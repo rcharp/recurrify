@@ -1,0 +1,280 @@
+{% import 'macros/flash.html' as flash with context %}
+<!DOCTYPE html>
+<!--[if IE 9]>         <html class="ie9 no-focus" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!--> <html class="no-focus" lang="en"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+
+        <title>Dashboard - {{ 'site_name'|site_name_filter }}</title>
+
+        <meta name="description" content="Recurrify - Subscriptions for your Shopify store">
+        <meta name="author" content="pixelcave">
+        <meta name="robots" content="noindex, nofollow">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+        <!-- Icons -->
+        <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+        <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico', subdomain=subdomain) }}">
+
+        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
+        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
+        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="96x96">
+        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="160x160">
+        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="192x192">
+        <!-- END Icons -->
+
+{#        <!-- Page JS Plugins CSS -->#}
+{#        <link rel="stylesheet" href="../../../../static/oneui/assets/js/plugins/bootstrap-datepicker/bootstrap-datepicker3.min.css">#}
+{#        <link rel="stylesheet" href="../../../../static/oneui/assets/js/plugins/bootstrap-datetimepicker/bootstrap-datetimepicker.min.css">#}
+{#        <link rel="stylesheet" href="../../../../static/oneui/assets/js/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css">#}
+{#        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.css">#}
+{#        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.5/css/select2.min.css">#}
+{#        <link rel="stylesheet" href="../../../../static/oneui/assets/js/plugins/select2/select2.min.css">#}
+{#        <link rel="stylesheet" href="../../../../static/oneui/assets/js/plugins/select2/select2-bootstrap.min.css">#}
+{#        <link rel="stylesheet" href="../../../../static/oneui/assets/js/plugins/jquery-auto-complete/jquery.auto-complete.min.css">#}
+{#        <link rel="stylesheet" href="../../../../static/oneui/assets/js/plugins/ion-rangeslider/css/ion.rangeSlider.min.css">#}
+{#        <link rel="stylesheet" href="../../../../static/oneui/assets/js/plugins/ion-rangeslider/css/ion.rangeSlider.skinHTML5.min.css">#}
+{#        <link rel="stylesheet" href="../../../../static/oneui/assets/js/plugins/dropzonejs/dropzone.min.css">#}
+{#        <link rel="stylesheet" href="../../../../static/oneui/assets/js/plugins/jquery-tags-input/jquery.tagsinput.min.css">#}
+{##}
+{#        <link rel="stylesheet" href="../../../../static/oneui/assets/js/plugins/datatables/jquery.dataTables.min.css">#}
+{##}
+{#        <!-- Stylesheets -->#}
+{#        <!-- Web fonts -->#}
+{#        <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400italic,600,700%7CRoboto:300,400,400italic,600,700">#}
+        <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">
+{##}
+{#        <!-- Bootstrap and OneUI CSS framework -->#}
+{#        <link rel="stylesheet" href="../../../../static/oneui/assets/css/bootstrap.min.css">#}
+{#        <link rel="stylesheet" id="css-main" href="../../../../static/icons/styles.css">#}
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css', subdomain=subdomain) }}">
+{##}
+{#        <!-- Shepherd JS -->#}
+{#        <link rel="stylesheet" href="../../../../static/shepherd.js/dist/css/shepherd-theme-square.css"/>#}
+{##}
+{#        <!-- CSS for form -->#}
+{#        <link rel="stylesheet" href="../../../../static/form/form.css"/>#}
+
+        <!-- Tailwind CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
+
+        <!-- END Stylesheets -->
+    </head>
+    <body>
+        {#{% include '/user/includes/mobile.html' ignore missing %}#}
+            <div class="bg-gray-100" style="height:100vh;">
+              {% with page='dashboard' %}{% include '/user/includes/main_header.html' ignore missing %}{% endwith %}
+                  <main class="flex-1 relative z-0 overflow-y-auto pb-6 focus:outline-none font-w400" style="height:auto;">
+                    {{ flash.render() }}
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 mt-20" style="height:80vh;">
+                        <!-- Replace with your content -->
+                        <div class="mt-1 grid grid-cols-4 gap-5 sm:grid-cols-4">
+                            <!-- submit box -->
+                            <div class="sm:col-span-1">
+                                <div class="bg-white overflow-hidden shadow rounded-lg  mb-4">
+                                  <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                                    <form action="{{ url_for('user.add_feedback', subdomain=subdomain) }}" method="post" onsubmit="SaveEmail()">
+                                      <div class="mt-6 grid grid-cols-6 col-gap-4 sm:grid-cols-6">
+                                          <div class="text-lg mb-3 leading-5 font-medium text-indigo-600 col-span-6">
+                                              Submit feedback
+                                          </div>
+
+                                      {% if not current_user.is_authenticated %}
+                                          <div class="sm:col-span-6">
+                                              <div class="mt-1 mb-3 rounded-md shadow-sm">
+                                                <input id="email" name="email" autofocus="autofocus" placeholder="Your email" required type="email" class="form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
+                                              </div>
+                                          </div>
+                                      {% endif %}
+                                        <div class="sm:col-span-6">
+                                          <div class="mt-1 mb-3 rounded-md shadow-sm">
+                                            <input id="title" name="title" autofocus="autofocus" placeholder="Title" required type="text" class="form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
+                                          </div>
+                                        </div>
+
+                                        <div class="sm:col-span-6">
+                                          <div class="mt-1 rounded-md shadow-sm">
+                                            <textarea id="description" name="description" required placeholder="What would you like to share?" rows="5" class="form-textarea w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"></textarea>
+                                          </div>
+                                        </div>
+                                      </div>
+                                      <div class="mt-4 mb-4 border-t border-gray-200 pt-3 pb-2">
+                                        <div class="flex justify-end">
+                                          <span class="ml-3 inline-flex rounded-md shadow-sm">
+                                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                                              Submit
+                                            </button>
+                                          </span>
+                                        </div>
+                                      </div>
+                                    </form>
+                                  </div>
+                                </div>
+
+                                <div class="mt-2 mb-4 text-center">
+                                    <a href="{{ url_for('user.dashboard', subdomain=subdomain) }}" class="text-sm leading-5 font-medium text-gray-500">
+                                        Powered by <span class="font-medium text-indigo-600"><u>Recurrify</u></span>
+                                    </a>
+                                </div>
+                            </div>
+                            <!-- end submit box -->
+
+                            <div class="sm:col-span-3">
+                                <div class="py-4 mt-20">
+                                  <div class="rounded-lg h-96 text-center" style="align-items:center;">
+                                      <span class="inline-flex text-sm leading-5 font-medium text-gray-500 text-center" style="float:none;margin:0 auto;">
+                                          <span>There is no feedback for {{ domain.company }} yet.</span>
+                                      </span><br /><br />
+                                      <span class="inline-flex text-sm leading-5 font-medium text-gray-500 text-center" style="float:none;margin:0 auto;">
+                                          <span>Your public dashboard link is: <span class="text-indigo-600" style="font-size:16px;font-family:'Baloo Bhaina 2"><u>https://{{ domain.name|lower }}.{{ 'site'|site_url_filter }}</u>.</span></span>
+                                      </span><br /><br />
+                                      <span class="inline-flex text-sm leading-5 font-medium text-gray-500 text-center" style="float:none;margin:0 auto;">
+                                          <span>Share it with your users so they can start leaving feedback!</span>
+                                      </span>
+                                  </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- /End replace -->
+                      </div>
+                  </main>
+            </div>
+
+
+        <!-- jQuery -->
+        <script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js', subdomain=subdomain) }}"></script>
+
+        <script>
+            function ShowDropdown(id) {
+                var dropdown = document.getElementById(id);
+                if (dropdown.classList.contains('opacity-0')){
+                    dropdown.classList.remove('opacity-0');
+                    dropdown.classList.remove('scale-95');
+                    dropdown.classList.add('opacity-100');
+                    dropdown.classList.add('scale-100');
+
+                    dropdown.style.display = '';
+                }
+                else {
+                    dropdown.classList.remove('opacity-100');
+                    dropdown.classList.remove('scale-100');
+                    dropdown.classList.add('opacity-0');
+                    dropdown.classList.add('scale-95');
+
+                    dropdown.style.display = 'none';
+                }
+            }
+
+            function ShowLoginModal(action, feedback_id){
+                if ('{{ demo }}' === 'True'){
+                    return false;
+                }
+
+                var login_overlay = document.getElementById('login-overlay-' + action);
+                login_overlay.style.display = '';
+                document.getElementById('feedback_id').value = feedback_id;
+
+                var login_overlay_modal = document.getElementById('login-overlay-modal');
+
+                if (login_overlay_modal !== null){
+                    login_overlay_modal.addEventListener("click", function () {
+                        login_overlay.style.display = 'none';
+                    }, false);
+                }
+            }
+
+            function ReplaceSubdomain(url){
+                var new_url = url.replace(/DUMMY_VALUE/, '{{ subdomain }}').toLowerCase();
+                return new_url;
+            }
+
+            function TogglePrivacy(){
+                var public_toggle = document.getElementById('public-toggle');
+                var private_toggle = document.getElementById('private-toggle');
+                var privacy;
+
+                if (public_toggle.classList.contains('bg-green-400')){
+                    public_toggle.classList.remove('bg-green-400');
+                    public_toggle.classList.add('bg-gray-200');
+
+                    private_toggle.classList.remove('translate-x-5');
+                    private_toggle.classList.add('translate-x-0');
+
+                    privacy = false;
+                }else{
+                    public_toggle.classList.remove('bg-gray-200');
+                    public_toggle.classList.add('bg-green-400');
+
+                    private_toggle.classList.remove('translate-x-0');
+                    private_toggle.classList.add('translate-x-5');
+
+                    privacy = true;
+                }
+
+                SetPrivacy(privacy, '{{ domain.domain_id }}')
+            }
+
+            function SetPrivacy(privacy, domain_id){
+                var url = "{{ url_for('user.set_domain_privacy') }}";
+                $.ajax({
+                    url: url,
+                    type: 'POST',
+                    data: {'domain_id': domain_id, 'privacy': privacy},
+                    success: function (response) {
+                    },
+                    error: function (xhr) {
+                    }
+                });
+            }
+        </script>
+        <script>
+            var body = document.getElementsByTagName("body")[0];
+            var user_dropdown = document.getElementById('user-dropdown-menu');
+            var sort_dropdown = document.getElementById('sort-dropdown-menu');
+            var notification_dropdown = document.getElementById('notification-dropdown-menu');
+
+            if (user_dropdown !== null){
+                body.addEventListener("click", function () {
+                    // Hide the user dropdown when you click outside of it
+                    user_dropdown.classList.remove('opacity-100');
+                    user_dropdown.classList.remove('scale-100');
+                    user_dropdown.classList.add('opacity-0');
+                    user_dropdown.classList.add('scale-95');
+                    user_dropdown.style.display = 'none';
+                }, false);
+                document.getElementById('user-menu').addEventListener("click", function (ev) {
+                    ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+                }, false);
+            }
+
+            if (sort_dropdown !== null){
+                body.addEventListener("click", function () {
+                    // Hide the sort dropdown when you click outside of it
+                    sort_dropdown.classList.remove('opacity-100');
+                    sort_dropdown.classList.remove('scale-100');
+                    sort_dropdown.classList.add('opacity-0');
+                    sort_dropdown.classList.add('scale-95');
+                    sort_dropdown.style.display = 'none';
+                }, false);
+                document.getElementById('sort-dropdown-button').addEventListener("click", function (ev) {
+                    ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+                }, false);
+            }
+
+            if (notification_dropdown !== null){
+                body.addEventListener("click", function () {
+                    // Hide the user dropdown when you click outside of it
+                    notification_dropdown.classList.remove('opacity-100');
+                    notification_dropdown.classList.remove('scale-100');
+                    notification_dropdown.classList.add('opacity-0');
+                    notification_dropdown.classList.add('scale-95');
+                    notification_dropdown.style.display = 'none';
+                }, false);
+                document.getElementById('notification-menu').addEventListener("click", function (ev) {
+                    ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+                }, false);
+            }
+        </script>
+    </body>
+</html>

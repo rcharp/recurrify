@@ -1,0 +1,4 @@
+
+        [console_scripts]
+        wishlist=cli.cli:cli
+    

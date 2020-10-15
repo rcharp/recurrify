@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+    <body>
+        <!-- Off-canvas menu for mobile -->
+          <div class="md:hidden">
+            <div class="fixed inset-0 flex z-40">
+              <!--
+                Off-canvas menu overlay, show/hide based on off-canvas menu state.
+
+                Entering: "transition-opacity ease-linear duration-300"
+                  From: "opacity-0"
+                  To: "opacity-100"
+                Leaving: "transition-opacity ease-linear duration-300"
+                  From: "opacity-100"
+                  To: "opacity-0"
+              -->
+              <div id="mobile-overlay" class="fixed inset-0 transition-opacity ease-linear duration-300">
+                <div class="absolute inset-0 bg-gray-600 opacity-75"></div>
+              </div>
+              <!--
+                Off-canvas menu, show/hide based on off-canvas menu state.
+
+                Entering: "transition ease-in-out duration-300 transform"
+                  From: "-translate-x-full"
+                  To: "translate-x-0"
+                Leaving: "transition ease-in-out duration-300 transform"
+                  From: "translate-x-0"
+                  To: "-translate-x-full"
+              -->
+              <div id="mobile-menu" class="relative flex-1 flex flex-col w-full pt-5 pb-4 bg-indigo-800 transition ease-in-out duration-300 transform text-center">
+                <div class="absolute top-0 right-0 -mr-14 p-1">
+                  <button id="close-button" class="flex items-center justify-center h-12 w-12 rounded-full focus:outline-none focus:bg-gray-600" aria-label="Close sidebar" onclick="CloseMenu()">
+                    <svg class="h-6 w-6 text-white" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                  </button>
+                </div>
+                <div class="flex-shrink-0 flex items-center px-4">
+                  <a href="{{ url_for('user.dashboard', subdomain=subdomain) }}" style="cursor:pointer;" class="flex items-center flex-shrink-0 px-4">
+                      <span style="font-size:32px;color:#ffffff;font-family:'Baloo Bhaina 2">{{ 'site'|site_name_filter }} <span style="font-size:14px;">{{ 'site'|site_version_filter }}</span></span>
+                  </a>
+                </div>
+                <div class="flex01 inline-flex justify-center" style="margin-top:150px;">
+                    <i class="si si-screen-desktop fa-3x text-white mb-5"></i><br /><br />
+                </div>
+                <span class="text-white pl-10 pr-10" style="color:white;font-size:20px;">We're still working on the mobile version of Recurrify.<br /><br />
+                    Please visit us on a laptop or desktop computer!
+                </span>
+              </div>
+            </div>
+          </div>
+
+        <script>
+            function CloseMenu(){
+                document.getElementById('mobile-menu').classList.remove('translate-x-0');
+                document.getElementById('mobile-menu').classList.add('-translate-x-full');
+                document.getElementById('close-button').style.display = 'none';
+
+                document.getElementById('mobile-overlay').classList.remove('opacity-100');
+                document.getElementById('mobile-overlay').classList.add('opacity-0');
+                document.getElementById('mobile-overlay').style.display = 'none';
+            }
+        </script>
+    </body>
+</html>

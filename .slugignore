@@ -1,0 +1,12 @@
+/instance
+.env
+"commands.txt"
+celerybeat-schedule
+node_modules
+ngrok.py
+app/blueprints/api/sdk.html
+/venv
+/build
+/dist
+.idea
+ngrok.exe

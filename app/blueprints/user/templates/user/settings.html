@@ -1,0 +1,401 @@
+{% import 'macros/flash.html' as flash with context %}
+<!DOCTYPE html>
+<!--[if IE 9]>
+<html class="ie9 no-focus" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-focus" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+
+    <title>Settings - {{ 'site_name'|site_name_filter }}</title>
+
+    <meta name="description" content="Recurrify - Subscriptions for your Shopify store">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <!-- Icons -->
+    <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico', subdomain=subdomain) }}">
+
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="192x192">
+    <!-- END Icons -->
+
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css', subdomain=subdomain) }}">
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
+
+    <!-- END Stylesheets -->
+</head>
+<body style="overflow-y: hidden;height: 100vh;">
+<div style="height:100vh; overflow-y:hidden;">
+    {#{% include '/user/includes/mobile.html' ignore missing %}#}
+    {% with page='settings' %}{% include '/user/includes/main_header.html' ignore missing %}{% endwith %}
+    <div class="h-screen flex overflow-hidden bg-gray-100" style="height:93vh;">
+        <div class="flex flex-col w-0 flex-1 overflow-hidden">
+            <div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+                <button class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:bg-gray-100 focus:text-gray-600 md:hidden"
+                        aria-label="Open sidebar" onclick="OpenSidebar()">
+                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                    </svg>
+                </button>
+                <div class="flex-1 px-4 flex justify-between">
+                    <div class="flex-1 flex">
+                        <div class="w-full flex md:ml-0">
+                            <label for="search_field" class="sr-only">Search</label>
+                            <div class="relative w-full text-gray-400 focus-within:text-gray-600">
+                                <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+                                    {#<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" />
+                            </svg>#}
+                                </div>
+                                <div id="search_field"
+                                     class="block w-full h-full pl-8 pr-3 py-2 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 sm:text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <main class="flex-1 relative z-0 overflow-y-auto pt-2 pb-6 focus:outline-none md:py-6" tabindex="0">
+                {{ flash.render() }}
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                    <div class="bg-white shadow overflow-hidden  sm:rounded-lg">
+                        <dl>
+                            <div class="px-4 py-5 sm:grid sm:grid-cols-12 border-b border-gray-200 sm:px-6">
+                                <dt class="mr-5 sm:col-span-2">
+                                    {% if current_user.name %}
+                                        <h3 class="text-lg leading-6 font-medium text-gray-900">
+                                            {{ current_user.name }}
+                                        </h3>
+                                    {% else %}
+                                        <span class="inline-flex rounded-md shadow-sm">
+                                      <a href="{{ url_for('user.update_credentials', subdomain=subdomain) }}"
+                                         class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                                        Set your name
+                                      </a>
+                                    </span>
+                                    {% endif %}
+                                    {% if current_user.username %}
+                                        <p class="mt-1 max-w-2xl text-sm leading-5 text-gray-900">
+                                            @{{ current_user.username }}
+                                        </p>
+                                    {% endif %}
+                                </dt>
+                                <dd class="sm:col-span-1">
+                                  <span class="inline-flex items-center justify-center h-16 w-16 rounded-full bg-gray-200">
+                                      {% if current_user.name %}
+                                          <span class="text-lg font-medium leading-none text-gray-500">{{ current_user.name|initial_filter }}</span>
+                                      {% else %}
+                                          <i class="si si-user fa-2x"></i>
+                                      {% endif %}
+                                  </span>
+                                </dd>
+                                <dd class="sm:col-span-6"></dd>
+                                <dd class="sm:col-span-3 sm:text-left lg:text-right mt-5">
+                                    {% if domain %}
+                                        <span class="inline-flex rounded-md mr-4 shadow-sm">
+                                      <a href="{{ url_for('user.dashboard', subdomain=domain.name) }}"
+                                         class="inline-flex items-center text-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                                        Go to my dashboard
+                                      </a>
+                                    </span>
+                                    {% endif %}
+                                </dd>
+                            </div>
+                        </dl>
+
+                        <div class="px-4 py-5 sm:p-0">
+                            <dl>
+                                <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                        Email
+                                    </dt>
+                                    <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {{ current_user.email }}
+                                    </dd>
+                                </div>
+                                <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                        Username
+                                    </dt>
+                                    <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {% if not current_user.username %}
+                                            <span class="mb-4">You don't have a username yet.</span><br/><br/>
+                                            <span class="inline-flex rounded-md shadow-sm">
+                                      <a href="{{ url_for('user.update_credentials', subdomain=subdomain) }}"
+                                         class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                                        Create username
+                                      </a>
+                                  </span>
+                                        {% else %}
+                                            <span class="mb-4">{{ current_user.username }}</span><br/><br/>
+                                            <span class="inline-flex rounded-md shadow-sm">
+                                      <a href="{{ url_for('user.update_credentials', subdomain=subdomain) }}"
+                                         class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                                        Update username
+                                      </a>
+                                    </span>
+                                        {% endif %}
+                                    </dd>
+                                </div>
+                                <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                        Update email/password
+                                    </dt>
+                                    <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                              <span class="inline-flex rounded-md shadow-sm">
+                                  <a href="{{ url_for('user.update_credentials', subdomain=subdomain) }}"
+                                     class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                                    Update email and password
+                                  </a>
+                              </span>
+                                    </dd>
+                                </div>
+                                <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                        Membership type
+                                    </dt>
+                                    <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                        {{ current_user.role|title }}
+                                    </dd>
+                                </div>
+                                {% if domain and current_user.role == 'creator' %}
+                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                        <dt class="text-sm leading-5 font-medium text-gray-500">
+                                            Domain Name
+                                        </dt>
+                                        <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                            {{ domain.name|title }}
+                                        </dd>
+                                    </div>
+                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                        <dt class="text-sm leading-5 font-medium text-gray-500">
+                                            Dashboard link
+                                        </dt>
+                                        <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                            <b><u>{{ domain.name }}.recurrify.io</u></b>
+                                        </dd>
+                                    </div>
+                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                        <dt class="text-sm leading-5 font-medium text-gray-500">
+                                            Domain Id
+                                        </dt>
+                                        <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                            {{ domain.domain_id }}
+                                        </dd>
+                                    </div>
+                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                        <dt class="text-sm leading-5 font-medium text-gray-500">
+                                            Require feedback approval?
+                                        </dt>
+                                        <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                            <div class="flex items-center mr-4 text-sm leading-5 font-medium text-gray-900">
+                                                <span class="mr-2">Off</span>
+                                                <!-- On: "bg-indigo-600", Off: "bg-gray-200" -->
+                                                <span id="approval-off" role="checkbox" tabindex="0"
+                                                      aria-checked="false"
+                                                      class="{% if domain.requires_approval %}bg-green-400{% else %}bg-gray-200{% endif %} relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:shadow-outline"
+                                                      onclick="ToggleApproval()">
+                                      <!-- On: "translate-x-5", Off: "translate-x-0" -->
+                                      <span id="approval-on" aria-hidden="true"
+                                            class="{% if domain.requires_approval %}translate-x-5{% else %}translate-x-0{% endif %} inline-block h-5 w-5 rounded-full bg-white shadow transform transition ease-in-out duration-200"></span>
+                                    </span>
+                                                <span class="ml-2">On</span>
+                                            </div>
+                                        </dd>
+                                    </div>
+                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5"
+                                         style="display:none">
+                                        <dt class="text-sm leading-5 font-medium text-gray-500">
+                                            Private Key
+                                        </dt>
+                                        <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                            <span id="private-key" class="mr-5">Loading...</span>
+                                            <i class="si si-docs" style="cursor:pointer;display:none;"
+                                               onclick="CopyPrivateKey();"></i>
+                                        </dd>
+                                    </div>
+                                {% endif %}
+                                {% if true %}
+                                    {% if current_user.subscription %}
+                                        <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                            <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                Payment info
+                                            </dt>
+                                            <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                                <h3 class="text-muted margin-bottom font-w400">
+                                                    {{ current_user.credit_card.brand }}
+                                                    ****{{ current_user.credit_card.last4 }}
+                                                    ({{ current_user.credit_card.exp_date.strftime('%m/%Y') }})
+                                                </h3>
+                                            </dd>
+                                        </div>
+                                    {% else %}
+                                        <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                            <dt class="text-sm leading-5 font-medium text-gray-500">
+                                                Payment info
+                                            </dt>
+                                            <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                  <span class="inline-flex rounded-md shadow-sm">
+                                      <a href="{{ url_for('billing.pricing', subdomain=subdomain) }}"
+                                         class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                                        Sign up for a plan
+                                      </a>
+                                  </span>
+                                            </dd>
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+                                <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                    <dt class="text-sm leading-5 font-medium text-gray-500">
+                                        Delete my account
+                                    </dt>
+                                    <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                          <span class="inline-flex rounded-md shadow-sm">
+                                              <a href="{{ url_for('billing.cancel') }}"
+                                                 onclick="return ConfirmDeleteAccount();"
+                                                 class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                                                  <span style="color:red">Delete my account</span>
+                                              </a>
+                                          </span>
+                                    </dd>
+                                </div>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+        </div>
+    </div>
+</div>
+<!-- END Page Container -->
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js', subdomain=subdomain) }}"></script>
+
+
+<script>
+    function ShowDropdown(id) {
+        var dropdown = document.getElementById(id);
+        if (dropdown.classList.contains('opacity-0')) {
+            dropdown.classList.remove('opacity-0');
+            dropdown.classList.remove('scale-95');
+            dropdown.classList.add('opacity-100');
+            dropdown.classList.add('scale-100');
+
+            dropdown.style.display = '';
+        } else {
+            dropdown.classList.remove('opacity-100');
+            dropdown.classList.remove('scale-100');
+            dropdown.classList.add('opacity-0');
+            dropdown.classList.add('scale-95');
+
+            dropdown.style.display = 'none';
+        }
+    }
+
+    function ConfirmDeleteAccount() {
+        return confirm("Are you sure you want to delete your account? This can't be undone.");
+    }
+
+    function GetPrivateKey(user_id, domain_id) {
+        $.ajax({
+            url: "{{ url_for('user.get_private_key') }}",
+            type: 'POST',
+            data: {'domain_id': domain_id, 'user_id': user_id},
+            success: function (response) {
+                if (response['success'] === true) {
+                    document.getElementById('private-key').innerText = response['key'];
+                }
+            },
+            error: function (xhr) {
+            }
+        });
+    }
+
+    function CopyPrivateKey() {
+        return false;
+        var private_key = document.getElementById('private-key').innerText;
+
+        if (private_key === 'Loading...') {
+            return false;
+        } else {
+            /* Select the text field */
+            private_key.select();
+            private_key.setSelectionRange(0, 99999); /*For mobile devices*/
+
+            /* Copy the text inside the text field */
+            document.execCommand("copy");
+
+            alert('Copied the private key to clipboard.')
+        }
+    }
+
+    function ToggleApproval() {
+        var approval_off = document.getElementById('approval-off');
+        var approval_on = document.getElementById('approval-on');
+        var approval;
+
+        if (approval_off.classList.contains('bg-green-400')) {
+            approval_off.classList.remove('bg-green-400');
+            approval_off.classList.add('bg-gray-200');
+
+            approval_on.classList.remove('translate-x-5');
+            approval_on.classList.add('translate-x-0');
+
+            approval = false;
+        } else {
+            approval_off.classList.remove('bg-gray-200');
+            approval_off.classList.add('bg-green-400');
+
+            approval_on.classList.remove('translate-x-0');
+            approval_on.classList.add('translate-x-5');
+
+            approval = true;
+        }
+
+        SetApproval(approval, '{{ domain.domain_id }}')
+    }
+
+    function SetApproval(approval, domain_id) {
+        var url = "{{ url_for('user.set_domain_approval') }}";
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {'domain_id': domain_id, 'approval': approval},
+            success: function (response) {
+            },
+            error: function (xhr) {
+            }
+        });
+    }
+</script>
+<script>
+    var body = document.getElementsByTagName("body")[0];
+    var except = document.getElementById('user-dropdown-menu');
+
+    body.addEventListener("click", function () {
+        except.classList.remove('opacity-100');
+        except.classList.remove('scale-100');
+        except.classList.add('opacity-0');
+        except.classList.add('scale-95');
+
+        except.style.display = 'none';
+    }, false);
+    document.getElementById('user-menu').addEventListener("click", function (ev) {
+        ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+    }, false);
+
+    //GetPrivateKey('{{ current_user.id }}', '{{ domain.domain_id }}');
+</script>
+</body>
+</html>
