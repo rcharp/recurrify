@@ -5,7 +5,7 @@
 set -e
 
 sourceApp="getwishlist"
-targetApp="getwishlistdev"
+targetApp="recurrify"
 
 while read key value; do
   key=${key%%:}
