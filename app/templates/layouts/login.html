@@ -37,12 +37,12 @@
                 </li>
               {% endif %}
               {% if current_user.is_authenticated %}
-                      <li><a href="{{ url_for('user.logout', subdomain=subdomain) }}">Log out</a></li>
+                      <li><a href="{{ url_for('user.logout') }}">Log out</a></li>
               {% else %}
                 <li><a style="padding:10px;" href="{{ url_for('billing.pricing') }}"><span style="font-family:'Baloo Bhaina 2', sans-serif !important;font-weight:300;letter-spacing: 1.5px;color:#555555;">Pricing</span></a></li>
                 <li><a style="padding:10px;" href="{{ url_for('user.contact') }}"><span style="font-family:'Baloo Bhaina 2', sans-serif !important;font-weight:300;letter-spacing: 1.5px;color:#555555;">Contact Us</span></a></li>
-                <li><a style="padding:10px;" href="{{ url_for('user.login', subdomain=subdomain) }}"><span style="font-family:'Baloo Bhaina 2', sans-serif !important;font-weight:300;letter-spacing: 1.5px;color:#555555;">Login</span></a></li>
-                <li class="bg-indigo-500" style=border-radius:4px;"><a style="padding:10px;" href="{{ url_for('user.signup', subdomain=subdomain) }}"><span style="font-size:12px; font-family:'Baloo Bhaina 2', sans-serif !important;letter-spacing: 2.5px;color:#fff;">Sign up</span></a></li>
+                <li><a style="padding:10px;" href="{{ url_for('user.login') }}"><span style="font-family:'Baloo Bhaina 2', sans-serif !important;font-weight:300;letter-spacing: 1.5px;color:#555555;">Login</span></a></li>
+                <li class="bg-indigo-500" style=border-radius:4px;"><a style="padding:10px;" href="{{ url_for('user.signup') }}"><span style="font-size:12px; font-family:'Baloo Bhaina 2', sans-serif !important;letter-spacing: 2.5px;color:#fff;">Sign up</span></a></li>
               {% endif %}
             </ul>
           </div>
@@ -51,5 +51,5 @@
 {% endblock %}
 
 {% block footer %}
-  <!--li><a href="{{ url_for('user.signup', subdomain=subdomain) }}">Sign up today</a></li-->
+  <!--li><a href="{{ url_for('user.signup') }}">Sign up today</a></li-->
 {% endblock %}

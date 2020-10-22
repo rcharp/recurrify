@@ -1,10 +1,10 @@
-FROM python:3.5-slim
+FROM python:3.6-slim
 MAINTAINER Nick Janetakis <nick.janetakis@gmail.com>
 
 RUN apt-get update && apt-get install -qq -y \
   build-essential libpq-dev --no-install-recommends
 
-ENV INSTALL_PATH /wishlist
+ENV INSTALL_PATH /recurrify
 RUN mkdir -p $INSTALL_PATH
 
 WORKDIR $INSTALL_PATH

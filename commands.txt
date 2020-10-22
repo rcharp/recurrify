@@ -1,6 +1,6 @@
 ******** Most used commands *********
 ./ngrok http -host-header=rewrite localhost:5000
-docker-compose exec website cards db reset
+docker-compose exec website recurrify db reset
 docker rmi -f $(docker images -qf dangling=true)
 *************************************
 
@@ -22,13 +22,13 @@ heroku addons:rename <old-db-name> <new-db-name> -a <app-name>
 Heroku Backup Database
 =====================
 # Manual database backup
-heroku pg:backups:capture --app getcards
+heroku pg:backups:capture --app recurrify
 
 # Get database backup URL
-heroku pg:backups:url b002 --app getcards
+heroku pg:backups:url b002 --app recurrify
 
 # Schedule daily DB backups
-heroku pg:backups:schedule DATABASE_URL --at '09:00 America/Los_Angeles' --app getcards
+heroku pg:backups:schedule DATABASE_URL --at '09:00 America/Los_Angeles' --app recurrify
 
 Ngrok
 ==============
@@ -115,34 +115,34 @@ Docker DB commands
 =================
 
 # Docker db commands
-docker-compose exec website cards db [command_name]
+docker-compose exec website recurrify db [command_name]
 
 # Reset db
-docker-compose exec website cards db reset
+docker-compose exec website recurrify db reset
 
 # Show tables in db
 docker exec -it $(docker-compose ps -q postgres9 ) psql -Upostgres -c '\z'
 
 # Add fake users
-docker-compose exec website cards add all
+docker-compose exec website recurrify add all
 
 # Test coverage
-docker-compose exec website cards cov
+docker-compose exec website recurrify cov
 
 # Generate a secret key for production
-docker-compose exec website cards secret
+docker-compose exec website recurrify secret
 
 # Generate secret key 64 bytes
-docker-compose exec website cards secret 64
+docker-compose exec website recurrify secret 64
 
 # All website's routes
-docker-compose exec website cards routes
+docker-compose exec website recurrify routes
 
 # Count lines of code
-docker-compose exec website cards loc
+docker-compose exec website recurrify loc
 
 # List all stripe charges
-docker-compose exec website cards stripe list_charges
+docker-compose exec website recurrify stripe list_charges
 
 
 Changes

@@ -41,7 +41,7 @@
                 </h3>
                 <div class="mt-2">
                   <p class="text-sm leading-5 text-gray-500 mb-4">
-                    In order to <span id="modal-action">vote or comment</span> on feedback, please leave your email address so that {% if domain %}{{ domain.company }} knows{% else %}we know{% endif %} who left it.
+                    In order to <span id="modal-action">vote or comment</span> on feedback, please leave your email address so that I know who left it.
                   </p>
                   <div class="mb-6">
                       <form id="login-overlay-form">
@@ -67,12 +67,12 @@
             </div>
             <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
               <span class="flex w-full rounded-md shadow-sm sm:col-start-2">
-                <a href="{{ url_for('user.signup', subdomain=subdomain) }}" type="button" class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-indigo-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                <a href="{{ url_for('user.signup') }}" type="button" class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-indigo-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                   Sign up
                 </a>
               </span>
               <span class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:col-start-1">
-                <a href="{{ url_for('user.login', subdomain=subdomain) }}" type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                <a href="{{ url_for('user.login') }}" type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                   Log in
                 </a>
               </span>
@@ -80,56 +80,8 @@
           </div>
         </div>
 
-        <script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js', subdomain=subdomain) }}"></script>
+        <script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
 
-        <script>
-            function VoteOrComment(action){
-                var email = document.getElementById('login-overlay-email').value;
-                var feedback_id = document.getElementById('feedback_id').value;
-
-                // Set the email in localStorage
-                if (email.includes('@')){
-                    localStorage.setItem('email', email);
-                }
-
-                if (action === 'vote'){
-                    var url = ReplaceSubdomain("{{ url_for('user.update_vote', subdomain='DUMMY_VALUE') }}");
-
-                    $.ajax({
-                        url: url,
-                        type: 'POST',
-                        beforeSend: UpdateVote(feedback_id),
-                        data: {'feedback_id': feedback_id, 'email': email},
-                        success: function (response) {
-                            if ('success' in response){
-                                location.reload();
-                            }
-                        },
-                        error: function (xhr) {
-                        }
-                    });
-                }
-                else if (action === 'comment'){
-                    if (email === null){
-                        location.reload();
-                    }
-                    else{
-                        var commentJSON = JSON.parse(localStorage.getItem('comment'));
-                        var data = Object.assign(commentJSON, {'feedback_id': feedback_id, 'email': email});
-
-                        $.ajax({
-                            type: 'POST',
-                            url:  "{{ url_for('user.add_comment') }}",
-                            data: data,
-                            success: function(comment) {
-                            }
-                        });
-                    }
-
-                    HideModal();
-                }
-            }
-        </script>
         <script>
             $(document).ready(function() {
                 // Don't submit the form normally

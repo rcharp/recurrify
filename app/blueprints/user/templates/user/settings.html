@@ -17,7 +17,7 @@
 
     <!-- Icons -->
     <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-    <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico', subdomain=subdomain) }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico') }}">
 
     <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
     <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
@@ -27,7 +27,7 @@
     <!-- END Icons -->
 
     <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css', subdomain=subdomain) }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
 
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
@@ -78,7 +78,7 @@
                                         </h3>
                                     {% else %}
                                         <span class="inline-flex rounded-md shadow-sm">
-                                      <a href="{{ url_for('user.update_credentials', subdomain=subdomain) }}"
+                                      <a href="{{ url_for('user.update_credentials') }}"
                                          class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
                                         Set your name
                                       </a>
@@ -101,14 +101,6 @@
                                 </dd>
                                 <dd class="sm:col-span-6"></dd>
                                 <dd class="sm:col-span-3 sm:text-left lg:text-right mt-5">
-                                    {% if domain %}
-                                        <span class="inline-flex rounded-md mr-4 shadow-sm">
-                                      <a href="{{ url_for('user.dashboard', subdomain=domain.name) }}"
-                                         class="inline-flex items-center text-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-                                        Go to my dashboard
-                                      </a>
-                                    </span>
-                                    {% endif %}
                                 </dd>
                             </div>
                         </dl>
@@ -131,7 +123,7 @@
                                         {% if not current_user.username %}
                                             <span class="mb-4">You don't have a username yet.</span><br/><br/>
                                             <span class="inline-flex rounded-md shadow-sm">
-                                      <a href="{{ url_for('user.update_credentials', subdomain=subdomain) }}"
+                                      <a href="{{ url_for('user.update_credentials') }}"
                                          class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
                                         Create username
                                       </a>
@@ -139,7 +131,7 @@
                                         {% else %}
                                             <span class="mb-4">{{ current_user.username }}</span><br/><br/>
                                             <span class="inline-flex rounded-md shadow-sm">
-                                      <a href="{{ url_for('user.update_credentials', subdomain=subdomain) }}"
+                                      <a href="{{ url_for('user.update_credentials') }}"
                                          class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
                                         Update username
                                       </a>
@@ -153,7 +145,7 @@
                                     </dt>
                                     <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
                               <span class="inline-flex rounded-md shadow-sm">
-                                  <a href="{{ url_for('user.update_credentials', subdomain=subdomain) }}"
+                                  <a href="{{ url_for('user.update_credentials') }}"
                                      class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
                                     Update email and password
                                   </a>
@@ -168,63 +160,6 @@
                                         {{ current_user.role|title }}
                                     </dd>
                                 </div>
-                                {% if domain and current_user.role == 'creator' %}
-                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
-                                        <dt class="text-sm leading-5 font-medium text-gray-500">
-                                            Domain Name
-                                        </dt>
-                                        <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                            {{ domain.name|title }}
-                                        </dd>
-                                    </div>
-                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
-                                        <dt class="text-sm leading-5 font-medium text-gray-500">
-                                            Dashboard link
-                                        </dt>
-                                        <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                            <b><u>{{ domain.name }}.recurrify.io</u></b>
-                                        </dd>
-                                    </div>
-                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
-                                        <dt class="text-sm leading-5 font-medium text-gray-500">
-                                            Domain Id
-                                        </dt>
-                                        <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                            {{ domain.domain_id }}
-                                        </dd>
-                                    </div>
-                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
-                                        <dt class="text-sm leading-5 font-medium text-gray-500">
-                                            Require feedback approval?
-                                        </dt>
-                                        <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                            <div class="flex items-center mr-4 text-sm leading-5 font-medium text-gray-900">
-                                                <span class="mr-2">Off</span>
-                                                <!-- On: "bg-indigo-600", Off: "bg-gray-200" -->
-                                                <span id="approval-off" role="checkbox" tabindex="0"
-                                                      aria-checked="false"
-                                                      class="{% if domain.requires_approval %}bg-green-400{% else %}bg-gray-200{% endif %} relative inline-flex flex-shrink-0 h-6 w-11 border-2 border-transparent rounded-full cursor-pointer transition-colors ease-in-out duration-200 focus:outline-none focus:shadow-outline"
-                                                      onclick="ToggleApproval()">
-                                      <!-- On: "translate-x-5", Off: "translate-x-0" -->
-                                      <span id="approval-on" aria-hidden="true"
-                                            class="{% if domain.requires_approval %}translate-x-5{% else %}translate-x-0{% endif %} inline-block h-5 w-5 rounded-full bg-white shadow transform transition ease-in-out duration-200"></span>
-                                    </span>
-                                                <span class="ml-2">On</span>
-                                            </div>
-                                        </dd>
-                                    </div>
-                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5"
-                                         style="display:none">
-                                        <dt class="text-sm leading-5 font-medium text-gray-500">
-                                            Private Key
-                                        </dt>
-                                        <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                            <span id="private-key" class="mr-5">Loading...</span>
-                                            <i class="si si-docs" style="cursor:pointer;display:none;"
-                                               onclick="CopyPrivateKey();"></i>
-                                        </dd>
-                                    </div>
-                                {% endif %}
                                 {% if true %}
                                     {% if current_user.subscription %}
                                         <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
@@ -246,7 +181,7 @@
                                             </dt>
                                             <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
                                   <span class="inline-flex rounded-md shadow-sm">
-                                      <a href="{{ url_for('billing.pricing', subdomain=subdomain) }}"
+                                      <a href="{{ url_for('billing.pricing') }}"
                                          class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
                                         Sign up for a plan
                                       </a>
@@ -280,7 +215,7 @@
 </div>
 <!-- END Page Container -->
 <!-- jQuery -->
-<script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js', subdomain=subdomain) }}"></script>
+<script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
 
 
 <script>
@@ -339,45 +274,6 @@
             alert('Copied the private key to clipboard.')
         }
     }
-
-    function ToggleApproval() {
-        var approval_off = document.getElementById('approval-off');
-        var approval_on = document.getElementById('approval-on');
-        var approval;
-
-        if (approval_off.classList.contains('bg-green-400')) {
-            approval_off.classList.remove('bg-green-400');
-            approval_off.classList.add('bg-gray-200');
-
-            approval_on.classList.remove('translate-x-5');
-            approval_on.classList.add('translate-x-0');
-
-            approval = false;
-        } else {
-            approval_off.classList.remove('bg-gray-200');
-            approval_off.classList.add('bg-green-400');
-
-            approval_on.classList.remove('translate-x-0');
-            approval_on.classList.add('translate-x-5');
-
-            approval = true;
-        }
-
-        SetApproval(approval, '{{ domain.domain_id }}')
-    }
-
-    function SetApproval(approval, domain_id) {
-        var url = "{{ url_for('user.set_domain_approval') }}";
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: {'domain_id': domain_id, 'approval': approval},
-            success: function (response) {
-            },
-            error: function (xhr) {
-            }
-        });
-    }
 </script>
 <script>
     var body = document.getElementsByTagName("body")[0];
@@ -394,8 +290,6 @@
     document.getElementById('user-menu').addEventListener("click", function (ev) {
         ev.stopPropagation(); //this is important! If removed, you'll get both alerts
     }, false);
-
-    //GetPrivateKey('{{ current_user.id }}', '{{ domain.domain_id }}');
 </script>
 </body>
 </html>

@@ -14,7 +14,7 @@
 
     <!-- Icons -->
     <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-    <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico', subdomain=subdomain) }}">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico') }}">
 
     <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
     <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
@@ -27,7 +27,7 @@
     <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">
 
     <!-- Bootstrap -->
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css', subdomain=subdomain) }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
 
     <!-- Tailwind CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
@@ -174,7 +174,7 @@
                 </div>
 
                 <div class="mt-2 mb-4 text-center">
-                    <a href="{{ url_for('user.dashboard', subdomain=subdomain) }}" class="text-sm leading-5 font-medium text-gray-500">
+                    <a href="{{ url_for('user.dashboard') }}" class="text-sm leading-5 font-medium text-gray-500">
                         Powered by <span class="font-medium text-indigo-600"><u>Recurrify</u></span>
                     </a>
                 </div>
@@ -188,7 +188,7 @@
                 </a>
               </span>
               <span class="inline-flex rounded-md shadow-sm ml-5 mr-5">
-                <a type="button" href="{{ url_for('user.dashboard', subdomain='demo') }}" class="inline-flex items-center text-center px-6 py-3 border justify-center leading-6 font-medium rounded-md text-indigo-600 bg-transparent focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150" style="width:193px;">
+                <a type="button" href="{{ url_for('user.dashboard') }}" class="inline-flex items-center text-center px-6 py-3 border justify-center leading-6 font-medium rounded-md text-indigo-600 bg-transparent focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150" style="width:193px;">
                   Try the demo
                 </a>
               </span>
@@ -483,7 +483,7 @@
                 </a>
               </span>
               <span class="inline-flex rounded-md shadow-sm ml-5 mr-5">
-                <a type="button" href="{{ url_for('user.dashboard', subdomain='demo') }}" class="inline-flex items-center text-center px-6 py-3 border justify-center leading-6 font-medium rounded-md text-indigo-600 bg-transparent focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150" style="width:193px;">
+                <a type="button" href="{{ url_for('user.dashboard') }}" class="inline-flex items-center text-center px-6 py-3 border justify-center leading-6 font-medium rounded-md text-indigo-600 bg-transparent focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150" style="width:193px;">
                   Try the demo
                 </a>
               </span>
@@ -813,7 +813,7 @@
       </div>
 
     <!-- jQuery -->
-    <script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js', subdomain=subdomain) }}"></script>
+    <script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
 
 </body>
 

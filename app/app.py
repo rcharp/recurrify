@@ -2,8 +2,8 @@ import logging
 import pytz
 from logging.handlers import SMTPHandler
 import os
+import uuid
 import json
-from flask_sslify import SSLify
 import stripe
 import datetime
 import random
@@ -17,6 +17,7 @@ from app.blueprints.admin import admin
 from app.blueprints.page import page
 from app.blueprints.contact import contact
 from app.blueprints.user import user
+from app.blueprints.shopify import shopify_bp
 from app.blueprints.base import base
 from app.blueprints.api import api
 from app.blueprints.api.functions import deserialize_token
@@ -36,8 +37,6 @@ from app.extensions import (
     login_manager,
     cache,
     cors,
-    # sslify,
-    # talisman
 )
 
 
@@ -81,7 +80,7 @@ def create_app(settings_override=None):
     :param settings_override: Override settings
     :return: Flask app
     """
-    app = Flask(__name__, instance_relative_config=True, subdomain_matching=True)
+    app = Flask(__name__, instance_relative_config=True)
 
     app.config.from_object('config.settings')
     app.config.from_pyfile('settings.py', silent=True)
@@ -117,6 +116,7 @@ def create_app(settings_override=None):
     app.register_blueprint(page)
     app.register_blueprint(contact)
     app.register_blueprint(user)
+    app.register_blueprint(shopify_bp)
     app.register_blueprint(base)
     app.register_blueprint(api)
     app.register_blueprint(billing)
@@ -138,7 +138,7 @@ def create_app(settings_override=None):
     #     if not request.is_secure and os.environ.get('PRODUCTION') == 'true':
     #         url = request.url.replace("http://", "https://", 1)
     #         code = 301
-    #         return redirect(url, code=code)
+    #         return shopify_redirect(url, code=code)
 
     @app.errorhandler(500)
     def error_502(e):
@@ -177,8 +177,6 @@ def extensions(app):
     login_manager.init_app(app)
     cache.init_app(app, config={'CACHE_TYPE': 'redis'})
     cors(app, support_credentials=True, resources={r"/*": {"origins": "*"}})
-    # talisman(app, content_security_policy=None)
-    sslify = SSLify(app, permanent=True)
 
     return None
 

@@ -116,12 +116,12 @@
                                 <li class="divider"></li>
                                 <li class="dropdown-header">Actions</li>
                                 <li>
-                                    <a tabindex="-1" href="{{ url_for('user.dashboard', subdomain=subdomain) }}">
+                                    <a tabindex="-1" href="{{ url_for('user.dashboard') }}">
                                         <i class="si si-grid pull-right"></i>My Dashboard
                                     </a>
                                 </li>
                                 <li>
-                                    <a tabindex="-1" href="{{ url_for('user.settings', subdomain=subdomain) }}">
+                                    <a tabindex="-1" href="{{ url_for('user.settings') }}">
                                         <i class="si si-settings pull-right"></i>Settings
                                     </a>
                                 </li>
@@ -131,7 +131,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a tabindex="-1" href="{{ url_for('user.logout', subdomain=subdomain) }}">
+                                    <a tabindex="-1" href="{{ url_for('user.logout') }}">
                                         <i class="si si-logout pull-right"></i>Log out
                                     </a>
                                 </li>
@@ -145,7 +145,7 @@
                 <ul class="nav-header pull-left">
                     <li>
                         <!-- Opens the Apps modal found at the bottom of the page, before including JS code -->
-                        <button class="btn btn-default pull-right" style="margin-top:0px;" data-toggle="modal" onclick="window.location.href='{{ url_for('user.dashboard', subdomain=subdomain) }}" }}'" type="button">
+                        <button class="btn btn-default pull-right" style="margin-top:0px;" data-toggle="modal" onclick="window.location.href='{{ url_for('user.dashboard') }}" }}'" type="button">
                             <i class="si si-home"></i>
                         </button>
                     </li>
@@ -196,7 +196,7 @@
                                                 <div style="text-align:center; font-size:24px;"><br /><br />
                                                     Whoops, looks like an error occured.<br /><br />
 
-                                                    Please click <a href="{{ url_for('user.dashboard', subdomain=subdomain) }}"><span style="color:#0073ff">here</span></a> to return to your dashboard.
+                                                    Please click <a href="{{ url_for('user.dashboard') }}"><span style="color:#0073ff">here</span></a> to return to your dashboard.
                                                 </div>
                                             </div>
                                             <!-- END Bootstrap Login -->

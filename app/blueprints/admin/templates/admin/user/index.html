@@ -15,7 +15,7 @@
       <p>Try limiting or removing your search terms.</p>
     {% else %}
       <p>There are no users present,
-         you should <a href="{{ url_for('user.signup', subdomain=subdomain) }}">sign up</a>.</p>
+         you should <a href="{{ url_for('user.signup') }}">sign up</a>.</p>
     {% endif %}
   {% else %}
     {% call f.form_tag('admin.users_bulk_delete') %}

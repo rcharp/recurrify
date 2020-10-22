@@ -4,7 +4,7 @@
 celerybeat-schedule
 node_modules
 ngrok.py
-app/blueprints/api/sdk.html
+app/blueprints/shopify/config.py
 /venv
 /build
 .idea

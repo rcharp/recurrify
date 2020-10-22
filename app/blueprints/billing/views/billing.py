@@ -155,14 +155,6 @@ def cancel():
                 subscription = Subscription()
                 canceled = subscription.cancel(user=current_user)
 
-            # Delete the domain
-            if current_user.domain:
-                from app.blueprints.user.models.domain import Domain
-                d = Domain.query.filter(Domain.domain_id == current_user.domain_id).scalar()
-
-                if d is not None:
-                    d.delete()
-
             if canceled:
 
                 # Set the user to inactive

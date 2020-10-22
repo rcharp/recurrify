@@ -15,7 +15,7 @@
 
         <!-- Icons -->
         <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-        <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico', subdomain=subdomain) }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico') }}">
 
         <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
         <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
@@ -24,7 +24,7 @@
         <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="192x192">
         <!-- END Icons -->
         <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css', subdomain=subdomain) }}">
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
 
         <!-- Tailwind CSS -->
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
@@ -45,7 +45,7 @@
                             <span class="text-center rounded-md text-gray-400" style="float:none;margin:0 auto;font-size:24px;">
                                 <span style="clear:both">Sorry, the page you're looking for doesn't exist!<br />
                                     <span style="font-size:18px;">
-                                        Please click <a href="{{ url_for('user.dashboard', subdomain=subdomain) }}"><span class="text-indigo-600">here</span></a> to return to the dashboard.
+                                        Please click <a href="{{ url_for('user.dashboard') }}"><span class="text-indigo-600">here</span></a> to return to the dashboard.
                                     </span>
                                 </span>
                             </span>
@@ -57,7 +57,7 @@
 
 
         <!-- jQuery -->
-        <script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js', subdomain=subdomain) }}"></script>
+        <script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
 
         <script>
             function ShowDropdown(id) {

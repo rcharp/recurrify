@@ -9,17 +9,17 @@
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div class="flex items-center justify-between h-16">
             <div class="flex items-center">
-              <a href="{{ url_for('page.home', subdomain=subdomain) }}" class="flex-shrink-0" style="cursor:pointer">
+              <a href="{{ url_for('page.home') }}" class="flex-shrink-0" style="cursor:pointer">
                 <img class="h-12 w-12" src="{{ url_for('static', filename='logo/logo.png') }}" alt="Recurrify logo">
               </a>
               <div class="hidden md:block">
                 <div class="ml-10 flex items-baseline">
-                  <a href="{{ url_for('user.dashboard', subdomain=subdomain) }}" class="px-3 py-2 rounded-md text-sm font-medium {% if page == 'dashboard' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Dashboard</a>
-                  <a href="{{ url_for('user.settings', subdomain=subdomain) }}" class="ml-2 px-3 py-2 rounded-md text-sm font-medium {% if page == 'settings' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Settings</a>
+                  <a href="{{ url_for('user.dashboard') }}" class="px-3 py-2 rounded-md text-sm font-medium {% if page == 'dashboard' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Dashboard</a>
+                  <a href="{{ url_for('user.settings') }}" class="ml-2 px-3 py-2 rounded-md text-sm font-medium {% if page == 'settings' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Settings</a>
                 </div>
               </div>
             </div>
-            {% if page == 'dashboard' and current_user.authenticated and current_user.domain == subdomain and current_user.role == 'creator' %}
+            {% if page == 'dashboard' and current_user.authenticated and current_user.role == 'creator' %}
                 {% include '/user/includes/privacy_switch.html' ignore missing %}
             {% endif %}
             <div class="md:block">
@@ -41,8 +41,8 @@
         -->
         <div id="sidebar" class="hidden md:hidden">
           <div class="px-2 pt-2 pb-3 sm:px-3">
-            <a href="{{ url_for('user.dashboard', subdomain=subdomain) }}" class="px-3 py-2 rounded-md text-sm font-medium {% if page == 'dashboard' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Dashboard</a>
-            <a href="{{ url_for('user.settings', subdomain=subdomain) }}" class="ml-4 px-3 py-2 rounded-md text-sm font-medium {% if page == 'settings' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Settings</a>
+            <a href="{{ url_for('user.dashboard') }}" class="px-3 py-2 rounded-md text-sm font-medium {% if page == 'dashboard' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Dashboard</a>
+            <a href="{{ url_for('user.settings') }}" class="ml-4 px-3 py-2 rounded-md text-sm font-medium {% if page == 'settings' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Settings</a>
           </div>
         </div>
       </nav>

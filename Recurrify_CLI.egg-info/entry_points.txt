@@ -1,4 +1,4 @@
 
         [console_scripts]
-        wishlist=cli.cli:cli
+        recurrify=cli.cli:cli
     

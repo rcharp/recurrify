@@ -22,7 +22,6 @@ class LoginFormAnon(Form):
     next = HiddenField()
     identity = StringField('Username or email',
                            [DataRequired(), Length(3, 254)])
-    domain = StringField('Domain (optional)')
     password = PasswordField('Password', [DataRequired(), Length(8, 128)])
     # remember = BooleanField('Stay signed in')
 
@@ -63,15 +62,6 @@ class SignupFormAnon(ModelForm):
         DataRequired(),
         Email(),
         Unique(User.email, get_session=lambda: db.session, message='This email is already in use. Login instead?')
-    ])
-
-    company = StringField(validators=[
-        DataRequired()
-    ])
-
-    domain = StringField(validators=[
-        DataRequired(),
-        Regexp('^[A-Za-z]+$', message='Only letters are allowed for domain names.'),
     ])
 
     password = PasswordField('Password', [DataRequired(), Length(8, 128)])

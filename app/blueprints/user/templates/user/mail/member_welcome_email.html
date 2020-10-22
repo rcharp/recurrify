@@ -193,12 +193,10 @@ ul li, ol li {
 						<p>Thank you for joining {{ 'site_name'|site_name_filter }}!<br>
 						We're happy to help you get started with leaving feedback.</p>
 						<h1>What do I do next?</h1>
-						<p>Sign in to leave feedback for {{ domain|capitalize }}!<br><br>
-						Just click the button below to be taken to {{ domain|capitalize }}'s dashboard.</p>
 						<table>
 							<tr>
 								<td class="padding">
-									<p><a href="{{ url_for('user.dashboard', subdomain=domain) }}" class="btn-primary"><span style="color:white">Take me there</span></a></p>
+									<p><a href="{{ url_for('user.dashboard') }}" class="btn-primary"><span style="color:white">Take me there</span></a></p>
 								</td>
 							</tr>
 						</table>

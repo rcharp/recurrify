@@ -1301,7 +1301,7 @@ class Http(object):
 
         self.timeout = timeout
 
-        # Keep Authorization: headers on a redirect.
+        # Keep Authorization: headers on a shopify_redirect.
         self.forward_authorization_headers = False
 
     def __getstate__(self):
@@ -1462,7 +1462,7 @@ class Http(object):
                         if authority == None:
                             response['location'] = urlparse.urljoin(absolute_uri, location)
                     if response.status == 301 and method in ["GET", "HEAD"]:
-                        response['-x-permanent-redirect-url'] = response['location']
+                        response['-x-permanent-shopify_redirect-url'] = response['location']
                         if 'content-location' not in response:
                             response['content-location'] = absolute_uri
                         _updateCache(headers, response, content, self.cache, cachekey)
@@ -1519,7 +1519,7 @@ class Http(object):
         Any extra headers that are to be sent with the request should be
         provided in the 'headers' dictionary.
 
-        The maximum number of redirect to follow before raising an
+        The maximum number of shopify_redirect to follow before raising an
         exception is 'redirections. The default is 5.
 
         The return value is a tuple of (response, content), the first
@@ -1624,12 +1624,12 @@ class Http(object):
                         break
 
             if cached_value and method in ["GET", "HEAD"] and self.cache and 'range' not in headers:
-                if '-x-permanent-redirect-url' in info:
+                if '-x-permanent-shopify_redirect-url' in info:
                     # Should cached permanent redirects be counted in our redirection count? For now, yes.
                     if redirections <= 0:
                         raise RedirectLimit("Redirected more times than rediection_limit allows.", {}, "")
                     (response, new_content) = self.request(
-                        info['-x-permanent-redirect-url'], method='GET',
+                        info['-x-permanent-shopify_redirect-url'], method='GET',
                         headers=headers, redirections=redirections - 1)
                     response.previous = Response(info)
                     response.previous.fromcache = True

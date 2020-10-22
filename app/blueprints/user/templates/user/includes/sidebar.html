@@ -8,17 +8,9 @@
       <!-- Static sidebar for desktop -->
       <div class="hidden md:flex md:flex-shrink-0" style="display:none">
         <div class="flex flex-col w-64 bg-indigo-800 pt-5 pb-4">
-          <a href="{{ url_for('user.dashboard', subdomain=subdomain) }}" style="cursor:pointer;" class="flex items-center flex-shrink-0 px-4">
-              <span style="font-size:32px;color:#ffffff;font-family:'Baloo Bhaina 2">{{ 'site'|site_name_filter }} <span style="font-size:14px;">{{ 'site'|site_version_filter }}{% if not subdomain or (subdomain and subdomain == 'demo') %} (Demo){% endif %}</span></span>
+          <a href="{{ url_for('user.dashboard') }}" style="cursor:pointer;" class="flex items-center flex-shrink-0 px-4">
+              <span style="font-size:32px;color:#ffffff;font-family:'Baloo Bhaina 2">{{ 'site'|site_name_filter }} <span style="font-size:14px;">{{ 'site'|site_version_filter }}</span></span>
           </a>
-        {% if subdomain and subdomain != 'demo' %}
-          <div class="flex items-center flex-shrink-0 px-4 mt-5">
-              <span style="font-size:16px;color:#ffffff;font-family:'Baloo Bhaina 2">Dashboard link:</span>
-          </div>
-          <div class="flex items-center flex-shrink-0 px-4 mb-5">
-              <span style="font-size:16px;color:#ffffff;font-family:'Baloo Bhaina 2"><u>https://{{ subdomain|lower }}.{{ 'site'|site_url_filter }}</u></span>
-          </div>
-        {% endif %}
           <div class="mt-5 h-0 flex-1 flex flex-col overflow-y-auto">
             <!-- Sidebar component, swap this element with another sidebar if you like -->
             {% with page=page %}{% include '/user/includes/sidebar_nav.html' ignore missing %}{% endwith %}

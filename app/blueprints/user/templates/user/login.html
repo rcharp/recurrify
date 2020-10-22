@@ -9,47 +9,12 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
 
     <!-- Icons -->
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css', subdomain=subdomain) }}">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
 </head>
   <div class="row">
     <div class="block-content" style="width:50%;min-width:300px;max-width:350px;margin:0 auto;
     border:1px solid #c5c5c5;border-radius:4px; padding:20px;float:none;margin-top:50px; background-color:#fff;">
-    {% if subdomain %}
-      {% call f.form_tag('user.login', subdomain=subdomain) %}
-        <legend class="text-center" style="padding-bottom:15px;margin-bottom:10px;">Log in to <a href="{{ url_for('user.dashboard', subdomain=subdomain) }}"><span class="text-indigo-800"><u>{{ subdomain }}.{{ 'site'|site_url_filter }}</u></span></a></legend>
-        <div class="text-center mb-10" style="width:100%;">
-            <span style="margin-bottom:15px;font-size:16px;">or
-                <a href="{{ url_for('user.login') }}">
-                    <span class="text-indigo-600">
-                        <u> log in to a different domain</u>
-                    </span>
-                </a>
-            </span>
-        </div>
-        {% call f.form_group(form.identity, css_class='sm-margin-bottom', placeholder="Username or email",
-                             autofocus='autofocus') %}
-        {% endcall %}
-
-        {% call f.form_group(form.password, css_class='sm-margin-bottom', placeholder="Password") %}
-        {% endcall %}
-
-        <div class="row">
-          <div class="col-md-6">
-            <button type="submit" class="btn btn-block bg-indigo-500 text-white-800">
-                <span style="color:white">Log In</span>
-            </button>
-          </div>
-          <div class="col-md-6">
-            <div class="visible-xs visible-sm sm-margin-top"></div>
-            <a href="{{ url_for('user.signup', subdomain=subdomain) }}"
-               class="btn btn-default btn-block">
-              Sign Up
-            </a>
-          </div>
-        </div>
-      {% endcall %}
-    {% else %}
-        {% call f.form_tag('user.login') %}
+    {% call f.form_tag('user.login') %}
         <legend>Log in</legend>
 
         {% call f.form_group(form.identity, css_class='sm-margin-bottom', placeholder="Username or email",
@@ -59,13 +24,6 @@
         {% call f.form_group(form.password, css_class='sm-margin-bottom', placeholder="Password") %}
         {% endcall %}
 
-        <div id="domain-group" class="input-group" style="margin-bottom:25px;">
-            {% call f.form_group(form.domain, css_class='sm-margin-bottom',
-                placeholder='Domain (optional)') %}
-            {% endcall %}
-            <span class="input-group-addon bg-white">.{{ 'site'|site_url_filter }}</span>
-         </div>
-
         <div class="row">
           <div class="col-md-6">
             <button type="submit" class="btn btn-block bg-indigo-500 text-white-800">
@@ -74,14 +32,13 @@
           </div>
           <div class="col-md-6">
             <div class="visible-xs visible-sm sm-margin-top"></div>
-            <a href="{{ url_for('user.signup', subdomain=subdomain) }}"
+            <a href="{{ url_for('user.signup') }}"
                class="btn btn-default btn-block">
               Sign Up
             </a>
           </div>
         </div>
       {% endcall %}
-    {% endif %}
       <div class="text-center md-margin-top">
         <a href="{{ url_for('user.begin_password_reset') }}" class="text-muted">
           Forgot your password?
@@ -90,18 +47,4 @@
         <small>By logging in you agree to our <a href="{{ url_for('page.privacy') }}">Privacy Policy</a> and <a href="{{ url_for('page.terms') }}">Terms of Service</a></small>
     </div>
   </div>
-
-    <script>
-        var company = document.getElementById("company");
-
-        if (company !== null){
-            company.addEventListener("keyup", function(){
-                document.getElementById("domain").value = document.getElementById("company").value;
-            });
-
-            $( document ).ready(function() {
-                document.body.classList.add('bg-indigo-500');
-            });
-        }
-    </script>
 {% endblock %}

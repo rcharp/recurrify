@@ -18,15 +18,9 @@
 
         <div id="notification-dropdown-menu" class="origin-top-right absolute right-0 mt-2 w-100 rounded-md shadow-lg transform opacity-0 scale-95" style="display:none; z-index:999;width:300px;">
           <div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical" aria-labelledby="notification-menu" style="padding:10px;">
-            {% if current_user.is_authenticated and new_feedback and new_feedback|length > 0 %}
-                <a href="{{ url_for('user.feedback_approval', subdomain=current_user.domain) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin" role="menuitem" style="cursor:pointer;">
-                    There {% if new_feedback|length > 1 %}are{% else %}is{% endif %} <span class="text-indigo-600 font-w600"><b>{{ new_feedback|length }}</b></span> new post{% if new_feedback|length > 1 %}s{% endif %} that need{% if new_feedback|length == 1 %}s{% endif %} your approval.
-                </a>
-            {% else %}
-                <span class="text-sm font-medium leading-none text-gray-500 ml-5">
-                    You have no new notifications.
-                </span>
-            {% endif %}
+            <span class="text-sm font-medium leading-none text-gray-500 ml-5">
+                You have no new notifications.
+            </span>
           </div>
         </div>
      </span>
@@ -64,16 +58,9 @@
                     </p>
                 </div>
             <div class="border-t border-gray-100"></div>
-            {% if current_user.role == 'creator' and current_user.domain %}
-                <div class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin" role="menuitem">
-                    My dashboard: <a href="{{ url_for('user.dashboard', subdomain=current_user.domain) }}" class="text-indigo-600 font-w500"><u>{{ current_user.domain }}.{{ 'site'|site_url_filter }}</u></a>
-                </div>
-                <div class="border-t border-gray-100"></div>
-{#                <a href="{{ url_for('user.send_invite', subdomain=subdomain) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin" role="menuitem" onclick="ShowInviteModal()"><i class="si si-share-alt mr-2"></i>Invite an admin</a>#}
-            {% endif %}
-            <a href="{{ url_for('user.settings', subdomain=subdomain) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin" role="menuitem"><i class="si si-settings mr-2"></i>Settings</a>
+            <a href="{{ url_for('user.settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin" role="menuitem"><i class="si si-settings mr-2"></i>Settings</a>
             <a href="{{ url_for('user.contact') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin" role="menuitem"><i class="si si-bubble mr-2"></i>Contact us</a>
-            <a href="{{ url_for('user.logout', subdomain=subdomain) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin" role="menuitem"><i class="si si-logout mr-2"></i>Sign out</a>
+            <a href="{{ url_for('user.logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin" role="menuitem"><i class="si si-logout mr-2"></i>Sign out</a>
           </div>
         </div>
       </div>

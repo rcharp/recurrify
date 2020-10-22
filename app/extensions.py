@@ -6,8 +6,6 @@ from flask_login import LoginManager
 from flask_caching import Cache
 from threading import Lock
 from flask_cors import CORS
-from flask_sslify import SSLify
-from flask_talisman import Talisman
 
 debug_toolbar = DebugToolbarExtension()
 mail = Mail()
@@ -18,7 +16,3 @@ cache = Cache(config={'CACHE_TYPE': 'redis'})
 timeout = 9999999999999999
 lock = Lock()
 cors = CORS
-
-# Force HTTPS
-# sslify = SSLify
-talisman = Talisman
