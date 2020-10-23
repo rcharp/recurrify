@@ -38,7 +38,7 @@ def install():
 
     scope = scopes()
     permission_url = s.create_permission_url(
-        scope, url_for("shopify.finalize", _external=True))
+        scope, url_for("shopify.finalize", _external=True, _scheme='https'))
 
     print(permission_url)
 
