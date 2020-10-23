@@ -1,5 +1,5 @@
 import pprint
-
+import requests
 from app import shopify_api as shopify_client
 from flask import (
     Blueprint, render_template, current_app, request, redirect, session,
@@ -52,6 +52,7 @@ def finalize():
     shopify_client.Session.setup(
         api_key=current_app.config['SHOPIFY_API_KEY'],
         secret=current_app.config['SHOPIFY_SHARED_SECRET'])
+
     shopify_session = shopify_client.Session(shop_url)
 
     token = shopify_session.request_token(request.args)
@@ -60,7 +61,9 @@ def finalize():
     db.session.add(shop)
     db.session.commit()
 
-    s = shopify_client.resources.Shop.current()
+    shopify_client.ShopifyResource.activate_session(shopify_session)
+    s = shopify_client.Shop.current()
+    print(s)
     email = s['email'] if 'email' in s else None
 
     session['shopify_url'] = shop_url
