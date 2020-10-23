@@ -1,4 +1,6 @@
-from sqlalchemy import or_
+from sqlalchemy import or_, exists
+import string
+import random
 
 from lib.util_sqlalchemy import ResourceMixin, AwareDateTime
 from app.extensions import db
@@ -24,9 +26,22 @@ class Member(ResourceMixin, db.Model):
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
         super(Member, self).__init__(**kwargs)
+        self.member_id = Member.generate_id()
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+    @classmethod
+    def generate_id(cls, size=8):
+        # Generate a random 8-character id
+        chars = string.digits
+        result = int(''.join(random.choice(chars) for _ in range(size)))
+
+        # Check to make sure there isn't already that id in the database
+        if not db.session.query(exists().where(cls.id == result)).scalar():
+            return result
+        else:
+            Member.generate_id()
 
     @classmethod
     def find_by_id(cls, identity):

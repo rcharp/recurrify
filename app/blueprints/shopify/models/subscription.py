@@ -1,30 +1,33 @@
 from sqlalchemy import or_, exists
-import string
-import random
 
 from lib.util_sqlalchemy import ResourceMixin, AwareDateTime
 from app.extensions import db
+import string
+import random
 
 
-class Shop(ResourceMixin, db.Model):
+class Subscription(ResourceMixin, db.Model):
 
-    __tablename__ = 'shops'
+    __tablename__ = 'shopify_subscriptions'
 
     # Objects.
     id = db.Column(db.Integer, primary_key=True)
-    shop_id = db.Column(db.Integer, unique=True, index=True, nullable=False)
-    shop = db.Column(db.String(255))
+    subscription_id = db.Column(db.Integer, unique=True, index=True, nullable=False)
+    description = db.Column(db.UnicodeText, unique=False, index=True, nullable=True, server_default='')
+    sku = db.Column(db.String(255), unique=True, index=True, nullable=False)
     token = db.Column(db.String(255))
     status = db.Column(db.SmallInteger, default=1)
 
     # Relationships.
-    user_id = db.Column(db.Integer, db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'),
+    shop_id = db.Column(db.Integer, db.ForeignKey('shops.shop_id', onupdate='CASCADE', ondelete='CASCADE'),
                            index=True, nullable=True, primary_key=False, unique=False)
+    member_id = db.Column(db.Integer, db.ForeignKey('members.member_id', onupdate='CASCADE', ondelete='CASCADE'),
+                        index=True, nullable=True, primary_key=False, unique=False)
 
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
-        super(Shop, self).__init__(**kwargs)
-        self.shop_id = Shop.generate_id()
+        super(Subscription, self).__init__(**kwargs)
+        self.subscription_id = Subscription.generate_id()
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -39,7 +42,7 @@ class Shop(ResourceMixin, db.Model):
         if not db.session.query(exists().where(cls.id == result)).scalar():
             return result
         else:
-            Shop.generate_id()
+            Subscription.generate_id()
 
     @classmethod
     def find_by_id(cls, identity):
@@ -50,8 +53,8 @@ class Shop(ResourceMixin, db.Model):
         :type identity: str
         :return: User instance
         """
-        return Shop.query.filter(
-          (Shop.id == identity).first())
+        return Subscription.query.filter(
+          (Subscription.id == identity).first())
 
     @classmethod
     def search(cls, query):
@@ -66,7 +69,7 @@ class Shop(ResourceMixin, db.Model):
             return ''
 
         search_query = '%{0}%'.format(query)
-        search_chain = (Shop.id.ilike(search_query))
+        search_chain = (Subscription.id.ilike(search_query))
 
         return or_(*search_chain)
 
@@ -76,19 +79,19 @@ class Shop(ResourceMixin, db.Model):
         Override the general bulk_delete method because we need to delete them
         one at a time while also deleting them on Stripe.
 
-        :param ids: Shop of ids to be deleted
-        :type ids: shop
+        :param ids: Subscription of ids to be deleted
+        :type ids: subscription
         :return: int
         """
         delete_count = 0
 
         for id in ids:
-            shop = Shop.query.get(id)
+            subscription = Subscription.query.get(id)
 
-            if shop is None:
+            if subscription is None:
                 continue
 
-            shop.delete()
+            subscription.delete()
 
             delete_count += 1
 

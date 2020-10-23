@@ -17,7 +17,7 @@ class Product(ResourceMixin, db.Model):
     status = db.Column(db.SmallInteger, default=1)
 
     # Relationships.
-    shop_id = db.Column(db.Integer, db.ForeignKey('shops.id', onupdate='CASCADE', ondelete='CASCADE'),
+    shop_id = db.Column(db.Integer, db.ForeignKey('shops.shop_id', onupdate='CASCADE', ondelete='CASCADE'),
                            index=True, nullable=True, primary_key=False, unique=False)
 
     def __init__(self, **kwargs):

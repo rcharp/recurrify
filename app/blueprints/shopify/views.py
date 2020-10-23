@@ -7,6 +7,8 @@ from flask import (
 
 from app.blueprints.shopify.models.shop import Shop
 from app.blueprints.user.models.user import User
+
+from app.blueprints.base.functions import generate_id
 from .decorators import shopify_auth_required
 from .helpers import scopes
 from app.extensions import db
@@ -41,8 +43,6 @@ def install():
     permission_url = s.create_permission_url(
         scope, url_for("shopify.finalize", _external=True, _scheme='https'))
 
-    print(permission_url)
-
     return render_template('shopify/install.html', permission_url=permission_url)
 
 
@@ -63,9 +63,12 @@ def finalize():
     db.session.add(shop)
     db.session.commit()
 
+    s = shopify_client.Shop.current()
+    email = s['email'] if 'email' in s else None
+
     session['shopify_url'] = shop_url
     session['shopify_token'] = token
     session['shopify_id'] = shop.id
 
     # return redirect(url_for('shopify.index'))
-    return redirect(url_for('user.signup', shop_id=shop.id))
+    return redirect(url_for('user.signup', shop_id=shop.id, email=email))
