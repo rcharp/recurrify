@@ -92,6 +92,7 @@ Signup with an account
 '''
 
 
+@user.route('/signup', methods=['GET', 'POST'])
 @user.route('/signup/<shop_id>/<email>', methods=['GET', 'POST'])
 @anonymous_required()
 @csrf.exempt
