@@ -40,6 +40,8 @@ def install():
     permission_url = s.create_permission_url(
         scope, url_for("shopify.finalize", _external=True))
 
+    print(permission_url)
+
     return render_template('shopify/install.html', permission_url=permission_url)
 
 
