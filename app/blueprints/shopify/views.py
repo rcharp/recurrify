@@ -61,10 +61,16 @@ def finalize():
     db.session.add(shop)
     db.session.commit()
 
-    shopify_client.ShopifyResource.activate_session(shopify_session)
-    s = shopify_client.Shop.current()
+    s = shopify_client.User
+    t = shopify_client.Shop
+    u = shopify_client.ShopifyResource.user
+    v = shopify_client.ShopifyResource.get
     print(s)
-    email = s['email'] if 'email' in s else None
+    print(t)
+    print(u)
+    print(v)
+
+    #email = s['email'] if 'email' in s else None
 
     session['shopify_url'] = shop_url
     session['shopify_token'] = token
