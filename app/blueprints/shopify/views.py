@@ -7,6 +7,7 @@ from flask import (
 
 from app.blueprints.shopify.models.shop import Shop
 from .decorators import shopify_auth_required
+from .helpers import scopes
 from app.extensions import db
 
 shopify_bp = Blueprint('shopify', __name__, template_folder='templates', url_prefix='/shopify')
@@ -33,12 +34,10 @@ def install():
         api_key=current_app.config['SHOPIFY_API_KEY'],
         secret=current_app.config['SHOPIFY_SHARED_SECRET'])
 
-    session = shopify_client.Session(shop_url)
+    s = shopify_client.Session(shop_url)
 
-    scope = [
-        "write_products", "read_products", "read_script_tags",
-        "write_script_tags"]
-    permission_url = session.create_permission_url(
+    scope = scopes()
+    permission_url = s.create_permission_url(
         scope, url_for("shopify.finalize", _external=True))
 
     return render_template('shopify/install.html', permission_url=permission_url)

@@ -69,3 +69,23 @@ def is_valid_shop(shop: str) -> bool:
     # Shopify docs give regex with protocol required, but shop never includes protocol
     shopname_regex = r'[a-zA-Z0-9][a-zA-Z0-9\-]*\.myshopify\.com[\/]?'
     return re.match(shopname_regex, shop)
+
+
+def scopes():
+    return ["read_products",
+            "write_products",
+            "read_script_tags",
+            "write_script_tags",
+            "read_customers",
+            "write_customers",
+            "read_orders",
+            "write_orders",
+            "read_all_orders",
+            "read_inventory",
+            "read_analytics",
+            "read_price_rules",
+            "write_price_rules",
+            "read_discounts",
+            "write_discounts",
+            "read_shopify_payments_payouts",
+            "read_shopify_payments_disputes"]
