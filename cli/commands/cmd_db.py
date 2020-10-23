@@ -5,6 +5,8 @@ from app.app import create_app
 from app.extensions import db
 from app.blueprints.base.functions import generate_id, generate_name, generate_private_key
 from app.blueprints.user.models.user import User
+from app.blueprints.user.models.member import Member
+from app.blueprints.shopify.models.product import Product
 
 # Create an app context for the database connection.
 app = create_app()

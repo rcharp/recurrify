@@ -16,6 +16,10 @@ SECRET_KEY = os.environ.get('SECRET_KEY', None)
 CRYPTO_KEY = os.environ.get('CRYPTO_KEY', None)
 PASSWORD = os.environ.get('PASSWORD', None)
 
+# Shopify
+SHOPIFY_API_KEY = os.environ.get('SHOPIFY_API_KEY', None)
+SHOPIFY_SHARED_SECRET = os.environ.get('SHOPIFY_SHARED_SECRET', None)
+
 # Flask-Mail.
 MAIL_USERNAME = os.environ.get('MAIL_USERNAME', None)
 MAIL_PASSWORD = os.environ.get('MAIL_PASSWORD', None)

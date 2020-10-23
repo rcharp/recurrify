@@ -12,7 +12,7 @@ from app.extensions import db
 shopify_bp = Blueprint('shopify', __name__, template_folder='templates', url_prefix='/shopify')
 
 
-@shopify_bp.route('/s')
+@shopify_bp.route('/')
 @shopify_auth_required
 def index():
     """ Render the index page of our application.
@@ -27,7 +27,7 @@ def install():
     """
 
     shop_url = request.args.get("shop")
-    api_version = '2020-10'
+    # api_version = '2020-10'
 
     shopify_client.Session.setup(
         api_key=current_app.config['SHOPIFY_API_KEY'],
