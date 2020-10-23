@@ -10,7 +10,7 @@ class Shop(ResourceMixin, db.Model):
 
     # Objects.
     id = db.Column(db.Integer, primary_key=True)
-    shop_name = db.Column(db.String(255))
+    shop = db.Column(db.String(255))
     token = db.Column(db.String(255))
     status = db.Column(db.SmallInteger, default=1)
 
