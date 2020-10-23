@@ -29,7 +29,7 @@ page = Blueprint('page', __name__, template_folder='templates')
 # SCOPES = ['write_script_tags']  # https://shopify.dev/docs/admin-api/access-scopes
 
 
-@page.route('/home', methods=['GET', 'POST'])
+@page.route('/', methods=['GET', 'POST'])
 @cross_origin()
 def home():
     if current_user.is_authenticated:
@@ -38,10 +38,10 @@ def home():
     return render_template('page/index.html', plans=settings.STRIPE_PLANS)
 
 
-@page.route('/', methods=['GET'])
-@shopify_auth_required
-def index():
-    return render_template('shopify/index.html')
+# @page.route('/', methods=['GET'])
+# @shopify_auth_required
+# def index():
+#     return render_template('shopify/index.html')
 
 
 # @page.route('/', methods=['GET'])

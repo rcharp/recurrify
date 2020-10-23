@@ -6,9 +6,6 @@ from flask import (
     url_for)
 
 from app.blueprints.shopify.models.shop import Shop
-from app.blueprints.user.models.user import User
-
-from app.blueprints.base.functions import generate_id
 from .decorators import shopify_auth_required
 from .helpers import scopes
 from app.extensions import db
@@ -63,7 +60,7 @@ def finalize():
     db.session.add(shop)
     db.session.commit()
 
-    s = shopify_client.Shop.current()
+    s = shopify_client.resources.Shop.current()
     email = s['email'] if 'email' in s else None
 
     session['shopify_url'] = shop_url
