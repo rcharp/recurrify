@@ -211,7 +211,7 @@
                                                 {% set status_list = statuses|selectattr('status_id', 'equalto', feedback.status_id ) | list %}
                                                 <span class="flex-shrink-0 inline-block px-2 py-0.5 text-xs mr-3 leading-4 font-medium {% if status_list|length > 0 %}bg-{{ (status_list | first).color }}-100 text-{{ (status_list | first).color }}-800{% endif %} rounded-full">{{ feedback.status }}</span>
                                             {% endif %}
-                                            {% if current_user.is_authenticated and current_user.role == 'creator' %}<a href="#"><small><u>Edit</u></small></a>{% endif %}
+                                            {% if current_user.is_authenticated and current_user.role == 'owner' %}<a href="#"><small><u>Edit</u></small></a>{% endif %}
                                             </div>
                                             <p class="mt-1 text-gray-500 text-sm leading-5 truncate">
                                               <i class="si si-clock mr-2"></i>Posted {{ feedback.created_on|datetime_filter }} by
@@ -223,7 +223,7 @@
                                                     {% elif feedback.fullname %}
                                                         {{ feedback.fullname }}
                                                     {% else %}
-                                                        {% if current_user.is_authenticated and current_user.role == 'creator' %}
+                                                        {% if current_user.is_authenticated and current_user.role == 'owner' %}
                                                             {{ feedback.email }}
                                                         {% else %}
                                                             An anonymous user

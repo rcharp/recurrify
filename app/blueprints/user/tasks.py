@@ -43,11 +43,11 @@ def deliver_password_reset_email(user_id, reset_token):
 
 # Sending emails -------------------------------------------------------------------
 @celery.task()
-def send_creator_welcome_email(email):
-    from app.blueprints.user.emails import send_creator_welcome_email
+def send_owner_welcome_email(email):
+    from app.blueprints.user.emails import send_owner_welcome_email
 
     if send:
-        send_creator_welcome_email(email)
+        send_owner_welcome_email(email)
     return
 
 

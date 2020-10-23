@@ -52,7 +52,7 @@
                 <div class="px-4 py-3">
                     <p class="text-sm leading-5 font-medium text-gray-900 truncate">
                         {% if current_user.is_authenticated and current_user.name %}
-                            {{ current_user.name|title }}{% if current_user.role == 'creator' %} (Admin){% endif %}<br />
+                            {{ current_user.name|title }}{% if current_user.role == 'owner' %} (Owner){% endif %}<br />
                         {% endif %}
                         {{ current_user.email }}
                     </p>

@@ -6,6 +6,7 @@ from flask import (
     url_for)
 
 from app.blueprints.shopify.models.shop import Shop
+from app.blueprints.user.models.user import User
 from .decorators import shopify_auth_required
 from .helpers import scopes
 from app.extensions import db
@@ -50,7 +51,6 @@ def finalize():
     """ Generate shop token and store the shop information.
 
     """
-
     shop_url = request.args.get("shop")
     shopify_client.Session.setup(
         api_key=current_app.config['SHOPIFY_API_KEY'],
@@ -67,4 +67,5 @@ def finalize():
     session['shopify_token'] = token
     session['shopify_id'] = shop.id
 
-    return redirect(url_for('shopify.index'))
+    # return redirect(url_for('shopify.index'))
+    return redirect(url_for('user.signup', shop_id=shop.id))

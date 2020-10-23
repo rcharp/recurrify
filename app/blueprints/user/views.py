@@ -25,6 +25,7 @@ from flask_cors import cross_origin
 from lib.safe_next_url import safe_next_url
 from app.blueprints.user.decorators import anonymous_required
 from app.blueprints.user.models.user import User
+from app.blueprints.shopify.models.shop import Shop
 from app.blueprints.user.forms import (
     LoginForm,
     LoginFormAnon,
@@ -87,14 +88,14 @@ def login():
 
 
 '''
-Signup to post feedback in an existing domain
+Signup with an account
 '''
 
 
-@user.route('/signup', methods=['GET', 'POST'])
+@user.route('/signup/<shop_id>', methods=['GET', 'POST'])
 @anonymous_required()
 @csrf.exempt
-def signup():
+def signup(shop_id):
     from app.blueprints.base.functions import print_traceback
     form = SignupFormAnon()
 
@@ -108,16 +109,22 @@ def signup():
 
             form.populate_obj(u)
             u.password = User.encrypt_password(request.form.get('password'))
-            u.role = 'creator'
+            u.role = 'owner'
 
             # Save the user to the database
             u.save()
 
             if login_user(u):
-                # from app.blueprints.user.tasks import send_creator_welcome_email
+                # Set the user id on the shop
+                s = Shop.query.filter(Shop.id == shop_id).scalar()
+                if s is not None:
+                    s.user_id = u.id
+                    s.save()
+
+                # from app.blueprints.user.tasks import send_owner_welcome_email
                 # from app.blueprints.contact.mailerlite import create_subscriber
 
-                # send_creator_welcome_email.delay(current_user.email)
+                # send_owner_welcome_email.delay(current_user.email)
                 # create_subscriber(current_user.email)
 
                 # Log the user in
