@@ -6,12 +6,13 @@ import re
 import hmac
 import base64
 import hashlib
-from flask import request, abort
-
-from app.blueprints.shopify.config import SHOPIFY_SECRET, SHOPIFY_API_KEY, INSTALL_REDIRECT_URL, APP_NAME
+from flask import request, abort, current_app
 
 
 def generate_install_redirect_url(shop: str, scopes: List, nonce: str, access_mode: List):
+    SHOPIFY_API_KEY = current_app.config['SHOPIFY_API_KEY']
+    INSTALL_REDIRECT_URL = current_app.config['INSTALL_REDIRECT_URL']
+
     scopes_string = ','.join(scopes)
     access_mode_string = ','.join(access_mode)
     redirect_url = "https://" + shop + "/admin/oauth/authorize?client_id=" + SHOPIFY_API_KEY + "&scope=" + scopes_string + "&redirect_uri=" + INSTALL_REDIRECT_URL + "&state=" + nonce + "&grant_options[]=" + access_mode_string
@@ -19,6 +20,7 @@ def generate_install_redirect_url(shop: str, scopes: List, nonce: str, access_mo
 
 
 def generate_post_install_redirect_url(shop: str):
+    APP_NAME = current_app.config['APP_NAME']
     redirect_url = "https://" + shop + "/admin/apps/" + APP_NAME
     return redirect_url
 
@@ -57,6 +59,7 @@ def verify_webhook_call(f):
 
 
 def verify_hmac(data: bytes, orig_hmac: str):
+    SHOPIFY_SECRET = current_app.config['SHOPIFY_SECRET']
     new_hmac = hmac.new(
         SHOPIFY_SECRET.encode('utf-8'),
         data,

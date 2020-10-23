@@ -19,6 +19,11 @@ PASSWORD = os.environ.get('PASSWORD', None)
 # Shopify
 SHOPIFY_API_KEY = os.environ.get('SHOPIFY_API_KEY', None)
 SHOPIFY_SHARED_SECRET = os.environ.get('SHOPIFY_SHARED_SECRET', None)
+APP_NAME = "Recurrify"
+SERVER_HOSTNAME = "recurrify.io"
+SERVER_BASE_URL = "https://" + SERVER_HOSTNAME + "/shopify"
+INSTALL_REDIRECT_URL = SERVER_BASE_URL + "/shopify/finalize"
+WEBHOOK_APP_UNINSTALL_URL = "https://" + SERVER_HOSTNAME + "/auth/callback"
 
 # Flask-Mail.
 MAIL_USERNAME = os.environ.get('MAIL_USERNAME', None)
