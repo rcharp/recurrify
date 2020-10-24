@@ -19,7 +19,7 @@ class Subscription(ResourceMixin, db.Model):
     status = db.Column(db.SmallInteger, default=1)
 
     # Relationships.
-    shop_id = db.Column(db.Integer, db.ForeignKey('shops.shop_id', onupdate='CASCADE', ondelete='CASCADE'),
+    shop_id = db.Column(db.BigInteger, db.ForeignKey('shops.shop_id', onupdate='CASCADE', ondelete='CASCADE'),
                            index=True, nullable=True, primary_key=False, unique=False)
     member_id = db.Column(db.Integer, db.ForeignKey('members.member_id', onupdate='CASCADE', ondelete='CASCADE'),
                         index=True, nullable=True, primary_key=False, unique=False)

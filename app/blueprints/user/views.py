@@ -134,9 +134,6 @@ def signup(shop_id=None, email=None):
                 # Log the user in
                 flash("You've successfully signed up!", 'success')
                 return redirect(url_for('user.dashboard'))
-            else:
-                print("There was an error signing up.")
-                flash("There was an error.", 'error')
     except Exception as e:
         print_traceback(e)
 
