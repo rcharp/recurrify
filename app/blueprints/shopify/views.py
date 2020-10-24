@@ -68,7 +68,7 @@ def finalize():
     db.session.commit()
 
     # Get the current shop
-    url = shop_url + '/admin/api/' + api_version + '/shop.json'
+    url = 'https://' + shop_url + '/admin/api/' + api_version + '/shop.json'
 
     headers = {
         "X-Shopify-Access-Token": token,
