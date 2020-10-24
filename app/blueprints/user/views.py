@@ -96,7 +96,7 @@ Signup with an account
 @user.route('/signup/<shop_id>/<email>', methods=['GET', 'POST'])
 @anonymous_required()
 @csrf.exempt
-def signup(shop_id, email):
+def signup(shop_id, email=None):
     from app.blueprints.base.functions import print_traceback
     form = SignupFormAnon()
     form.email = email
