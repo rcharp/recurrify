@@ -58,10 +58,6 @@ class SignupFormAnon(ModelForm):
     #     DataRequired()
     # ])
 
-    url = StringField(validators=[
-        DataRequired()
-    ])
-
     email = EmailField(validators=[
         DataRequired(),
         Email(),
