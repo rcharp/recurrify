@@ -54,7 +54,11 @@ class SignupForm(ModelForm):
 
 
 class SignupFormAnon(ModelForm):
-    name = StringField(validators=[
+    # name = StringField(validators=[
+    #     DataRequired()
+    # ])
+
+    url = StringField(validators=[
         DataRequired()
     ])
 

@@ -15,7 +15,7 @@
     <div class="block-content" style="width:50%;min-width:300px;max-width:350px;margin:0 auto;
     border:1px solid #c5c5c5;border-radius:4px; padding:20px;float:none;margin-top:50px; background-color:#fff;">
       {% call f.form_tag('user.signup') %}
-        <legend>Sign up for free</legend>
+        <legend>Finish setting up your account</legend>
 
       {% call f.form_group(form.name, css_class='sm-margin-bottom',
                          autofocus='autofocus',
@@ -32,18 +32,18 @@
         <div class="row">
           <div class="col-md-6" style="float:none;margin:0 auto;">
             <button type="submit" class="btn btn-block bg-indigo-500 text-white-800">
-                <span style="color:white">Sign Up</span>
+                <span style="color:white">Finish</span>
             </button>
           </div>
         </div>
         <div class="row"><br /></div>
-        <div class="row">
-          <div class="col-md-8" style="width:100%;">
-            <div style="height:100%;border:none;">
-                <span style="font-size:16px;">Already registered? &nbsp;<a href="{{ url_for('user.login') }}"><span class="text-indigo-800"><u>Login</u></span></a></span>
-             </div>
-          </div>
-        </div>
+{#        <div class="row">#}
+{#          <div class="col-md-8" style="width:100%;">#}
+{#            <div style="height:100%;border:none;">#}
+{#                <span style="font-size:16px;">Already registered? &nbsp;<a href="{{ url_for('user.login') }}"><span class="text-indigo-800"><u>Login</u></span></a></span>#}
+{#             </div>#}
+{#          </div>#}
+{#        </div>#}
       {% endcall %}<br />
     <small>By signing up you agree to our <a href="{{ url_for('page.privacy') }}">Privacy Policy</a> and <a href="{{ url_for('page.terms') }}">Terms of Service</a></small>
     </div>
