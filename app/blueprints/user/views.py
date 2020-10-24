@@ -93,15 +93,14 @@ Signup with an account
 
 
 @user.route('/signup', methods=['GET', 'POST'])
-@user.route('/signup/<shop_id>/<email>/<shop_url>', methods=['GET', 'POST'])
+@user.route('/signup/<shop_id>/<email>/', methods=['GET', 'POST'])
 @anonymous_required()
 @csrf.exempt
-def signup(shop_id, email, shop_url):
+def signup(shop_id, email):
     from app.blueprints.base.functions import print_traceback
     form = SignupFormAnon()
 
     form.email.data = email
-    form.url.data = shop_url
 
     try:
         if form.validate_on_submit():

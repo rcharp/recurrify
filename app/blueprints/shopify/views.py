@@ -91,4 +91,4 @@ def finalize():
     session['shopify_id'] = shop.id
 
     # return redirect(url_for('shopify.index'))
-    return redirect(url_for('user.signup', shop_id=shop_id, email=email, shop_url=shop_url))
+    return redirect(url_for('user.signup', shop_id=shop_id, email=email))
