@@ -99,7 +99,6 @@ Signup with an account
 def signup(shop_id=None, email=None):
     from app.blueprints.base.functions import print_traceback
     form = SignupFormAnon()
-
     form.email.data = email
 
     try:
@@ -133,6 +132,8 @@ def signup(shop_id=None, email=None):
                 # Log the user in
                 flash("You've successfully signed up!", 'success')
                 return redirect(url_for('user.dashboard'))
+            else:
+                flash("There was an error.", 'error')
     except Exception as e:
         print_traceback(e)
 
