@@ -1,6 +1,7 @@
 import pprint
 import requests
-from app import shopify_api as shopify_client
+# from app import shopify_api as shopify_client
+import shopify
 from flask import (
     Blueprint, render_template, current_app, request, redirect, session,
     url_for)
@@ -30,11 +31,11 @@ def install():
     shop_url = request.args.get("shop")
     # api_version = '2020-10'
 
-    shopify_client.Session.setup(
+    shopify.Session.setup(
         api_key=current_app.config['SHOPIFY_API_KEY'],
         secret=current_app.config['SHOPIFY_SHARED_SECRET'])
 
-    s = shopify_client.Session(shop_url)
+    s = shopify.Session(shop_url)
 
     scope = scopes()
     permission_url = s.create_permission_url(
@@ -49,11 +50,11 @@ def finalize():
 
     """
     shop_url = request.args.get("shop")
-    shopify_client.Session.setup(
+    shopify.Session.setup(
         api_key=current_app.config['SHOPIFY_API_KEY'],
         secret=current_app.config['SHOPIFY_SHARED_SECRET'])
 
-    shopify_session = shopify_client.Session(shop_url)
+    shopify_session = shopify.Session(shop_url)
 
     token = shopify_session.request_token(request.args)
 
@@ -61,11 +62,14 @@ def finalize():
     db.session.add(shop)
     db.session.commit()
 
-    s = shopify_client.Session(shop_url, shopify_session.api_version, token)
-    shopify_client.ShopifyResource.activate_session(s)
+    s = shopify.Shop.current()
+    print(s)
 
-    current_shop = shopify_client.Shop.current()  # Get the current shop
-    print(current_shop)
+    # s = shopify_client.Session(shop_url, shopify_session.api_version, token)
+    # shopify_client.ShopifyResource.activate_session(s)
+    #
+    # current_shop = shopify_client.Shop.current()  # Get the current shop
+    # print(current_shop)
 
     # email = s['email'] if 'email' in s else None
 
