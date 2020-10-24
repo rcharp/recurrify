@@ -44,8 +44,8 @@ class Session(object):
     def __init__(self, shop_url, version=None, token=None):
         self.url = self.__prepare_url(shop_url)
         self.token = token
-        self.version = '2020-10'
-        # self.version = ApiVersion.coerce_to_version(version)
+        # self.version = '2020-10'
+        self.version = ApiVersion.coerce_to_version(version)
         return
 
     def create_permission_url(self, scope, redirect_uri, state=None):

@@ -68,19 +68,17 @@ def finalize():
     db.session.commit()
 
     # Get the current shop
-    shop_session = shopify.Session(shop_url, api_version, token)
-    shopify.ShopifyResource.activate_session(shop_session)
+    url = shop_url + '/admin/api/' + api_version + '/shop.json'
 
-    # shop_session = shopify.Session(shop_url, api_version, token)
-    # shopify.ShopifyResource.activate_session(shop_session)
-    current_shop = shopify.Shop.current()
-    print(current_shop)
+    headers = {
+        "X-Shopify-Access-Token": token,
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+    }
 
-    # s = shopify_client.Session(shop_url, shopify_session.api_version, token)
-    # shopify_client.ShopifyResource.activate_session(s)
-    #
-    # current_shop = shopify_client.Shop.current()  # Get the current shop
-    # print(current_shop)
+    r = requests.get(url, headers=headers)
+
+    print(r.json())
 
     # email = s['email'] if 'email' in s else None
 
