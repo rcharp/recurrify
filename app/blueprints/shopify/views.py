@@ -67,8 +67,8 @@ def finalize():
     db.session.commit()
 
     # Get the current shop
-    shop_session = shopify.Session(shop_url, api_version, token)
-    shopify.ShopifyResource.activate_session(shop_session)
+    # shop_session = shopify.Session(shop_url, api_version, token)
+    # shopify.ShopifyResource.activate_session(shop_session)
 
     current_shop = shopify.Shop.current()
     print(current_shop)
