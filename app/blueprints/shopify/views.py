@@ -77,14 +77,18 @@ def finalize():
     }
 
     r = requests.get(url, headers=headers)
+    if r.status_code == 200:
+        result = r.json()
+    else:
+        result = {}
 
-    print(r.json())
-
-    # email = s['email'] if 'email' in s else None
+    # Get the shop owner's email
+    shop_id = result['shop']['id'] if 'shop' in result and 'id' in result['shop'] else None
+    email = result['shop']['email'] if 'shop' in result and 'email' in result['shop'] else None
 
     session['shopify_url'] = shop_url
     session['shopify_token'] = token
     session['shopify_id'] = shop.id
 
     # return redirect(url_for('shopify.index'))
-    return redirect(url_for('user.signup', shop_id=shop.id, email=None))
+    return redirect(url_for('user.signup', shop_id=shop_id, email=email))
