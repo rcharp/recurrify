@@ -62,13 +62,14 @@ def finalize():
 
     token = s.request_token(request.args)
 
+    # Add the shop to the database
     shop = Shop(shop=shop_url, token=token)
     db.session.add(shop)
     db.session.commit()
 
     # Get the current shop
-    # shop_session = shopify.Session(shop_url, api_version, token)
-    # shopify.ShopifyResource.activate_session(shop_session)
+    shop_session = shopify.Session(shop_url, api_version, token)
+    shopify.ShopifyResource.activate_session(shop_session)
 
     # shop_session = shopify.Session(shop_url, api_version, token)
     # shopify.ShopifyResource.activate_session(shop_session)
