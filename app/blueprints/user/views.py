@@ -133,7 +133,7 @@ def signup(shop_id, email, shop_url):
 
                 # Log the user in
                 flash("You've successfully signed up!", 'success')
-                return redirect(url_for('user.start'))
+                return redirect(url_for('user.dashboard'))
     except Exception as e:
         print_traceback(e)
 
