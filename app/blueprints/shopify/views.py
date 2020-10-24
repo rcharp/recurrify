@@ -29,11 +29,12 @@ def install():
     """
 
     shop_url = request.args.get("shop")
-    # api_version = '2020-10'
+    api_version = '2020-10'
 
     shopify.Session.setup(
         api_key=current_app.config['SHOPIFY_API_KEY'],
-        secret=current_app.config['SHOPIFY_SHARED_SECRET'])
+        secret=current_app.config['SHOPIFY_SHARED_SECRET'],
+        api_version=api_version)
 
     s = shopify.Session(shop_url)
 
@@ -52,7 +53,8 @@ def finalize():
     shop_url = request.args.get("shop")
     shopify.Session.setup(
         api_key=current_app.config['SHOPIFY_API_KEY'],
-        secret=current_app.config['SHOPIFY_SHARED_SECRET'])
+        secret=current_app.config['SHOPIFY_SHARED_SECRET'],
+        api_version='2020-10')
 
     shopify_session = shopify.Session(shop_url)
 
