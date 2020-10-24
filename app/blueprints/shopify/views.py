@@ -36,7 +36,7 @@ def install():
         secret=current_app.config['SHOPIFY_SHARED_SECRET'],
         api_version=api_version)
 
-    s = shopify.Session(shop_url)
+    s = shopify.Session(shop_url, api_version)
 
     scope = scopes()
     permission_url = s.create_permission_url(
