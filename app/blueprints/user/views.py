@@ -99,7 +99,9 @@ Signup with an account
 def signup(shop_id=None, email=None):
     from app.blueprints.base.functions import print_traceback
     form = SignupFormAnon()
-    # form.email.data = email
+
+    if email is not None:
+        form.email.data = email
 
     try:
         if form.validate_on_submit():
@@ -138,7 +140,7 @@ def signup(shop_id=None, email=None):
     except Exception as e:
         print_traceback(e)
 
-    return render_template('user/signup.html', form=form)
+    return render_template('user/signup.html', form=form, email=email)
 
 
 @user.route('/logout')
