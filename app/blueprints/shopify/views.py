@@ -1,7 +1,7 @@
 import pprint
 import requests
-# from app import shopify_api as shopify_client
-import shopify
+from app import shopify_api as shopify
+# import shopify
 from flask import (
     Blueprint, render_template, current_app, request, redirect, session,
     url_for)
