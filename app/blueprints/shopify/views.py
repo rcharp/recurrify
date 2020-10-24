@@ -61,14 +61,10 @@ def finalize():
     db.session.add(shop)
     db.session.commit()
 
-    s = shopify_client.User
-    t = shopify_client.Shop
-    u = shopify_client.ShopifyResource.user
-    v = shopify_client.ShopifyResource.get
+    s = shopify_client.User.current()
+    t = shopify_client.Shop.current()
     print(s)
     print(t)
-    print(u)
-    print(v)
 
     #email = s['email'] if 'email' in s else None
 
