@@ -1,10 +1,10 @@
 import pprint
 import requests
+from sqlalchemy import exists
 from app import shopify_api as shopify
 # import shopify
 from flask import (
-    Blueprint, render_template, current_app, request, redirect, session,
-    url_for)
+    Blueprint, render_template, current_app, request, redirect, session, flash, url_for)
 
 from app.blueprints.shopify.models.shop import Shop
 from .decorators import shopify_auth_required
@@ -80,6 +80,10 @@ def finalize():
     # Get the shop owner's email
     shop_id = result['shop']['id'] if 'shop' in result and 'id' in result['shop'] else None
     email = result['shop']['email'] if 'shop' in result and 'email' in result['shop'] else None
+
+    if db.session.query(exists().where(Shop.shop_id == shop_id)).scalar():
+        flash('There is already an account for this store. Please login or use a different store', 'error')
+        return redirect(url_for('user.login'))
 
     # Add the shop to the database
     shop = Shop(shop=shop_url, shop_id=shop_id, token=token)
