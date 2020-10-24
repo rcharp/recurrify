@@ -23,12 +23,8 @@
 
 
 {# Render a form field. #}
-{%- macro field(f, css_class) -%}
-    {% if 'payment' in css_class %}
-        {{ f(class=css_class, **kwargs) }}
-    {% else %}
-        {{ f(class='form-control', **kwargs) }}
-    {% endif %}
+{%- macro field(f, css_class='form-control') -%}
+  {{ f(class=css_class, **kwargs) }}
 {%- endmacro -%}
 
 
@@ -41,19 +37,15 @@
 {# Render a form group with errors for various field types. #}
 {%- macro form_group(f, css_class='') -%}
   {% if f.errors %}
-      {% set css_class = css_class + ' has-error ' + kwargs.pop('class', '') %}
+    {% set css_class = css_class + ' has-error ' + kwargs.pop('class', '') %}
   {% endif %}
 
   {% if f.type == 'BooleanField' %}
     <div class="checkbox {{ css_class }}" style="margin-left:20px;">
     {{ checkbox_field(f, **kwargs) }}
   {% else %}
-      {% if 'payment' in css_class %}
-        <div class="{{ css_class }}">
-      {% else %}
-        <div class="form-group {{ css_class }}">
-      {% endif %}
-{#    {{ field_label(f) }}#}
+    <div class="form-group {{ css_class }}">
+    {{ field_label(f) }}
     {{ field(f, **kwargs) }}
   {% endif %}
 
