@@ -17,9 +17,9 @@
       {% call f.form_tag('user.signup') %}
         <legend>Finish setting up your account</legend>
 
-      {% call f.form_group(form.name, css_class='sm-margin-bottom',
-                         autofocus='autofocus',
-                         placeholder='Name') %}
+{#      {% call f.form_group(form.name, css_class='sm-margin-bottom',#}
+{#                         autofocus='autofocus',#}
+{#                         placeholder='Name') %}#}
         {% call f.form_group(form.email, css_class='sm-margin-bottom',
                              placeholder='Email address') %}
         {% endcall %}
