@@ -82,7 +82,7 @@ def finalize():
     email = result['shop']['email'] if 'shop' in result and 'email' in result['shop'] else None
 
     if db.session.query(exists().where(Shop.shop_id == shop_id)).scalar():
-        flash('There is already an account for this store. Please login or use a different store', 'error')
+        flash('There is already an account for this store. Please login or use a different store.', 'error')
         return redirect(url_for('user.login'))
 
     # Add the shop to the database
@@ -95,4 +95,4 @@ def finalize():
     session['shopify_id'] = shop.id
 
     # return redirect(url_for('shopify.index'))
-    return redirect(url_for('user.signup', shop_id=shop_id, email=email))
+    return redirect(url_for('user.signup', shop_id=shop_id, email=email, url=shop_url))

@@ -93,12 +93,15 @@ Signup with an account
 
 
 @user.route('/signup', methods=['GET', 'POST'])
-@user.route('/signup/<shop_id>/<email>/', methods=['GET', 'POST'])
+@user.route('/signup/<shop_id>/<email>/<url>', methods=['GET', 'POST'])
 @anonymous_required()
 @csrf.exempt
-def signup(shop_id=None, email=None):
+def signup(shop_id=None, email=None, url=None):
     from app.blueprints.base.functions import print_traceback
     form = SignupFormAnon()
+
+    if url is not None:
+        form.url.data = url
 
     if email is not None:
         form.email.data = email
@@ -138,7 +141,7 @@ def signup(shop_id=None, email=None):
     except Exception as e:
         print_traceback(e)
 
-    return render_template('user/signup.html', form=form, email=email)
+    return render_template('user/signup.html', form=form, email=email, url=url)
 
 
 @user.route('/logout')

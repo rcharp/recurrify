@@ -20,8 +20,8 @@
 {#      {% call f.form_group(form.name, css_class='sm-margin-bottom',#}
 {#                         autofocus='autofocus',#}
 {#                         placeholder='Name') %}#}
-        {% call f.form_group(form.email, css_class='sm-margin-bottom', autofocus='autofocus',
-                             placeholder='{{ email }}') %}
+        {% call f.form_group(form.url, css_class='sm-margin-bottom') %}
+        {% call f.form_group(form.email, css_class='sm-margin-bottom', autofocus='autofocus') %}
         {% endcall %}
 
         {% call f.form_group(form.password, css_class='sm-margin-bottom') %}

@@ -1,7 +1,7 @@
 from flask_wtf import Form
 from wtforms import HiddenField, StringField, PasswordField
 from wtforms.validators import DataRequired, Length, Optional, Regexp, EqualTo
-from wtforms_components import EmailField, Email
+from wtforms_components import EmailField, Email, read_only
 from wtforms_alchemy import Unique
 
 from lib.util_wtforms import ModelForm
@@ -58,6 +58,10 @@ class SignupFormAnon(ModelForm):
     #     DataRequired()
     # ])
 
+    url = StringField(validators=[
+        DataRequired()
+    ])
+
     email = EmailField(validators=[
         DataRequired(),
         Email(),
@@ -66,6 +70,10 @@ class SignupFormAnon(ModelForm):
 
     password = PasswordField('Create a password', [DataRequired(), Length(8, 128)])
     # confirm = PasswordField("Repeat Password", [DataRequired(), EqualTo("password", message="Passwords don't match!"), Length(8, 128)])
+
+    def __init__(self, *args, **kwargs):
+        super(SignupFormAnon, self).__init__(*args, **kwargs)
+        read_only(self.url)
 
 
 class WelcomeForm(ModelForm):
