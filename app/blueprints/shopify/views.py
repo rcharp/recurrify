@@ -51,21 +51,23 @@ def finalize():
 
     """
     shop_url = request.args.get("shop")
+    api_version = '2020-10'
+
     shopify.Session.setup(
         api_key=current_app.config['SHOPIFY_API_KEY'],
         secret=current_app.config['SHOPIFY_SHARED_SECRET'],
-        api_version='2020-10')
+        api_version=api_version)
 
-    shopify_session = shopify.Session(shop_url)
+    s = shopify.Session(shop_url, api_version)
 
-    token = shopify_session.request_token(request.args)
+    token = s.request_token(request.args)
 
     shop = Shop(shop=shop_url, token=token)
     db.session.add(shop)
     db.session.commit()
 
-    s = shopify.Shop.current()
-    print(s)
+    current_shop = shopify.Shop.current()
+    print(current_shop)
 
     # s = shopify_client.Session(shop_url, shopify_session.api_version, token)
     # shopify_client.ShopifyResource.activate_session(s)
