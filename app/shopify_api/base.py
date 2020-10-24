@@ -193,7 +193,7 @@ class ShopifyResource(ActiveResource, mixins.Countable):
         cls.url = session.url
         cls.user = None
         cls.password = None
-        cls.version = '2020-10' # session.api_version.name
+        cls.version = session.api_version.name
         cls.headers['X-Shopify-Access-Token'] = session.token
 
     @classmethod
