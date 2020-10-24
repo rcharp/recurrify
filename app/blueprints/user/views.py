@@ -99,7 +99,7 @@ Signup with an account
 def signup(shop_id, email):
     from app.blueprints.base.functions import print_traceback
     form = SignupFormAnon()
-    form.email = email
+    form.email.data = email
 
     try:
         if form.validate_on_submit():
