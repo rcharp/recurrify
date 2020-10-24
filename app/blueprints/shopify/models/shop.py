@@ -24,7 +24,7 @@ class Shop(ResourceMixin, db.Model):
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
         super(Shop, self).__init__(**kwargs)
-        self.shop_id = Shop.generate_id()
+        # self.shop_id = Shop.generate_id()
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
