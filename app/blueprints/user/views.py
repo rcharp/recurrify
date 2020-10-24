@@ -118,7 +118,7 @@ def signup(shop_id, email):
 
             if login_user(u):
                 # Set the user id on the shop
-                s = Shop.query.filter(Shop.id == shop_id).scalar()
+                s = Shop.query.filter(Shop.shop_id == shop_id).scalar()
                 if s is not None:
                     s.user_id = u.id
                     s.save()
