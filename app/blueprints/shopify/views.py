@@ -62,11 +62,6 @@ def finalize():
 
     token = s.request_token(request.args)
 
-    # Add the shop to the database
-    shop = Shop(shop=shop_url, token=token)
-    db.session.add(shop)
-    db.session.commit()
-
     # Get the current shop
     url = 'https://' + shop_url + '/admin/api/' + api_version + '/shop.json'
 
@@ -85,6 +80,11 @@ def finalize():
     # Get the shop owner's email
     shop_id = result['shop']['id'] if 'shop' in result and 'id' in result['shop'] else None
     email = result['shop']['email'] if 'shop' in result and 'email' in result['shop'] else None
+
+    # Add the shop to the database
+    shop = Shop(shop=shop_url, shop_id=shop_id, token=token)
+    db.session.add(shop)
+    db.session.commit()
 
     session['shopify_url'] = shop_url
     session['shopify_token'] = token
