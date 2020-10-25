@@ -106,7 +106,7 @@ def signup(shop_id, email=None, url=None):
     if email is not None:
         form.email.data = email
 
-        print(shop_id)
+    print(shop_id)
 
     try:
         if form.validate_on_submit():
@@ -143,7 +143,7 @@ def signup(shop_id, email=None, url=None):
     except Exception as e:
         print_traceback(e)
 
-    return render_template('user/signup.html', form=form, email=email, url=url)
+    return render_template('user/signup.html', form=form, shop_id=shop_id, email=email, url=url)
 
 
 @user.route('/logout')
