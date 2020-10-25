@@ -106,7 +106,7 @@ def signup(shop_id=None, email=None, url=None):
     if email is not None:
         form.email.data = email
 
-    s = int(request.args.get('shop_id'))
+    s = request.args.get('shop_id')
     print(s)
 
     try:
