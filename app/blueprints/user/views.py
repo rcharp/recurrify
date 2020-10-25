@@ -123,6 +123,8 @@ def signup(shop_id=None, email=None, url=None):
 
             if login_user(u):
                 # Set the user id on the shop
+                print(shop_id)
+                print(url)
                 s = Shop.query.filter(Shop.shop == url).scalar()
                 a = Shop.query.all()
                 for shop in a:
