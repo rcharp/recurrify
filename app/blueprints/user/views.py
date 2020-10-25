@@ -106,8 +106,8 @@ def signup(shop_id=None, email=None, url=None):
     if email is not None:
         form.email.data = email
 
-    s = request.args.get('shop_id')
-    print(s)
+    print(request.args)
+    print(request.data)
 
     try:
         if form.validate_on_submit():
