@@ -109,8 +109,8 @@ def signup(shop_id=None, email=None, url=None):
     try:
         if form.validate_on_submit():
             if db.session.query(exists().where(User.email == request.form.get('email'))).scalar():
-                flash('There is already an account with this email. Please login.', 'error')
-                return redirect(url_for('user.login'))
+                flash(Markup("There is already an account using this email. Please use another or <a href='" + url_for('user.login') + "'><span class='text-indigo-700'><u>login</span></u></a>."), category='error')
+                return redirect(url_for('user.signup', shop_id=shop_id, email=email, url=url))
 
             u = User()
 
