@@ -121,19 +121,14 @@ def signup(shop_id=None, email=None, url=None):
             # Save the user to the database
             u.save()
 
-            if login_user(u):
-                # Set the user id on the shop
-                print(shop_id)
-                print(url)
-                s = Shop.query.filter(Shop.shop == url).scalar()
-                a = Shop.query.all()
-                for shop in a:
-                    print(shop)
-                print(s)
-                if s is not None:
-                    s.user_id = u.id
-                    s.save()
+            # Set the user id on the shop
+            s = Shop.query.filter(Shop.shop_id == shop_id).scalar()
+            print(s)
+            if s is not None:
+                s.user_id = u.id
+                s.save()
 
+            if login_user(u):
                 # from app.blueprints.user.tasks import send_owner_welcome_email
                 # from app.blueprints.contact.mailerlite import create_subscriber
 
