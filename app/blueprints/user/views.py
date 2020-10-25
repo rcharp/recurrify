@@ -125,7 +125,8 @@ def signup(shop_id=None, email=None, url=None):
                 # Set the user id on the shop
                 s = Shop.query.filter(Shop.shop == url).scalar()
                 a = Shop.query.all()
-                print(a)
+                for shop in a:
+                    print(shop)
                 print(s)
                 if s is not None:
                     s.user_id = u.id
