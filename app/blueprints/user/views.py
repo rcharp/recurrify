@@ -93,10 +93,10 @@ Signup with an account
 
 
 @user.route('/signup', methods=['GET', 'POST'])
-@user.route('/signup/<shop_id>/<email>/<url>', methods=['GET', 'POST'])
+@user.route('/signup/<email>/<url>', methods=['GET', 'POST'])
 @anonymous_required()
 @csrf.exempt
-def signup(shop_id=None, email=None, url=None):
+def signup(email=None, url=None):
     from app.blueprints.base.functions import print_traceback
     form = SignupFormAnon()
 
@@ -106,8 +106,8 @@ def signup(shop_id=None, email=None, url=None):
     if email is not None:
         form.email.data = email
 
-    shop = Shop.query.filter(Shop.shop_id == shop_id).scalar()
-    print(shop)
+    s = request.args.get('shop_id')
+    print(s)
 
     try:
         if form.validate_on_submit():
@@ -124,11 +124,6 @@ def signup(shop_id=None, email=None, url=None):
             # Save the user to the database
             u.save()
 
-            # Set the user id on the shop
-            if shop is not None:
-                shop.user_id = u.id
-                shop.save()
-
             if login_user(u):
                 # from app.blueprints.user.tasks import send_owner_welcome_email
                 # from app.blueprints.contact.mailerlite import create_subscriber
@@ -142,7 +137,7 @@ def signup(shop_id=None, email=None, url=None):
     except Exception as e:
         print_traceback(e)
 
-    return render_template('user/signup.html', form=form, shop_id=shop_id, email=email, url=url)
+    return render_template('user/signup.html', form=form, email=email, url=url)
 
 
 @user.route('/logout')
