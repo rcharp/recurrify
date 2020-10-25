@@ -106,6 +106,9 @@ def signup(email=None, url=None):
     if email is not None:
         form.email.data = email
 
+    s = int(request.args.get('shop_id'))
+    print(s)
+
     try:
         if form.validate_on_submit():
             if db.session.query(exists().where(User.email == request.form.get('email'))).scalar():
@@ -124,7 +127,7 @@ def signup(email=None, url=None):
             if login_user(u):
 
                 # Set the shop's user id to the current user
-                s = int(request.args.get('shop_id'))
+
                 shop = Shop.query.filter(Shop.shop_id == s).scalar()
                 print(shop)
 
