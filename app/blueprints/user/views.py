@@ -93,10 +93,10 @@ Signup with an account
 
 
 @user.route('/signup', methods=['GET', 'POST'])
-@user.route('/signup/<email>/<url>', methods=['GET', 'POST'])
+@user.route('/signup/<shop_id>/<email>/<url>', methods=['GET', 'POST'])
 @anonymous_required()
 @csrf.exempt
-def signup(email=None, url=None):
+def signup(shop_id=None, email=None, url=None):
     from app.blueprints.base.functions import print_traceback
     form = SignupFormAnon()
 
@@ -143,7 +143,7 @@ def signup(email=None, url=None):
     except Exception as e:
         print_traceback(e)
 
-    return render_template('user/signup.html', form=form, email=email, url=url)
+    return render_template('user/signup.html', form=form, shop_id=shop_id, email=email, url=url)
 
 
 @user.route('/logout')
