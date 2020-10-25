@@ -107,6 +107,7 @@ def signup(shop_id=None, email=None, url=None):
         form.email.data = email
 
     shop = Shop.query.filter(Shop.shop_id == shop_id).scalar()
+    print(shop)
 
     try:
         if form.validate_on_submit():
