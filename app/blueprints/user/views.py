@@ -106,6 +106,8 @@ def signup(shop_id=None, email=None, url=None):
     if email is not None:
         form.email.data = email
 
+    shop = Shop.query.filter(Shop.shop_id == shop_id).scalar()
+
     try:
         if form.validate_on_submit():
             if db.session.query(exists().where(User.email == request.form.get('email'))).scalar():
@@ -122,11 +124,9 @@ def signup(shop_id=None, email=None, url=None):
             u.save()
 
             # Set the user id on the shop
-            s = Shop.query.filter(Shop.shop_id == shop_id).scalar()
-            print(s)
-            if s is not None:
-                s.user_id = u.id
-                s.save()
+            if shop is not None:
+                shop.user_id = u.id
+                shop.save()
 
             if login_user(u):
                 # from app.blueprints.user.tasks import send_owner_welcome_email
