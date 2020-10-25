@@ -92,7 +92,7 @@ Signup with an account
 '''
 
 
-@user.route('/signup', methods=['GET', 'POST'])
+# @user.route('/signup', methods=['GET', 'POST'])
 @user.route('/signup/<shop_id>/<email>/<url>', methods=['GET', 'POST'])
 @anonymous_required()
 @csrf.exempt
@@ -128,8 +128,8 @@ def signup(shop_id, email, url):
 
                 # Set the shop's user id to the current user
 
-                shop = Shop.query.filter(Shop.shop_id == s).scalar()
-                print(shop)
+                # shop = Shop.query.filter(Shop.shop_id == s).scalar()
+                # print(shop)
 
                 # from app.blueprints.user.tasks import send_owner_welcome_email
                 # from app.blueprints.contact.mailerlite import create_subscriber
