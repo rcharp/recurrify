@@ -19,20 +19,23 @@ from flask_login import (
 import time
 import random
 import requests
+import pprint
 from operator import attrgetter
 from flask_cors import cross_origin
 
 from lib.safe_next_url import safe_next_url
 from app.blueprints.user.decorators import anonymous_required
+from app.blueprints.api.functions import rest_call, graphql_query
 from app.blueprints.user.models.user import User
 from app.blueprints.shopify.models.shop import Shop
+from app.blueprints.shopify.models.membership import Membership
 from app.blueprints.user.forms import (
     LoginForm,
     LoginFormAnon,
     BeginPasswordResetForm,
     PasswordResetForm,
     SignupForm,
-    SignupFormAnon,
+    SignupFormStoreOwner,
     WelcomeForm,
     UpdateCredentials)
 
@@ -68,7 +71,7 @@ def login():
                 if next_url == url_for('user.login') or next_url == '' or next_url is None:
 
                     # Take them to the settings page
-                    next_url = url_for('user.settings')
+                    next_url = url_for('user.dashboard')
 
                 if next_url:
                     return redirect(safe_next_url(next_url), code=307)
@@ -93,27 +96,23 @@ Signup with an account
 
 
 @user.route('/signup', methods=['GET', 'POST'])
-@user.route('/signup/<shop_id>/<email>/<url>', methods=['GET', 'POST'])
 @anonymous_required()
 @csrf.exempt
-def signup(shop_id, email, url):
+def signup():
     from app.blueprints.base.functions import print_traceback
-    form = SignupFormAnon()
+    form = SignupFormStoreOwner()
 
-    if url is not None:
-        form.url.data = url
-
-    if email is not None:
-        form.email.data = email
-
-    print(request.args)
-    print(request.data)
+    # Set the url and the email on the form
+    if 'shopify_url' in session and session['shopify_url'] is not None:
+        form.url.data = session['shopify_url']
+    if 'shopify_email' in session and session['shopify_email'] is not None:
+        form.email.data = session['shopify_email']
 
     try:
         if form.validate_on_submit():
             if db.session.query(exists().where(User.email == request.form.get('email'))).scalar():
                 flash(Markup("There is already an account using this email. Please use another or <a href='" + url_for('user.login') + "'><span class='text-indigo-700'><u>login</span></u></a>."), category='error')
-                return redirect(url_for('user.signup', shop_id=shop_id, email=email, url=url))
+                return redirect(url_for('user.signup'))
 
             u = User()
 
@@ -127,9 +126,11 @@ def signup(shop_id, email, url):
             if login_user(u):
 
                 # Set the shop's user id to the current user
-
-                # shop = Shop.query.filter(Shop.shop_id == s).scalar()
-                # print(shop)
+                if 'shopify_id' in session and session['shopify_id'] is not None:
+                    shop = Shop.query.filter(Shop.shop_id == session['shopify_id']).scalar()
+                    if shop is not None:
+                        shop.user_id = u.id
+                        shop.save()
 
                 # from app.blueprints.user.tasks import send_owner_welcome_email
                 # from app.blueprints.contact.mailerlite import create_subscriber
@@ -140,10 +141,21 @@ def signup(shop_id, email, url):
                 # Log the user in
                 flash("You've successfully signed up!", 'success')
                 return redirect(url_for('user.dashboard'))
+            else:
+                # Delete the shop from the database
+                if 'shopify_id' in session and session['shopify_id'] is not None:
+                    shop = Shop.query.filter(Shop.shop_id == session['shopify_id']).scalar()
+                    if shop is not None:
+                        shop.delete()
     except Exception as e:
+        # Delete the shop from the database
+        if 'shopify_id' in session and session['shopify_id'] is not None:
+            shop = Shop.query.filter(Shop.shop_id == session['shopify_id']).scalar()
+            if shop is not None:
+                shop.delete()
         print_traceback(e)
 
-    return render_template('user/signup.html', form=form, shop_id=shop_id, email=email, url=url)
+    return render_template('user/signup.html', form=form)
 
 
 @user.route('/logout')
@@ -228,7 +240,38 @@ def update_credentials():
 @csrf.exempt
 @cross_origin()
 def dashboard():
-    return render_template('user/dashboard.html', current_user=current_user)
+    shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
+    token = shop.token
+    url = shop.shop
+    result = rest_call(url, 'products', token)
+    products = result['products'] if result is not None and 'products' in result else list()
+    products.sort(key=lambda x: x['created_at'], reverse=True)
+
+    # Print the list
+    pprint.pprint(products)
+
+    return render_template('user/dashboard.html', current_user=current_user, products=products, shops=None, memberships=None, members=None)
+
+
+@user.route('/dashboard/<s>', methods=['GET', 'POST'])
+@csrf.exempt
+@cross_origin()
+def sort_products(s):
+    shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
+    token = shop.token
+    url = shop.shop
+    result = rest_call(url, 'products', token)
+    products = result['products'] if result is not None and 'products' in result else list()
+
+    # Print the list
+    pprint.pprint(products)
+
+    if s == 'alphabetical':
+        products.sort(key=lambda x: x['title'])
+    else:
+        products.sort(key=lambda x: x['created_at'], reverse=True)
+
+    return render_template('user/dashboard.html', current_user=current_user, s=s, products=products)
 
 
 # Settings -------------------------------------------------------------------
@@ -236,7 +279,12 @@ def dashboard():
 @login_required
 @csrf.exempt
 def settings():
-    return render_template('user/settings.html', current_user=current_user)
+    shops = Shop.query.filter(Shop.user_id == current_user.id).all()
+    memberships = [member for membership in
+                   [Membership.query.filter(Membership.shop_id == shop.shop_id).all() for shop in shops] for member in
+                   membership]
+    members = len(list(set([User.query.filter(User.id == membership.member_id).scalar() for membership in memberships])))
+    return render_template('user/settings.html', current_user=current_user, shops=shops, members=members)
 
 
 # Actions -------------------------------------------------------------------

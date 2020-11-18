@@ -19,6 +19,9 @@ PASSWORD = os.environ.get('PASSWORD', None)
 # Shopify
 SHOPIFY_API_KEY = os.environ.get('SHOPIFY_API_KEY', None)
 SHOPIFY_SHARED_SECRET = os.environ.get('SHOPIFY_SHARED_SECRET', None)
+SHOPIFY_SHOP_ID = os.environ.get('SHOPIFY_SHOP_ID', None)
+SHOPIFY_API_VERSION = os.environ.get('SHOPIFY_API_VERSION', None)
+SHOPIFY_SHOP_URL = os.environ.get('SHOPIFY_SHOP_URL', None)
 APP_NAME = "Recurrify"
 SERVER_HOSTNAME = "recurrify.io"
 SERVER_BASE_URL = "https://" + SERVER_HOSTNAME + "/shopify"

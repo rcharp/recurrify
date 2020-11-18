@@ -39,6 +39,7 @@ Flask-SSLify==0.1.5
 flask-talisman==0.7.0
 Flask-WTF==0.9.5
 future==0.18.2
+graphql-python==0.0.1
 gunicorn==19.9.0
 helpers==0.2.0
 heroku3==4.2.1

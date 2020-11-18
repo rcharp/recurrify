@@ -1,8 +1,8 @@
 import pprint
 import requests
-from sqlalchemy import exists
+from sqlalchemy import exists, and_
 from app import shopify_api as shopify
-# import shopify
+from app.blueprints.api.functions import rest_call, graphql_query
 from flask import (
     Blueprint, render_template, current_app, request, redirect, session, flash, url_for)
 
@@ -42,6 +42,9 @@ def install():
     permission_url = s.create_permission_url(
         scope, url_for("shopify.finalize", _external=True, _scheme='https'))
 
+    # Clear the session
+    session.clear()
+
     return render_template('shopify/install.html', permission_url=permission_url)
 
 
@@ -63,25 +66,13 @@ def finalize():
     token = s.request_token(request.args)
 
     # Get the current shop
-    url = 'https://' + shop_url + '/admin/api/' + api_version + '/shop.json'
-
-    headers = {
-        "X-Shopify-Access-Token": token,
-        "Accept": "application/json",
-        "Content-Type": "application/json"
-    }
-
-    r = requests.get(url, headers=headers)
-    if r.status_code == 200:
-        result = r.json()
-    else:
-        result = {}
+    result = rest_call(shop_url, 'shop', token)
 
     # Get the shop owner's email
     shop_id = result['shop']['id'] if 'shop' in result and 'id' in result['shop'] else None
     email = result['shop']['email'] if 'shop' in result and 'email' in result['shop'] else None
 
-    if db.session.query(exists().where(Shop.shop_id == shop_id)).scalar():
+    if db.session.query(exists().where(and_(Shop.shop_id == shop_id, Shop.user_id is not None))).scalar():
         flash('There is already an account for this store. Please login or use a different store.', 'error')
         return redirect(url_for('user.login'))
 
@@ -90,9 +81,10 @@ def finalize():
     db.session.add(shop)
     db.session.commit()
 
+    # Set the session
     session['shopify_url'] = shop_url
+    session['shopify_email'] = email
     session['shopify_token'] = token
-    session['shopify_id'] = shop.id
+    session['shopify_id'] = shop_id
 
-    # return redirect(url_for('shopify.index'))
-    return redirect(url_for('user.signup', shop_id=shop_id, email=email, url=shop_url))
+    return redirect(url_for('user.signup'))

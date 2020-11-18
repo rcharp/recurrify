@@ -86,15 +86,19 @@ def create_app(settings_override=None):
     app.config.from_pyfile('settings.py', silent=True)
 
     # Setting app server name and cookie domain
-    if os.environ.get('PRODUCTION') != 'Development':
+    if os.environ.get('PRODUCTION') == 'true':
         # Set the app server name
         app.config['SERVER_NAME'] = 'recurrify.io'
         app.config['REMEMBER_COOKIE_DOMAIN'] = '.recurrify.io'
-    # else:
-    #     # Set the app server name
-    #     app.config['SERVER_NAME'] = 'localhost:5000'
-    #     app.config['REMEMBER_COOKIE_DOMAIN'] = '.localhost:5000'
+    else:
+        # Set the app server name
+        SERVER_NAME = '807df4180489.ngrok.io'
+        # SERVER_NAME = 'local.dev'
+        app.config['SERVER_NAME'] = SERVER_NAME
+        app.config['REMEMBER_COOKIE_DOMAIN'] = '.' + SERVER_NAME
 
+        # Disable CSRF in dev
+        app.config['WTF_CSRF_ENABLED'] = False
 
     # Keeps the app from crashing on reload
     app.config['SQLALCHEMY_POOL_RECYCLE'] = 499
@@ -203,10 +207,10 @@ def template_processors(app):
     app.jinja_env.filters['site_color_filter'] = site_color_filter
     app.jinja_env.filters['shuffle_filter'] = shuffle_filter
     app.jinja_env.filters['percent_filter'] = percent_filter
-    app.jinja_env.filters['default_profile_image_url'] = default_profile_image_url
     app.jinja_env.filters['any_votes_filter'] = any_votes_filter
     app.jinja_env.filters['initial_filter'] = initial_filter
     app.jinja_env.filters['deserialize_private_key'] = deserialize_private_key
+    app.jinja_env.filters['any_filter'] = any_filter
     app.jinja_env.globals.update(current_year=current_year)
 
     return app.jinja_env
@@ -416,8 +420,12 @@ def initial_filter(arg):
         return arg[0].upper()
 
 
-def default_profile_image_url(arg):
-    markup = 'https://storage.googleapis.com/indie-hackers.appspot.com/avatars/soVlU13BlpgOX7DVWwfJAy67QA43'
-    offerd = 'https://scontent.ftpa1-2.fna.fbcdn.net/v/t1.0-9/23471937_10155779109118398_6528989144266130489_n.jpg?_nc_cat=104&_nc_sid=09cbfe&_nc_ohc=fMD4100xS9wAX8vx9MW&_nc_ht=scontent.ftpa1-2.fna&oh=dc95db0c4dbf170940ac87c45678ccb9&oe=5F09350D'
+def any_filter(arg, k=None, search=None):
+    if search is None:
+        if any(k in item for item in arg):
+            return True
+        return False
 
-    return None
+    if any(item[k] == search for item in arg):
+        return True
+    return False

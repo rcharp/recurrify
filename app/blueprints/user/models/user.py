@@ -47,6 +47,11 @@ class User(UserMixin, ResourceMixin, db.Model):
     # Billing.
     name = db.Column(db.String(128), index=True)
     payment_id = db.Column(db.String(128), index=True)
+    address_street = db.Column(db.String(255), unique=False, index=True, nullable=True, server_default='')
+    address_city = db.Column(db.String(255), unique=False, index=True, nullable=True, server_default='')
+    address_state = db.Column(db.String(255), unique=False, index=True, nullable=True, server_default='')
+    address_country = db.Column(db.String(255), unique=False, index=True, nullable=True, server_default='')
+    address_zip = db.Column(db.String(255), unique=False, index=True, nullable=True, server_default='')
     cancelled_subscription_on = db.Column(AwareDateTime())
     trial = db.Column('trial', db.Boolean(), nullable=False,
                       server_default='1')
