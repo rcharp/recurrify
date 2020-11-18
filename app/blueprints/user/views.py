@@ -22,11 +22,12 @@ import requests
 import pprint
 from operator import attrgetter
 from flask_cors import cross_origin
-
+from flask_paginate import Pagination, get_page_args
 from lib.safe_next_url import safe_next_url
 from app.blueprints.user.decorators import anonymous_required
 from app.blueprints.api.functions import rest_call, graphql_query
 from app.blueprints.user.models.user import User
+from app.blueprints.base.functions import get_pagination
 from app.blueprints.shopify.models.shop import Shop
 from app.blueprints.shopify.models.membership import Membership
 from app.blueprints.user.forms import (
@@ -236,21 +237,25 @@ def update_credentials():
     return render_template('user/update_credentials.html', form=form)
 
 
-@user.route('/dashboard', methods=['GET','POST'])
+@user.route('/dashboard/', methods=['GET','POST'])
+@user.route('/dashboard/<int:page>', methods=['GET','POST'])
 @csrf.exempt
 @cross_origin()
-def dashboard():
+def dashboard(page=1):
     shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
     token = shop.token
     url = shop.shop
     result = rest_call(url, 'products', token)
-    products = result['products'] if result is not None and 'products' in result else list()
+    products = result['products'] * 27 if result is not None and 'products' in result else list()
     products.sort(key=lambda x: x['created_at'], reverse=True)
 
-    # Print the list
-    pprint.pprint(products)
+    offset = 7
+    start, finish, pagination, total_pages = get_pagination(products, offset, page)
 
-    return render_template('user/dashboard.html', current_user=current_user, products=products, shops=None, memberships=None, members=None)
+    # Print the list
+    # pprint.pprint(products)
+
+    return render_template('user/dashboard.html', current_user=current_user, total=len(products), products=pagination, start=start, finish=finish, total_pages=total_pages, page=page)
 
 
 @user.route('/dashboard/<s>', methods=['GET', 'POST'])
