@@ -14,7 +14,7 @@ from app.blueprints.user.models.user import User
 def get_pagination(products, offset, page):
     pagination = products[page * offset - offset:page * offset]
     start = page * offset - offset + 1
-    finish = len(pagination) if len(pagination) < offset else start + offset - 1
+    finish = len(products) if len(products) < start + offset - 1 else start + offset - 1
     pages = int(len(products) / offset) + 1 if len(products) % offset != 0 else int(len(products) / offset)
 
     return start, finish, pagination, pages

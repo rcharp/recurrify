@@ -1,0 +1,201 @@
+{% import 'macros/flash.html' as flash with context %}
+<!DOCTYPE html>
+<!--[if IE 9]>
+<html class="ie9 no-focus" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-focus" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+
+    <title>Setup - {{ 'site_name'|site_name_filter }}</title>
+
+    <meta name="description" content="Recurrify - Subscriptions for your Shopify store">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <!-- Icons -->
+    <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico') }}">
+
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="192x192">
+    <!-- END Icons -->
+
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
+
+    <!-- END Stylesheets -->
+</head>
+<body style="overflow-y: hidden;height: 100vh;">
+<div style="height:100vh; overflow-y:hidden;">
+    {% with page='settings' %}{% include '/user/includes/main_header.html' ignore missing %}{% endwith %}
+    <div class="h-screen flex overflow-hidden bg-gray-100" style="height:93vh;">
+        <div class="flex flex-col w-0 flex-1 overflow-hidden">
+            <div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+                <button class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:bg-gray-100 focus:text-gray-600 md:hidden"
+                        aria-label="Open sidebar" onclick="OpenSidebar()">
+                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                    </svg>
+                </button>
+                <div class="flex-1 px-4 flex justify-between">
+                    <div class="flex-1 flex">
+                        <div class="w-full flex md:ml-0">
+                            <label for="search_field" class="sr-only">Search</label>
+                            <div class="relative w-full text-gray-400 focus-within:text-gray-600">
+                                <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+                                    {#<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" />
+                            </svg>#}
+                                </div>
+                                <div id="search_field"
+                                     class="block w-full h-full pl-8 pr-3 py-2 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 sm:text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <main class="flex-1 relative z-0 overflow-y-auto pb-6 focus:outline-none" tabindex="0">
+                {{ flash.render() }}
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 md:px-8">
+                    <h1 class="mb-5 mt-5" style="font-size: 24px;">Is this a source store or a destination store?</h1>
+                    <!--
+                      Tailwind UI components require Tailwind CSS v1.8 and the @tailwindcss/ui plugin.
+                      Read the documentation to get started: https://tailwindui.com/documentation
+                    -->
+                    <form action="{{ url_for('user.setup_shop') }}" method="POST">
+                      <div class="rounded-lg bg-white border border-gray-200 pb-10 pl-7 pr-7">
+                        <div class="mt-3 sm:mt-5 sm:pt-5">
+                            <div>
+                              <div role="group" aria-labelledby="label-notifications">
+                                <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-baseline">
+                                  <div>
+                                    <div class="text-base leading-6 font-medium text-gray-900 sm:text-sm sm:leading-5 sm:text-gray-700" id="label-notifications">
+                                      Store type
+                                    </div>
+                                  </div>
+                                  <div class="sm:col-span-2">
+                                    <div class="max-w-lg">
+                                        <div class="flex items-center">
+                                          <input id="source_radio" checked name="store_type" value="source" type="radio" class="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out" style="cursor:pointer" onchange="EnableSourceURL(false)">
+                                          <label for="source_radio" class="ml-3">
+                                            <span class="block text-sm leading-5 font-medium text-gray-700">Source store</span>
+                                            <span class="block text-sm leading-5 font-medium text-gray-500">This is the main store that allows other stores to sell its products.</span>
+                                          </label>
+                                        </div>
+                                        <div class="mt-4 flex items-center">
+                                          <input id="destination_radio" name="store_type" type="radio" value="destination" class="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out" style="cursor:pointer" onchange="EnableSourceURL(true)">
+                                          <label for="destination_radio" class="ml-3">
+                                            <span class="block text-sm leading-5 font-medium text-gray-700">Destination store</span>
+                                            <span class="block text-sm leading-5 font-medium text-gray-500">This is a store that sells another store's products.</span>
+                                          </label>
+                                        </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                        </div>
+
+                        <div id="url_div" style="display:none">
+                          <div class="mt-6 sm:mt-5">
+                            <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+                              <label for="source_url" class="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2">
+                                URL of source store to sync with
+                              </label>
+                              <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                <div class="max-w-lg rounded-md shadow-sm sm:max-w-xs">
+                                  <input id="source_url" name="source_url" disabled placeholder="sourceurl.myshopify.com" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5">
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <input type="hidden" name="shop_id" value="{{ shop_id }}" />
+
+                      <div class="mt-8 border-t border-gray-200 pt-5">
+                        <div class="flex justify-end">
+                          <span class="ml-3 inline-flex rounded-md shadow-sm">
+                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                              Continue
+                            </button>
+                          </span>
+                        </div>
+                      </div>
+                    </form>
+
+                </div>
+            </main>
+
+        </div>
+    </div>
+</div>
+<!-- END Page Container -->
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
+
+
+<script>
+    function ShowDropdown(id) {
+        var dropdown = document.getElementById(id);
+        if (dropdown.classList.contains('opacity-0')) {
+            dropdown.classList.remove('opacity-0');
+            dropdown.classList.remove('scale-95');
+            dropdown.classList.add('opacity-100');
+            dropdown.classList.add('scale-100');
+
+            dropdown.style.display = '';
+        } else {
+            dropdown.classList.remove('opacity-100');
+            dropdown.classList.remove('scale-100');
+            dropdown.classList.add('opacity-0');
+            dropdown.classList.add('scale-95');
+
+            dropdown.style.display = 'none';
+        }
+    }
+
+    function EnableSourceURL(val) {
+        var field = document.getElementById('source_url');
+        field.disabled = val !== true;
+        field.required = val === true;
+
+        if (val === true){
+            document.getElementById('url_div').style.display = '';
+        }
+        else{
+            document.getElementById('url_div').style.display = 'none';
+        }
+    }
+
+
+</script>
+<script>
+    var body = document.getElementsByTagName("body")[0];
+    var except = document.getElementById('user-dropdown-menu');
+
+    body.addEventListener("click", function () {
+        except.classList.remove('opacity-100');
+        except.classList.remove('scale-100');
+        except.classList.add('opacity-0');
+        except.classList.add('scale-95');
+
+        except.style.display = 'none';
+    }, false);
+    document.getElementById('user-menu').addEventListener("click", function (ev) {
+        ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+    }, false);
+</script>
+</body>
+</html>

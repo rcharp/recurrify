@@ -127,9 +127,16 @@ def construct_query(query, parameters):
     return query
 
 
-def rest_call(shop_url, api, token):
+def rest_call(shop_url, api, token, *args):
     api_version = current_app.config.get('SHOPIFY_API_VERSION')
-    url = 'https://' + shop_url + '/admin/api/' + api_version + '/' + api + '.json'
+    url = 'https://' + shop_url + '/admin/api/' + api_version + '/' + api
+
+    if args:
+        for arg in args:
+            url += '/' + arg
+
+    # Append json to the end of the rest call
+    url += '.json'
 
     headers = {
         "X-Shopify-Access-Token": token,

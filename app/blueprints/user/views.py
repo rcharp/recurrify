@@ -133,6 +133,9 @@ def signup():
                         shop.user_id = u.id
                         shop.save()
 
+                        flash("You've successfully signed up!", 'success')
+                        return redirect(url_for('user.start', shop_id=shop.shop_id))
+
                 # from app.blueprints.user.tasks import send_owner_welcome_email
                 # from app.blueprints.contact.mailerlite import create_subscriber
 
@@ -141,7 +144,7 @@ def signup():
 
                 # Log the user in
                 flash("You've successfully signed up!", 'success')
-                return redirect(url_for('user.dashboard'))
+                return redirect(url_for('user.start'))
             else:
                 # Delete the shop from the database
                 if 'shopify_id' in session and session['shopify_id'] is not None:
@@ -206,11 +209,40 @@ def password_reset():
 
 
 @user.route('/start', methods=['GET', 'POST'])
+@user.route('/start/<shop_id>', methods=['GET', 'POST'])
 @login_required
-def start():
+def start(shop_id):
     if not current_user.is_authenticated:
         return redirect(url_for('user.login'))
-    return render_template('user/start.html', current_user=current_user)
+
+    return render_template('user/start.html', current_user=current_user, shop_id=shop_id)
+
+
+@user.route('/setup_shop', methods=['GET', 'POST'])
+@login_required
+def setup_shop():
+    if not current_user.is_authenticated:
+        return redirect(url_for('user.login'))
+    if request.method == 'POST':
+        if 'shop_id' in request.form and 'store_type' in request.form:
+            s = Shop.query.filter(Shop.shop_id == request.form['shop_id']).scalar()
+            if s is not None:
+                if 'source_url' in request.form and request.form['store_type'] == 'destination':
+                    t = Shop.query.filter(Shop.shop == request.form['source_url']).scalar()
+
+                    if t is None:
+                        flash(Markup("The store you're trying to sync with wasn't found. Please try again."), category='error')
+                        return redirect(url_for('user.start', shop_id=request.form['shop_id']))
+
+                    s.source_store_id = t.shop_id
+                    s.source = False
+                    flash(Markup("You've successfully synced your store with " + request.form['source_url'] + "!"), category='success')
+                else:
+                    s.source = True
+                    flash(Markup("You've successfully set up your store to sync with others!"), category='success')
+
+                s.save()
+    return redirect(url_for('user.dashboard'))
 
 
 @user.route('/settings/update_credentials', methods=['GET', 'POST'])
@@ -246,16 +278,42 @@ def dashboard(page=1):
     token = shop.token
     url = shop.shop
     result = rest_call(url, 'products', token)
-    products = result['products'] * 27 if result is not None and 'products' in result else list()
+    products = result['products'] if result is not None and 'products' in result else list()
     products.sort(key=lambda x: x['created_at'], reverse=True)
+
+    products = products * 25
 
     offset = 7
     start, finish, pagination, total_pages = get_pagination(products, offset, page)
+    prev_page, next_page = page - 1, page + 1
 
     # Print the list
     # pprint.pprint(products)
 
-    return render_template('user/dashboard.html', current_user=current_user, total=len(products), products=pagination, start=start, finish=finish, total_pages=total_pages, page=page)
+    return render_template('user/dashboard.html', current_user=current_user, total=len(products),
+                           products=pagination, start=start, finish=finish,
+                           total_pages=total_pages, page=page, prev=prev_page, next=next_page)
+
+
+@user.route('/sync/', methods=['GET','POST'])
+@csrf.exempt
+@cross_origin()
+def sync():
+    return
+
+
+@user.route('/product/<product_id>', methods=['GET','POST'])
+@csrf.exempt
+@cross_origin()
+def product(product_id):
+    shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
+    token = shop.token
+    url = shop.shop
+    result = rest_call(url, 'products', token, product_id)
+
+    pprint.pprint(result)
+
+    return render_template('user/product.html', current_user=current_user, product=result['product'])
 
 
 @user.route('/dashboard/<s>', methods=['GET', 'POST'])

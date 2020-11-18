@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div>
+          <nav class="relative z-0 inline-flex shadow-sm">
+            <a href="{% if page == 1 %}#{% else %}{{ url_for('user.dashboard', page=prev) }}{% endif %}" class="relative inline-flex items-center px-2 py-2 rounded-l-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" aria-label="Previous">
+              <!-- Heroicon name: chevron-left -->
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+              </svg>
+            </a>
+            {% if total_pages > 7 %}
+                <!-- We're on page 1 - 6 -->
+                {% if page <= 6 %}
+                    {% for x in range(1, 7) %}
+                        <a href="{{ url_for('user.dashboard', page=x) }}" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-{% if x == page %}indigo-200{% else %}white{% endif %} text-sm leading-5 font-medium text-{% if x == page %}indigo{% else %}gray{% endif %}-700 hover:text-{% if x == page %}indigo{% else %}gray{% endif %}-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+                            {{ x }}
+                        </a>
+                    {% endfor %}
+                    <span class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700">
+                      ...
+                    </span>
+
+                <!-- We're within 6 pages of the last page -->
+                {% elif total_pages - page <= 5 %}
+                    <a href="{{ url_for('user.dashboard', page=1) }}" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+                      1
+                    </a>
+                    <span class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700">
+                      ...
+                    </span>
+                    {% for x in range(total_pages - 5, total_pages) %}
+                        <a href="{{ url_for('user.dashboard', page=x) }}" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-{% if x == page %}indigo-200{% else %}white{% endif %} text-sm leading-5 font-medium text-{% if x == page %}indigo{% else %}gray{% endif %}-700 hover:text-{% if x == page %}indigo{% else %}gray{% endif %}-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+                            {{ x }}
+                        </a>
+                    {% endfor %}
+
+                <!-- Otherwise we're somewhere in the middle -->
+                {% else %}
+                    <a href="{{ url_for('user.dashboard', page=1) }}" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+                      1
+                    </a>
+                    <span class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700">
+                      ...
+                    </span>
+                    {% for x in range(page - 2, page + 3) %}
+                        <a href="{{ url_for('user.dashboard', page=x) }}" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-{% if x == page %}indigo-200{% else %}white{% endif %} text-sm leading-5 font-medium text-{% if x == page %}indigo{% else %}gray{% endif %}-700 hover:text-{% if x == page %}indigo{% else %}gray{% endif %}-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+                            {{ x }}
+                        </a>
+                    {% endfor %}
+                    <span class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700">
+                      ...
+                    </span>
+                {% endif %}
+
+                <a href="{{ url_for('user.dashboard', page=total_pages) }}" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-{% if total_pages == page %}indigo-200{% else %}white{% endif %} text-sm leading-5 font-medium text-{% if total_pages == page %}indigo{% else %}gray{% endif %}-700 hover:text-{% if total_pages == page %}indigo{% else %}gray{% endif %}-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+                  {{ total_pages }}
+                </a>
+            {% else %}
+                {% for x in range(1, total_pages + 1) %}
+                    <a href="{{ url_for('user.dashboard', page=x) }}" class="-ml-px relative inline-flex items-center px-4 py-2 border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-700 transition ease-in-out duration-150">
+                        {{ x }}
+                    </a>
+                {% endfor %}
+            {% endif %}
+            <a href="{% if page == total_pages %}#{% else %}{{ url_for('user.dashboard', page=next) }}{% endif %}" class="-ml-px relative inline-flex items-center px-2 py-2 rounded-r-md border border-gray-300 bg-white text-sm leading-5 font-medium text-gray-500 hover:text-gray-400 focus:z-10 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-100 active:text-gray-500 transition ease-in-out duration-150" aria-label="Next">
+              <!-- Heroicon name: chevron-right -->
+              <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+              </svg>
+            </a>
+          </nav>
+        </div>
+</body>
+</html>
