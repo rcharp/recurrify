@@ -107,7 +107,7 @@
                         <div class="flex flex-col mb-5">
                           <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                             <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                              <div class="shadow overflow-hidden border-gray-200 sm:rounded-lg">
+                              <div class="shadow overflow-hidden border-gray-200 sm:rounded-lg" style="max-height:575px;">
                                 <table class="min-w-full divide-y divide-gray-200">
                                   <thead>
                                     <tr>
@@ -196,8 +196,8 @@
                                     {% endfor %}
                                   </tbody>
                                 </table>
-                                {% include '/user/includes/pagination.html' ignore missing %}
                               </div>
+                              {% include '/user/includes/pagination.html' ignore missing %}
                             </div>
                           </div>
                         </div>

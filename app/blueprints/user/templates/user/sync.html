@@ -1,0 +1,284 @@
+{% import 'macros/flash.html' as flash with context %}
+<!DOCTYPE html>
+<!--[if IE 9]>
+<html class="ie9 no-focus" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-focus" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+
+    <title>Setup - {{ 'site_name'|site_name_filter }}</title>
+
+    <meta name="description" content="Recurrify - Subscriptions for your Shopify store">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <!-- Icons -->
+    <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico') }}">
+
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="192x192">
+    <!-- END Icons -->
+
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
+
+    <!-- END Stylesheets -->
+</head>
+<body style="overflow-y: hidden;height: 100vh;">
+<div style="height:100vh; overflow-y:hidden;">
+    {% with page='settings' %}{% include '/user/includes/main_header.html' ignore missing %}{% endwith %}
+    <div class="h-screen flex overflow-hidden bg-gray-100" style="height:93vh;">
+        <div class="flex flex-col w-0 flex-1 overflow-hidden">
+            <div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+                <button class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:bg-gray-100 focus:text-gray-600 md:hidden"
+                        aria-label="Open sidebar" onclick="OpenSidebar()">
+                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                    </svg>
+                </button>
+                <div class="flex-1 px-4 flex justify-between">
+                    <div class="flex-1 flex">
+                        <div class="w-full flex md:ml-0">
+                            <label for="search_field" class="sr-only">Search</label>
+                            <div class="relative w-full text-gray-400 focus-within:text-gray-600">
+                                <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+                                    {#<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" />
+                            </svg>#}
+                                </div>
+                                <div id="search_field"
+                                     class="block w-full h-full pl-8 pr-3 py-2 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 sm:text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <main class="flex-1 relative z-0 overflow-y-auto pb-6 focus:outline-none" tabindex="0">
+                {{ flash.render() }}
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 pt-10">
+                    <div class="text-center full">
+                        <span class="text-lg mb-1 mt-10 text-gray-700" style="font-size: 24px;">Add the destination stores to sync</span><br/>
+                        <span class="mb-5 text-sm font-medium text-gray-500">These are other stores that you want to sell your products.</span>
+                    </div>
+                    <!--
+                      Tailwind UI components require Tailwind CSS v1.8 and the @tailwindcss/ui plugin.
+                      Read the documentation to get started: https://tailwindui.com/documentation
+                    -->
+                    <form action="{{ url_for('user.setup_shop') }}" method="POST">
+                      <div class="rounded-lg bg-white border border-gray-200 pb-10 pl-7 pr-7 mt-5 mb-8">
+                          <ul id="destination_list">
+                            <li id="destination_0">
+                              <div class="mt-6 sm:mt-5">
+                                <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+                                  <label for="source_url" class="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2">
+                                    URL of destination store
+                                  </label>
+                                  <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                    <div class="max-w-lg rounded-md shadow-sm sm:max-w-xs">
+                                      <input required id="destination_url" name="destination_url" placeholder="destination.myshopify.com" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5">
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </li>
+                          </ul>
+                      </div>
+
+                      <div class="text-center full">
+                        <span class="text-lg mb-1 mt-10 text-gray-700" style="font-size: 24px;">Choose your plan for this store</span><br/>
+                      </div>
+
+                      <fieldset class="pt-8" style="width:500px;margin:0 auto;float:none;">
+                          <ul class="space-y-4" role="radiogroup" aria-labelledby="radiogroup-label">
+                            <li id="hobby" tabindex="0" role="radio" aria-checked="true" class="group relative bg-white rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500" onclick="SwitchPlan(this);">
+                              <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
+                                <div class="flex items-center">
+                                  <div class="text-sm">
+                                    <p class="font-medium text-gray-900">
+                                      Hobby
+                                    </p>
+                                    <div class="text-gray-500">
+                                      <p class="sm:inline">100 products</p><br />
+                                      <p class="sm:inline">Sync inventory in real-time</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="mt-2 flex text-sm sm:mt-0 sm:block sm:ml-4 sm:text-right">
+                                  <div class="text-xl font-medium text-gray-900">$19</div>
+                                  <div class="ml-1 text-gray-500 sm:ml-0">/mo</div>
+                                </div>
+                              </div>
+                              <!-- On: "border-indigo-500", Off: "border-transparent" -->
+                              <div id="hobby_border" class="plans border-indigo-500 absolute inset-0 rounded-lg border-2 pointer-events-none" aria-hidden="true"></div>
+                            </li>
+
+                            <li id="startup" tabindex="-1" role="radio" aria-checked="false" class="group relative bg-white rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500" onclick="SwitchPlan(this);">
+                              <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
+                                <div class="flex items-center">
+                                  <div class="text-sm">
+                                    <p class="font-medium text-gray-900">
+                                      Startup
+                                    </p>
+                                    <div class="text-gray-500">
+                                      <p class="sm:inline">500 products</p><br />
+                                      <p class="sm:inline">Sync inventory in real-time</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="mt-2 flex text-sm sm:mt-0 sm:block sm:ml-4 sm:text-right">
+                                  <div class="text-xl font-medium text-gray-900">$39</div>
+                                  <div class="ml-1 text-gray-500 sm:ml-0">/mo</div>
+                                </div>
+                              </div>
+                              <!-- On: "border-indigo-500", Off: "border-transparent" -->
+                              <div id="startup_border" class="plans border-transparent absolute inset-0 rounded-lg border-2 pointer-events-none" aria-hidden="true"></div>
+                            </li>
+
+                            <li id="business" tabindex="-1" role="radio" aria-checked="false" class="group relative bg-white rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500" onclick="SwitchPlan(this);">
+                              <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
+                                <div class="flex items-center">
+                                  <div class="text-sm">
+                                    <p class="font-medium text-gray-900">
+                                      Business
+                                    </p>
+                                    <div class="text-gray-500">
+                                      <p class="sm:inline">1000 products</p><br />
+                                      <p class="sm:inline">Sync inventory in real-time</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="mt-2 flex text-sm sm:mt-0 sm:block sm:ml-4 sm:text-right">
+                                  <div class="text-xl font-medium text-gray-900">$69</div>
+                                  <div class="ml-1 text-gray-500 sm:ml-0">/mo</div>
+                                </div>
+                              </div>
+                              <!-- On: "border-indigo-500", Off: "border-transparent" -->
+                              <div id="business_border" class="plans border-transparent absolute inset-0 rounded-lg border-2 pointer-events-none" aria-hidden="true"></div>
+                            </li>
+
+                            <li id="enterprise" tabindex="-1" role="radio" aria-checked="false" class="group relative bg-white rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500" onclick="SwitchPlan(this);">
+                              <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
+                                <div class="flex items-center">
+                                  <div class="text-sm">
+                                    <p class="font-medium text-gray-900">
+                                      Enterprise
+                                    </p>
+                                    <div class="text-gray-500">
+                                      <p class="sm:inline">5000 products</p><br />
+                                      <p class="sm:inline">Sync inventory in real-time</p>
+                                    </div>
+                                  </div>
+                                </div>
+                                <div class="mt-2 flex text-sm sm:mt-0 sm:block sm:ml-4 sm:text-right">
+                                  <div class="text-xl font-medium text-gray-900">$129</div>
+                                  <div class="ml-1 text-gray-500 sm:ml-0">/mo</div>
+                                </div>
+                              </div>
+                              <!-- On: "border-indigo-500", Off: "border-transparent" -->
+                              <div id="enterprise_border" class="plans border-transparent absolute inset-0 rounded-lg border-2 pointer-events-none" aria-hidden="true"></div>
+                            </li>
+                          </ul>
+                        </fieldset>
+                        {#<div class="mt-2 pt-2">
+                            <div class="flex justify-end">
+                              <span class="ml-3 inline-flex rounded-md shadow-sm">
+                                <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out" #}{#onclick="AddDestinationStore()"#}{#>
+                                  Add another store
+                                </button>
+                              </span>
+                            </div>
+                        </div>#}
+
+                      <input type="hidden" name="shop_id" value="{{ shop_id }}" />
+
+                      <div class="mt-8 border-t border-gray-200 pt-5">
+                        <div class="flex justify-end">
+                          <span class="ml-3 inline-flex rounded-md shadow-sm">
+                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                              Submit
+                            </button>
+                          </span>
+                        </div>
+                      </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+<!-- END Page Container -->
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
+
+
+<script>
+    function ShowDropdown(id) {
+        var dropdown = document.getElementById(id);
+        if (dropdown.classList.contains('opacity-0')) {
+            dropdown.classList.remove('opacity-0');
+            dropdown.classList.remove('scale-95');
+            dropdown.classList.add('opacity-100');
+            dropdown.classList.add('scale-100');
+
+            dropdown.style.display = '';
+        } else {
+            dropdown.classList.remove('opacity-100');
+            dropdown.classList.remove('scale-100');
+            dropdown.classList.add('opacity-0');
+            dropdown.classList.add('scale-95');
+
+            dropdown.style.display = 'none';
+        }
+    }
+
+    function AddDestinationStore() {
+        var store_count = document.getElementsByTagName('li').length;
+        var store_list = document.getElementById('destination_list');
+
+        var destination = document.getElementById('destination_0').cloneNode(true);
+        destination.id = 'destination_' + String(store_count);
+        store_list.appendChild(destination);
+        document.getElementById(destination.id).getElementsByTagName('input')[0].value = '';
+    }
+
+    function SwitchPlan(val){
+        var options = document.getElementsByClassName('plans');
+        for (var i = 0; i < options.length; i++){
+            options[i].classList.remove('border-indigo-500');
+            options[i].classList.add('border-transparent');
+        }
+
+        document.getElementById(val.id + '_border').classList.add('border-indigo-500');
+    }
+
+
+</script>
+<script>
+    var body = document.getElementsByTagName("body")[0];
+    var except = document.getElementById('user-dropdown-menu');
+
+    body.addEventListener("click", function () {
+        except.classList.remove('opacity-100');
+        except.classList.remove('scale-100');
+        except.classList.add('opacity-0');
+        except.classList.add('scale-95');
+
+        except.style.display = 'none';
+    }, false);
+    document.getElementById('user-menu').addEventListener("click", function (ev) {
+        ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+    }, false);
+</script>
+</body>
+</html>

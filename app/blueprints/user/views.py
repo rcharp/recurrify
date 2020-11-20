@@ -239,7 +239,7 @@ def setup_shop():
                     flash(Markup("You've successfully synced your store with " + request.form['source_url'] + "!"), category='success')
                 else:
                     s.source = True
-                    flash(Markup("You've successfully set up your store to sync with others!"), category='success')
+                    flash(Markup("You've successfully set up your store to sync with others. Click \"Sync a store!\" above to sell your products on another store."), category='success')
 
                 s.save()
     return redirect(url_for('user.dashboard'))
@@ -283,7 +283,8 @@ def dashboard(page=1):
 
     products = products * 25
 
-    offset = 7
+    # How many products per page
+    offset = 20
     start, finish, pagination, total_pages = get_pagination(products, offset, page)
     prev_page, next_page = page - 1, page + 1
 
@@ -299,7 +300,12 @@ def dashboard(page=1):
 @csrf.exempt
 @cross_origin()
 def sync():
-    return
+    if request.method == 'POST':
+        return
+    else:
+        shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
+
+    return render_template('user/sync.html', shop=shop)
 
 
 @user.route('/product/<product_id>', methods=['GET','POST'])
@@ -342,12 +348,9 @@ def sort_products(s):
 @login_required
 @csrf.exempt
 def settings():
-    shops = Shop.query.filter(Shop.user_id == current_user.id).all()
-    memberships = [member for membership in
-                   [Membership.query.filter(Membership.shop_id == shop.shop_id).all() for shop in shops] for member in
-                   membership]
-    members = len(list(set([User.query.filter(User.id == membership.member_id).scalar() for membership in memberships])))
-    return render_template('user/settings.html', current_user=current_user, shops=shops, members=members)
+    shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
+    destinations = Shop.query.filter(Shop.source_store_id == shop.shop_id).all()
+    return render_template('user/settings.html', current_user=current_user, shop=shop, destinations=destinations)
 
 
 # Actions -------------------------------------------------------------------
