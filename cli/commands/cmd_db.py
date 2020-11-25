@@ -110,11 +110,19 @@ def seed_plans():
         'price': 129
     }
 
+    unlimited = {
+        'title': 'Unlimited',
+        'tag': 'unlimited',
+        'limit': 9999,
+        'price': 199
+    }
+
     Plan(**hobby).save()
     Plan(**startup).save()
     Plan(**business).save()
+    Plan(**enterprise).save()
 
-    return Plan(**enterprise).save()
+    return Plan(**unlimited).save()
 
 
 @click.command()

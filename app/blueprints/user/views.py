@@ -33,7 +33,7 @@ from app.blueprints.shopify.models.sync import Sync
 from app.blueprints.shopify.models.plan import Plan
 from app.blueprints.user.forms import (
     LoginForm,
-    LoginFormAnon,
+    LoginFormExistingStore,
     BeginPasswordResetForm,
     PasswordResetForm,
     SignupFormDestinationStore,
@@ -60,7 +60,7 @@ User
 @anonymous_required()
 @csrf.exempt
 def login():
-    form = LoginFormAnon(next=request.args.get('next'))
+    form = LoginForm(next=request.args.get('next'))
 
     if form.validate_on_submit():
         u = User.find_by_identity(request.form.get('identity'))
@@ -105,34 +105,62 @@ Signup with an account
 @anonymous_required()
 @csrf.exempt
 def signup():
+    print(session)
     from app.blueprints.base.functions import print_traceback
     form = SignupFormSourceStore()
-
-    # Check to see if this is a destination store being set up
+    print("Session is")
+    print(session)
+    # Ensure the Shopify URL and the store's email exist in the session
     if 'shopify_url' in session and session['shopify_url'] is not None and 'shopify_email' in session and session['shopify_email'] is not None:
 
-        # This email already exists in the db
+        # This email already exists in the db, so connect this store to their account
         if db.session.query(exists().where(User.email == session['shopify_email'])).scalar():
 
-            # There is a pending sync to this store
-            if db.session.query(exists().where(Sync.destination_url == session['shopify_url'])).scalar():
-                form = SignupFormDestinationStore()
-                form.url.data = session['shopify_url']
-                form.email.data = session['shopify_email']
-                try:
-                    if form.validate_on_submit():
-                        # Update the sync
-                        t = Sync.query.filter(and_(Sync.source_id == session['source_id'],
-                                                   Sync.destination_url == session['shopify_url'])).scalar()
+            # Show the form to login the user
+            form = LoginFormExistingStore()
+            form.url.data = session['shopify_url']
+            form.identity.data = session['shopify_email']
 
-                        if t is not None:
-                            t.destination_id = session['shop_id']
-                            t.active = True
-                            t.save()
+            try:
+                if form.validate_on_submit():
 
-                            return redirect(url_for('user.stores'))
-                except Exception as e:
-                    print_traceback(e)
+                    # Get the user
+                    u = User.query.filter(User.email == session['shopify_email']).scalar()
+
+                    # Make them enter their password to continue
+                    if u.authenticated(password=request.form.get('password')):
+
+                        # Set the shop's user id to the current user
+                        if 'shopify_id' in session and session['shopify_id'] is not None:
+                            shop = Shop.query.filter(Shop.shopify_id == session['shopify_id']).scalar()
+                            if shop is not None:
+                                shop.user_id = u.id
+                                shop.save()
+
+                                # Redirect to the start page
+                                flash(Markup("You've successfully connected " + session['shopify_url'] + " to your account!"), category='success')
+                                return redirect(url_for('user.start', shop_id=shop.shop_id))
+
+                    flash(Markup("There was an error. Please try again."), category='error')
+                    return redirect(url_for('user.settings'))
+
+                    # # There is a pending sync to this store
+                    # if db.session.query(exists().where(Sync.destination_url == session['shopify_url'])).scalar():
+                    #
+                    #     # Update the sync
+                    #     t = Sync.query.filter(and_(Sync.source_id == session['source_id'],
+                    #                                Sync.destination_url == session['shopify_url'])).scalar()
+                    #
+                    #     if t is not None:
+                    #         t.destination_id = session['shop_id']
+                    #         t.active = True
+                    #         t.save()
+                    #
+                    #         return redirect(url_for('user.stores'))
+            except Exception as e:
+                print_traceback(e)
+
+            return render_template('user/login_existing_store.html', form=form, url=session['shopify_url'])
         else:
             # Set the url and the email on the form
             form.url.data = session['shopify_url']
@@ -336,8 +364,9 @@ def sync():
         return
     else:
         shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
+        plans = Plan.query.all()
 
-    return render_template('user/sync.html', shop=shop)
+    return render_template('user/sync.html', shop=shop, plans=plans)
 
 
 @user.route('/create_sync', methods=['GET', 'POST'])
@@ -379,7 +408,7 @@ def create_sync():
                         destination_url = request.form['destination_url']
 
                         if db.session.query(exists().where(and_(Sync.source_id == s.shop_id, Sync.destination_url == destination_url))).scalar():
-                            flash(Markup("There is already an existing sync with " + destination_url + "."), category='error')
+                            flash(Markup("There is already an existing sync with " + destination_url + ". Please go to stores above to see syncs."), category='error')
                             return redirect(url_for('user.dashboard'))
 
                         plan = request.form['plan_id']

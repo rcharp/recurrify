@@ -116,7 +116,7 @@
                                             <div class="text-gray-500">
                                                 {% set plan = plans|selectattr('id', 'equalto', sync.plan_id ) | list | first %}
                                                 <p class="sm:inline">{{ sync.plan|title }} plan - ${{ plan.price }}/mo</p><br/>
-                                                <p class="sm:inline">x/{{ plan.limit }} product syncs used</p><br/>
+                                                <p class="sm:inline">x/{% if plan.limit > 5000 %}Unlimited{% else %}{{ plan.limit }}{% endif %} product syncs used</p><br/>
                                             </div>
                                         </div>
                                     </div>

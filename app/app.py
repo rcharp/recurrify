@@ -92,7 +92,7 @@ def create_app(settings_override=None):
         app.config['REMEMBER_COOKIE_DOMAIN'] = '.recurrify.io'
     else:
         # Set the app server name
-        SERVER_NAME = 'd2cb8f49d595.ngrok.io'
+        SERVER_NAME = '2dcc4685be2e.ngrok.io'
         # SERVER_NAME = 'local.dev'
         app.config['SERVER_NAME'] = SERVER_NAME
         app.config['REMEMBER_COOKIE_DOMAIN'] = '.' + SERVER_NAME

@@ -18,12 +18,20 @@ class LoginForm(Form):
     # remember = BooleanField('Stay signed in')
 
 
-class LoginFormAnon(Form):
+class LoginFormExistingStore(Form):
     next = HiddenField()
-    identity = StringField('Username or email',
-                           [DataRequired(), Length(3, 254)])
-    password = PasswordField('Password', [DataRequired(), Length(8, 128)])
-    # remember = BooleanField('Stay signed in')
+    url = StringField('Store URL')
+    identity = EmailField('Email', validators=[
+        DataRequired(),
+        Email()
+    ])
+
+    password = PasswordField('Enter your password', [DataRequired(), Length(8, 128)])
+
+    def __init__(self, *args, **kwargs):
+        super(LoginFormExistingStore, self).__init__(*args, **kwargs)
+        read_only(self.url)
+        read_only(self.identity)
 
 
 class BeginPasswordResetForm(Form):

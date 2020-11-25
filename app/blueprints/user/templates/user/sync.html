@@ -67,190 +67,114 @@
 
             <main class="flex-1 relative z-0 overflow-y-auto pb-6 focus:outline-none" tabindex="0">
                 {{ flash.render() }}
-                <div class="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 pt-10">
-                    <div class="text-center full">
-                        <span class="text-lg mb-1 mt-10 text-gray-700" style="font-size: 24px;">Add a destination store to sync</span><br/>
-                        <span class="mb-5 text-sm font-medium text-gray-500">This is another store that you want to sell your products through.</span>
-                    </div>
-                    <!--
-                      Tailwind UI components require Tailwind CSS v1.8 and the @tailwindcss/ui plugin.
-                      Read the documentation to get started: https://tailwindui.com/documentation
-                    -->
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8 pt-10">
                     <form action="{{ url_for('user.create_sync') }}" method="POST" onsubmit="return ValidStoreURL();">
-                        <div class="rounded-lg bg-white border border-gray-200 pb-10 pl-7 pr-7 mt-5 mb-8">
-                            <ul id="destination_list">
-                                <li id="destination_0">
-                                    <div class="mt-6 sm:mt-5">
-                                        <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
-                                            <label for="source_url"
-                                                   class="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2">
-                                                URL of destination store
-                                            </label>
-                                            <div class="mt-1 sm:mt-0 sm:col-span-2">
-                                                <div class="max-w-lg rounded-md shadow-sm sm:max-w-xs">
-                                                    <input required id="destination_url" name="destination_url"
-                                                           placeholder="destination.myshopify.com"
-                                                           class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
-                                                            onkeyup="GenerateDestinationLink(this)">
+                        <div class="grid md:grid-cols-2 sm:gap-4 lg:gap-6 sm:grid-cols-1 lg:grid-cols-2 mb-5">
+                            <div class="col-span-1">
+                                <div class="text-center full">
+                                    <span class="text-lg mb-1 mt-10 text-gray-700" style="font-size: 24px;">1. Add a destination store to sync</span><br/>
+                                    <span class="mb-5 text-sm font-medium text-gray-500">This is another store that you want to sell your products through.</span>
+                                </div>
+                                <div class="rounded-lg bg-white border border-gray-200 pb-10 pl-7 pr-7 mt-5 mb-8">
+                                    <ul id="destination_list">
+                                        <li id="destination_0">
+                                            <div class="mt-6 sm:mt-5">
+                                                <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+                                                    <label for="source_url"
+                                                           class="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2">
+                                                        URL of destination store
+                                                    </label>
+                                                    <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                                        <div class="max-w-lg rounded-md shadow-sm sm:max-w-xs">
+                                                            <input required autofocus id="destination_url" name="destination_url"
+                                                                   placeholder="destination.myshopify.com"
+                                                                   class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"
+                                                                    onkeyup="GenerateDestinationLink(this)">
+                                                        </div>
+                                                        <span id="error" style="display:none" class="block text-sm font-medium leading-5 text-red-700 sm:mt-px sm:pt-2">
+                                                            Invalid store url.
+                                                        </span>
+                                                    </div>
                                                 </div>
-                                                <span id="error" style="display:none" class="block text-sm font-medium leading-5 text-red-700 sm:mt-px sm:pt-2">
-                                                    Invalid store url.
-                                                </span>
                                             </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
+                                        </li>
+                                    </ul>
 
-                            <div id="link_div" style="display:none">
-                                <div class="mt-6 sm:mt-5">
-                                    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
-                                        <label for="destination_link"
-                                               class="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2">
-                                            Share this link with destination store:
-                                        </label>
-                                        <div class="mt-1 sm:mt-0 sm:col-span-2">
-                                            <span id="destination_link" class="w-4/5 text-sm font-medium leading-5 text-indigo-700 sm:mt-px sm:pt-2"></span>
-                                            <span class="w-1/5" title="Copy the link"><i class="fa fa-copy pull-right" style="cursor:pointer" onclick="CopyLink()"></i></span>
+                                    <div id="link_div" style="display:none">
+                                        <div class="mt-6 sm:mt-5">
+                                            <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+                                                <label for="destination_link"
+                                                       class="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2">
+                                                    Share this link with destination store:
+                                                </label>
+                                                <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                                    <span id="destination_link" class="w-4/5 text-sm font-medium leading-5 text-indigo-700 sm:mt-px sm:pt-2"></span>
+                                                    <span class="w-1/5" title="Copy the link"><i class="fa fa-copy pull-right" style="cursor:pointer" onclick="CopyLink()"></i></span>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            <div class="col-span-1">
+                                <div class="text-center full">
+                                    <span class="text-lg mb-1 mt-10 text-gray-700" style="font-size: 24px;">2. Choose your plan for this destination store</span><br/>
+                                </div>
 
-                        <div class="text-center full">
-                            <span class="text-lg mb-1 mt-10 text-gray-700" style="font-size: 24px;">Choose your plan for this destination store</span><br/>
-                        </div>
-
-                        <fieldset class="pt-8" style="width:500px;margin:0 auto;float:none;">
-                            <ul class="space-y-4" role="radiogroup" aria-labelledby="radiogroup-label">
-                                <li id="hobby" tabindex="0" role="radio" aria-checked="true"
-                                    class="group relative bg-white rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500"
-                                    onclick="SwitchPlan(this);">
-                                    <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
-                                        <div class="flex items-center">
-                                            <div class="text-sm">
-                                                <p class="font-medium text-gray-900">
-                                                    Hobby
-                                                </p>
-                                                <div class="text-gray-500">
-                                                    <p class="sm:inline">100 products</p><br/>
-                                                    <p class="sm:inline">Sync inventory in real-time</p>
+                                <fieldset class="pt-8" style="width:500px;margin:0 auto;float:none;">
+                                    <ul class="space-y-4" role="radiogroup" aria-labelledby="radiogroup-label">
+                                        {% for plan in plans %}
+                                            <li id="{{ plan.tag }}" tabindex="0" role="radio" aria-checked="true"
+                                                class="group relative bg-white rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500"
+                                                onclick="SwitchPlan(this);">
+                                                <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
+                                                    <div class="flex items-center">
+                                                        <div class="text-sm">
+                                                            <p class="font-medium text-gray-900">
+                                                                {{ plan.title }}
+                                                            </p>
+                                                            <div class="text-gray-500">
+                                                                <p class="sm:inline">{% if plan.limit > 5000 %}Unlimited{% else %}{{ plan.limit }}{% endif %} products</p><br/>
+                                                                <p class="sm:inline">Sync inventory in real-time</p>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mt-2 flex text-sm sm:mt-0 sm:block sm:ml-4 sm:text-right">
+                                                        <div class="text-xl font-medium text-gray-900">${{ plan.price }}</div>
+                                                        <div class="ml-1 text-gray-500 sm:ml-0">/mo</div>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2 flex text-sm sm:mt-0 sm:block sm:ml-4 sm:text-right">
-                                            <div class="text-xl font-medium text-gray-900">$19</div>
-                                            <div class="ml-1 text-gray-500 sm:ml-0">/mo</div>
-                                        </div>
+                                                <!-- On: "border-indigo-500", Off: "border-transparent" -->
+                                                <div id="{{ plan.tag }}_border"
+                                                     class="plans border-{% if plan.tag == 'hobby' %}indigo-500{% else %}transparent{% endif %} absolute inset-0 rounded-lg border-2 pointer-events-none"
+                                                     aria-hidden="true"></div>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </fieldset>
+                                {#<div class="mt-2 pt-2">
+                                    <div class="flex justify-end">
+                                      <span class="ml-3 inline-flex rounded-md shadow-sm">
+                                        <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out" #}{#onclick="AddDestinationStore()"#}{#>
+                                          Add another store
+                                        </button>
+                                      </span>
                                     </div>
-                                    <!-- On: "border-indigo-500", Off: "border-transparent" -->
-                                    <div id="hobby_border"
-                                         class="plans border-indigo-500 absolute inset-0 rounded-lg border-2 pointer-events-none"
-                                         aria-hidden="true"></div>
-                                </li>
+                                </div>#}
 
-                                <li id="startup" tabindex="-1" role="radio" aria-checked="false"
-                                    class="group relative bg-white rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500"
-                                    onclick="SwitchPlan(this);">
-                                    <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
-                                        <div class="flex items-center">
-                                            <div class="text-sm">
-                                                <p class="font-medium text-gray-900">
-                                                    Startup
-                                                </p>
-                                                <div class="text-gray-500">
-                                                    <p class="sm:inline">500 products</p><br/>
-                                                    <p class="sm:inline">Sync inventory in real-time</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2 flex text-sm sm:mt-0 sm:block sm:ml-4 sm:text-right">
-                                            <div class="text-xl font-medium text-gray-900">$39</div>
-                                            <div class="ml-1 text-gray-500 sm:ml-0">/mo</div>
-                                        </div>
-                                    </div>
-                                    <!-- On: "border-indigo-500", Off: "border-transparent" -->
-                                    <div id="startup_border"
-                                         class="plans border-transparent absolute inset-0 rounded-lg border-2 pointer-events-none"
-                                         aria-hidden="true"></div>
-                                </li>
+                                <input type="hidden" name="shop_id" value="{{ shop.shop_id }}"/>
+                                <input id="plan_id" type="hidden" name="plan_id" value="hobby"/>
 
-                                <li id="business" tabindex="-1" role="radio" aria-checked="false"
-                                    class="group relative bg-white rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500"
-                                    onclick="SwitchPlan(this);">
-                                    <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
-                                        <div class="flex items-center">
-                                            <div class="text-sm">
-                                                <p class="font-medium text-gray-900">
-                                                    Business
-                                                </p>
-                                                <div class="text-gray-500">
-                                                    <p class="sm:inline">1000 products</p><br/>
-                                                    <p class="sm:inline">Sync inventory in real-time</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2 flex text-sm sm:mt-0 sm:block sm:ml-4 sm:text-right">
-                                            <div class="text-xl font-medium text-gray-900">$69</div>
-                                            <div class="ml-1 text-gray-500 sm:ml-0">/mo</div>
-                                        </div>
-                                    </div>
-                                    <!-- On: "border-indigo-500", Off: "border-transparent" -->
-                                    <div id="business_border"
-                                         class="plans border-transparent absolute inset-0 rounded-lg border-2 pointer-events-none"
-                                         aria-hidden="true"></div>
-                                </li>
-
-                                <li id="enterprise" tabindex="-1" role="radio" aria-checked="false"
-                                    class="group relative bg-white rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500"
-                                    onclick="SwitchPlan(this);">
-                                    <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
-                                        <div class="flex items-center">
-                                            <div class="text-sm">
-                                                <p class="font-medium text-gray-900">
-                                                    Enterprise
-                                                </p>
-                                                <div class="text-gray-500">
-                                                    <p class="sm:inline">5000 products</p><br/>
-                                                    <p class="sm:inline">Sync inventory in real-time</p><br/>
-                                                    <p class="sm:inline">Priority support</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="mt-2 flex text-sm sm:mt-0 sm:block sm:ml-4 sm:text-right">
-                                            <div class="text-xl font-medium text-gray-900">$129</div>
-                                            <div class="ml-1 text-gray-500 sm:ml-0">/mo</div>
-                                        </div>
-                                    </div>
-                                    <!-- On: "border-indigo-500", Off: "border-transparent" -->
-                                    <div id="enterprise_border"
-                                         class="plans border-transparent absolute inset-0 rounded-lg border-2 pointer-events-none"
-                                         aria-hidden="true"></div>
-                                </li>
-                            </ul>
-                        </fieldset>
-                        {#<div class="mt-2 pt-2">
-                            <div class="flex justify-end">
-                              <span class="ml-3 inline-flex rounded-md shadow-sm">
-                                <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out" #}{#onclick="AddDestinationStore()"#}{#>
-                                  Add another store
-                                </button>
-                              </span>
                             </div>
-                        </div>#}
-
-                        <input type="hidden" name="shop_id" value="{{ shop.shop_id }}"/>
-                        <input id="plan_id" type="hidden" name="plan_id" value="hobby"/>
+                        </div>
 
                         <div class="mt-8 border-t border-gray-200 pt-5">
                             <div class="flex justify-end">
-                          <span class="ml-3 inline-flex rounded-md shadow-sm">
-                            <button type="submit"
-                                    class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
-                              Submit
-                            </button>
-                          </span>
+                                <span class="ml-3 inline-flex rounded-md shadow-sm">
+                                    <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                                        Submit
+                                    </button>
+                                </span>
                             </div>
                         </div>
                     </form>

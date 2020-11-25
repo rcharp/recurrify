@@ -76,6 +76,10 @@ def finalize():
 
     if db.session.query(exists().where(and_(Shop.shopify_id == shopify_id, Shop.user_id is not None))).scalar():
         flash('There is already an account for this store. Please login or use a different store.', 'error')
+
+        # TODO: remove this code
+        s = Shop.query.filter(Shop.shopify_id == shopify_id).scalar()
+        s.delete()
         # return redirect(url_for('user.login'))
 
     # Add the shop to the database
