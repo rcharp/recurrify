@@ -7,6 +7,7 @@ try:
     # the list of constructors for yaml.safe_load to use.
     import yaml
 
+
     class YAMLHashWithIndifferentAccess(yaml.YAMLObject):
         yaml_tag = '!map:ActiveSupport::HashWithIndifferentAccess'
         yaml_loader = yaml.SafeLoader

@@ -9,15 +9,15 @@
     <script src="https://cdn.shopify.com/s/assets/external/app.js"></script>
     <script type="text/javascript">
         ShopifyApp.init({
-          apiKey: '{{ config["SHOPIFY_API_KEY"] }}',
-          shopOrigin: 'https://{{ session["shopify_url"] }}',
-          debug: true
+            apiKey: '{{ config["SHOPIFY_API_KEY"] }}',
+            shopOrigin: 'https://{{ session["shopify_url"] }}',
+            debug: true
         });
     </script>
 </head>
 <body>
 <script type="text/javascript">
-    ShopifyApp.ready(function(){
+    ShopifyApp.ready(function () {
         ShopifyApp.Bar.initialize({
             title: 'Hello Shopify - Index'
         });

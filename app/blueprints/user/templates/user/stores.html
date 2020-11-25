@@ -1,0 +1,198 @@
+{% import 'macros/flash.html' as flash with context %}
+<!DOCTYPE html>
+<!--[if IE 9]>
+<html class="ie9 no-focus" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-focus" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+
+    <title>Stores - {{ 'site_name'|site_name_filter }}</title>
+
+    <meta name="description" content="Recurrify - Subscriptions for your Shopify store">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+
+    <!-- Icons -->
+    <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico') }}">
+
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="192x192">
+    <!-- END Icons -->
+
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
+
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
+
+    <!-- END Stylesheets -->
+</head>
+<body style="overflow-y: hidden;height: 100vh;">
+<div style="height:100vh; overflow-y:hidden;">
+    {% with page='stores' %}{% include '/user/includes/main_header.html' ignore missing %}{% endwith %}
+    <div class="h-screen flex overflow-hidden bg-gray-100" style="height:93vh;">
+        <div class="flex flex-col w-0 flex-1 overflow-hidden">
+            <div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+                <button class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:bg-gray-100 focus:text-gray-600 md:hidden"
+                        aria-label="Open sidebar" onclick="OpenSidebar()">
+                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h7"></path>
+                    </svg>
+                </button>
+                <div class="flex-1 px-4 flex justify-between">
+                    <div class="flex-1 flex">
+                        <div class="w-full flex md:ml-0">
+                            <label for="search_field" class="sr-only">Search</label>
+                            <div class="relative w-full text-gray-400 focus-within:text-gray-600">
+                                <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+                                    {#<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" />
+                            </svg>#}
+                                </div>
+                                <div id="search_field"
+                                     class="block w-full h-full pl-8 pr-3 py-2 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 sm:text-sm"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <main class="flex-1 relative z-0 overflow-y-auto pb-6 focus:outline-none" tabindex="0">
+                {{ flash.render() }}
+                <div class="max-w-5xl mx-auto px-4 sm:px-6 md:px-8 pt-10">
+                    <div class="text-center full">
+                        <span class="text-lg mb-1 mt-10 text-gray-700" style="font-size: 24px;">Your store type: {% if store.source %}Source{% endif %}</span><br/>
+                    </div>
+
+                    <fieldset class="pt-8 pb-8" style="width:500px;margin:0 auto;float:none;">
+                        <ul class="space-y-4" role="radiogroup" aria-labelledby="radiogroup-label">
+                            <a href="{{ url_for('user.dashboard') }}" id="hobby" tabindex="0" role="radio" aria-checked="true"
+                                class="group relative bg-white rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500">
+                                <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
+                                    <div class="flex items-center">
+                                        <div class="text-sm">
+                                            <p class="font-medium text-gray-900">
+                                                {{ store.url }}
+                                            </p>
+                                            <div class="text-gray-500">
+                                                <p class="sm:inline">x of {{ product_count }} products synced</p><br/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </a>
+                        </ul>
+                    </fieldset>
+                    <!--
+                      Tailwind UI components require Tailwind CSS v1.8 and the @tailwindcss/ui plugin.
+                      Read the documentation to get started: https://tailwindui.com/documentation
+                    -->
+
+                    <div class="text-center full">
+                        <span class="text-lg mb-1 mt-10 text-gray-700"
+                              style="font-size: 24px;">Your destination stores</span><br/>
+                    </div>
+
+                    <fieldset class="pt-8" style="width:500px;margin:0 auto;float:none;">
+                        <ul class="space-y-4" role="radiogroup" aria-labelledby="radiogroup-label">
+                            {% for sync in destinations %}
+                                <li id="hobby" tabindex="0" role="radio" aria-checked="true"
+                                    class="group relative bg-white rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500"
+                                    onclick="SwitchPlan(this);">
+                                <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
+                                    <div class="flex items-center">
+                                        <div class="text-sm">
+                                            <p class="font-medium text-gray-900">
+                                                {{ sync.destination_url}} {% if not sync.active %}- Pending activation{% else %}- Active{% endif %}
+                                            </p>
+                                            <div class="text-gray-500">
+                                                {% set plan = plans|selectattr('id', 'equalto', sync.plan_id ) | list | first %}
+                                                <p class="sm:inline">{{ sync.plan|title }} plan - ${{ plan.price }}/mo</p><br/>
+                                                <p class="sm:inline">x/{{ plan.limit }} product syncs used</p><br/>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="border-{% if sync.active %}green{% endif %}-500 absolute inset-0 rounded-lg border-2 pointer-events-none"
+                                         aria-hidden="true"></div>
+                            {% endfor %}
+                        </ul>
+                    </fieldset>
+                </div>
+            </main>
+        </div>
+    </div>
+</div>
+<!-- END Page Container -->
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
+
+
+<script>
+    function ShowDropdown(id) {
+        var dropdown = document.getElementById(id);
+        if (dropdown.classList.contains('opacity-0')) {
+            dropdown.classList.remove('opacity-0');
+            dropdown.classList.remove('scale-95');
+            dropdown.classList.add('opacity-100');
+            dropdown.classList.add('scale-100');
+
+            dropdown.style.display = '';
+        } else {
+            dropdown.classList.remove('opacity-100');
+            dropdown.classList.remove('scale-100');
+            dropdown.classList.add('opacity-0');
+            dropdown.classList.add('scale-95');
+
+            dropdown.style.display = 'none';
+        }
+    }
+
+    function AddDestinationStore() {
+        var store_count = document.getElementsByTagName('li').length;
+        var store_list = document.getElementById('destination_list');
+
+        var destination = document.getElementById('destination_0').cloneNode(true);
+        destination.id = 'destination_' + String(store_count);
+        store_list.appendChild(destination);
+        document.getElementById(destination.id).getElementsByTagName('input')[0].value = '';
+    }
+
+    function SwitchPlan(val) {
+        var options = document.getElementsByClassName('plans');
+        for (var i = 0; i < options.length; i++) {
+            options[i].classList.remove('border-indigo-500');
+            options[i].classList.add('border-transparent');
+        }
+
+        document.getElementById(val.id + '_border').classList.add('border-indigo-500');
+    }
+
+
+</script>
+<script>
+    var body = document.getElementsByTagName("body")[0];
+    var except = document.getElementById('user-dropdown-menu');
+
+    body.addEventListener("click", function () {
+        except.classList.remove('opacity-100');
+        except.classList.remove('scale-100');
+        except.classList.add('opacity-0');
+        except.classList.add('scale-95');
+
+        except.style.display = 'none';
+    }, false);
+    document.getElementById('user-menu').addEventListener("click", function (ev) {
+        ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+    }, false);
+</script>
+</body>
+</html>

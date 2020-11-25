@@ -1,4 +1,5 @@
 __author__ = 'Ricky'
+
 from flask import Flask, render_template
 from flask_mail import Mail, Message
 from app.app import create_celery_app
@@ -60,7 +61,7 @@ def contact_us_email(email, message):
                        recipients=[email],
                        sender="support@recurrify.io")
 
-    response.html = render_template('user/mail/contact_email.html',email=email, message=message)
+    response.html = render_template('user/mail/contact_email.html', email=email, message=message)
 
     mail.send(msg)
     mail.send(response)

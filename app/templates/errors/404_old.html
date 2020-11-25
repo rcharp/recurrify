@@ -1,59 +1,63 @@
 {% import 'macros/flash.html' as flash with context %}
 <!DOCTYPE html>
-<!--[if IE 9]>         <html class="ie9 no-focus" lang="en"> <![endif]-->
-<!--[if gt IE 9]><!--> <html class="no-focus" lang="en"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
+<!--[if IE 9]>
+<html class="ie9 no-focus" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-focus" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
 
-        <title>404 - {{ 'site_name'|site_name_filter }}</title>
+    <title>404 - {{ 'site_name'|site_name_filter }}</title>
 
-        <meta name="description" content="Recurrify - Subscriptions for your Shopify store">
-        <meta name="author" content="pixelcave">
-        <meta name="robots" content="noindex, nofollow">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="description" content="Recurrify - Subscriptions for your Shopify store">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
-        <!-- Icons -->
-        <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-        <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico') }}">
+    <!-- Icons -->
+    <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico') }}">
 
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="96x96">
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="160x160">
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="192x192">
-        <!-- END Icons -->
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="192x192">
+    <!-- END Icons -->
 
 
-        <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">\
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">
+    \
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
 
-        <!-- Tailwind CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
 
-        <!-- END Stylesheets -->
-    </head>
-    <body>
-        <div class="h-screen flex overflow-hidden bg-gray-100">
-          {#{% include '/user/includes/mobile.html' ignore missing %}#}
-          {% with page='404' %}{% include '/user/includes/main_header.html' ignore missing %}{% endwith %}
-          <div class="flex flex-col w-0 flex-1 overflow-hidden">
-              <main class="flex-1 relative z-0 overflow-y-auto pt-2 pb-6 focus:outline-none md:py-6" tabindex="0">
-                <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                    <div class="py-4 text-center">
-                      <div class="rounded-lg h-96 text-center" style="display:flex; align-items:center;">
-                          <img class="h-96 block" src="{{ url_for('static', filename='images/404.png') }}" style="float:none; margin:auto;display:block;" /><br />
-                      </div>
-                        <span class="text-center rounded-md text-gray-400" style="float:none;margin:0 auto;font-size:24px;">
+    <!-- END Stylesheets -->
+</head>
+<body>
+<div class="h-screen flex overflow-hidden bg-gray-100">
+    {#{% include '/user/includes/mobile.html' ignore missing %}#}
+    {% with page='404' %}{% include '/user/includes/main_header.html' ignore missing %}{% endwith %}
+    <div class="flex flex-col w-0 flex-1 overflow-hidden">
+        <main class="flex-1 relative z-0 overflow-y-auto pt-2 pb-6 focus:outline-none md:py-6" tabindex="0">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                <div class="py-4 text-center">
+                    <div class="rounded-lg h-96 text-center" style="display:flex; align-items:center;">
+                        <img class="h-96 block" src="{{ url_for('static', filename='images/404.png') }}"
+                             style="float:none; margin:auto;display:block;"/><br/>
+                    </div>
+                    <span class="text-center rounded-md text-gray-400" style="float:none;margin:0 auto;font-size:24px;">
                             <span style="clear:both">Sorry, the page you're looking for doesn't exist!</span>
                         </span>
-                    </div>
                 </div>
-              </main>
-          </div>
-        </div>
-        <!-- END Page Container -->
-        <!-- jQuery -->
-        <script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
-    </body>
+            </div>
+        </main>
+    </div>
+</div>
+<!-- END Page Container -->
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
+</body>
 </html>

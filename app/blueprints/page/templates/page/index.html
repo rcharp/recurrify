@@ -36,171 +36,209 @@
 
     <!-- MailerLite Universal -->
     <script>
-    (function(m,a,i,l,e,r){ m['MailerLiteObject']=e;function f(){
-    var c={ a:arguments,q:[]};var r=this.push(c);return "number"!=typeof r?r:f.bind(c.q);}
-    f.q=f.q||[];m[e]=m[e]||f.bind(f.q);m[e].q=m[e].q||f.q;r=a.createElement(i);
-    var _=a.getElementsByTagName(i)[0];r.async=1;r.src=l+'?v'+(~~(new Date().getTime()/1000000));
-    _.parentNode.insertBefore(r,_);})(window, document, 'script', 'https://static.mailerlite.com/js/universal.js', 'ml');
+        (function (m, a, i, l, e, r) {
+            m['MailerLiteObject'] = e;
 
-    var ml_account = ml('accounts', '876269', 'e0v7x7y9o8', 'load');
+            function f() {
+                var c = {a: arguments, q: []};
+                var r = this.push(c);
+                return "number" != typeof r ? r : f.bind(c.q);
+            }
+
+            f.q = f.q || [];
+            m[e] = m[e] || f.bind(f.q);
+            m[e].q = m[e].q || f.q;
+            r = a.createElement(i);
+            var _ = a.getElementsByTagName(i)[0];
+            r.async = 1;
+            r.src = l + '?v' + (~~(new Date().getTime() / 1000000));
+            _.parentNode.insertBefore(r, _);
+        })(window, document, 'script', 'https://static.mailerlite.com/js/universal.js', 'ml');
+
+        var ml_account = ml('accounts', '876269', 'e0v7x7y9o8', 'load');
     </script>
     <!-- End MailerLite Universal -->
 
 </head>
 
 <body class="text-black base-font-size">
-    {#{% include '/page/includes/mobile.html' ignore missing %}#}
-    <div class="{#hidden#} sm:block sm:absolute sm:inset-y-0 sm:h-full sm:w-full" style="overflow-x:hidden;">
+{#{% include '/page/includes/mobile.html' ignore missing %}#}
+<div class="{#hidden#} sm:block sm:absolute sm:inset-y-0 sm:h-full sm:w-full" style="overflow-x:hidden;">
 
-        <!-- Header -->
-        {% with page='index' %}{% include '/page/includes/index_header.html' ignore missing %}{% endwith %}
+    <!-- Header -->
+    {% with page='index' %}{% include '/page/includes/index_header.html' ignore missing %}{% endwith %}
 
-        <!-- Main content -->
-        <div class="py-16 bg-gray-50 {#overflow-hidden#} lg:py-24">
-          <div class="relative max-w-xl mx-auto px-4 sm:px-6 lg:px-8 lg:max-w-screen-xl">
-            <svg class="hidden lg:block absolute left-full transform -translate-x-1/2 -translate-y-1/4" width="404" height="784" fill="none" viewBox="0 0 404 784">
-              <defs>
-                <pattern id="b1e6e422-73f8-40a6-b5d9-c8586e37e0e7" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
-                </pattern>
-              </defs>
-              <rect width="404" height="784" fill="url(#b1e6e422-73f8-40a6-b5d9-c8586e37e0e7)" />
+    <!-- Main content -->
+    <div class="py-16 bg-gray-50 {#overflow-hidden#} lg:py-24">
+        <div class="relative max-w-xl mx-auto px-4 sm:px-6 lg:px-8 lg:max-w-screen-xl">
+            <svg class="hidden lg:block absolute left-full transform -translate-x-1/2 -translate-y-1/4" width="404"
+                 height="784" fill="none" viewBox="0 0 404 784">
+                <defs>
+                    <pattern id="b1e6e422-73f8-40a6-b5d9-c8586e37e0e7" x="0" y="0" width="20" height="20"
+                             patternUnits="userSpaceOnUse">
+                        <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                    </pattern>
+                </defs>
+                <rect width="404" height="784" fill="url(#b1e6e422-73f8-40a6-b5d9-c8586e37e0e7)"/>
             </svg>
 
             <div class="relative">
-              <h3 class="text-center text-3xl leading-8 font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-10">
-                Collect and organize feedback from your users
-              </h3>
-              <p class="mt-4 max-w-3xl mx-auto text-center text-xl leading-7 text-gray-500">
-                Never waste time again building features that you're not sure your users want. Track feedback from your users and create product roadmaps to make informed product decisions.
-              </p>
+                <h3 class="text-center text-3xl leading-8 font-bold tracking-tight text-gray-900 sm:text-4xl sm:leading-10">
+                    Collect and organize feedback from your users
+                </h3>
+                <p class="mt-4 max-w-3xl mx-auto text-center text-xl leading-7 text-gray-500">
+                    Never waste time again building features that you're not sure your users want. Track feedback from
+                    your users and create product roadmaps to make informed product decisions.
+                </p>
             </div>
 
             <div id="product" class="relative mt-12 lg:mt-24 lg:grid lg:grid-cols-2 lg:gap-8 lg:items-center">
-              <div class="relative">
-                <h4 class="text-2xl leading-8 font-bold text-gray-900 tracking-tight sm:text-3xl sm:leading-9">
-                  The best way to organize feedback from your users.
-                </h4>
-                <p class="mt-3 text-lg leading-7 text-gray-500">
-                  Recurrify allows you to collect feedback from your users, no matter where they are.<br /><br />All feedback will be organized in your personal dashboard, where you can track and sort feedback and see which improvements your users are voting on the most.<br /><br />This will ensure that you're always working on the right features at the right time.
-                </p>
+                <div class="relative">
+                    <h4 class="text-2xl leading-8 font-bold text-gray-900 tracking-tight sm:text-3xl sm:leading-9">
+                        The best way to organize feedback from your users.
+                    </h4>
+                    <p class="mt-3 text-lg leading-7 text-gray-500">
+                        Recurrify allows you to collect feedback from your users, no matter where they are.<br/><br/>All
+                        feedback will be organized in your personal dashboard, where you can track and sort feedback and
+                        see which improvements your users are voting on the most.<br/><br/>This will ensure that you're
+                        always working on the right features at the right time.
+                    </p>
 
-                <ul class="mt-10">
-                  <li>
-                    <div class="flex">
-                      <div class="flex-shrink-0">
-                        <div class="flex items-center justify-center text-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                          <i class="si si-speech h-5 w-5" style="font-size:22px;"></i>
-                        </div>
-                      </div>
-                      <div class="ml-4">
-                        <h5 class="text-lg leading-6 font-medium text-gray-900">Users can submit, comment, and vote on feedback
-                        </h5>
-                        <p class="mt-2 text-base leading-6 text-gray-500">
-                          Get real product suggestions from your users. That way, you can know exactly which features they want the most.  
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="mt-10">
-                    <div class="flex">
-                      <div class="flex-shrink-0">
-                        <div class="flex items-center justify-center text-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                          <i class="si si-map h-5 w-5" style="font-size:22px;"></i>
-                        </div>
-                      </div>
-                      <div class="ml-4">
-                        <h5 class="text-lg leading-6 font-medium text-gray-900">Create product roadmaps
-                        </h5>
-                        <p class="mt-2 text-base leading-6 text-gray-500">
-                          Create public product roadmaps and keep your users in the loop about what's to come for your product.
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                  <li class="mt-10">
-                    <div class="flex">
-                      <div class="flex-shrink-0">
-                        <div class="flex items-center justify-center text-center h-12 w-12 rounded-md bg-indigo-500 text-white">
-                          <i class="si si-puzzle h-5 w-5" style="font-size:22px;"></i>
-                        </div>
-                      </div>
-                      <div class="ml-4">
-                        <h5 class="text-lg leading-6 font-medium text-gray-900">Embed widgets anywhere in your site
-                        </h5>
-                        <p class="mt-2 text-base leading-6 text-gray-500">
-                          Recurrify gives lets you collect feedback in two ways: with your public dashboard, or with embdeddable widgets. Your users can use either to submit feedback.
-                        </p>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-
-              <div class="mt-10 -mx-4 relative lg:mt-0">
-                <div class="bg-white overflow-hidden shadow rounded-lg mb-4" style="width:90%;min-width:300px;margin: 0 auto;">
-                  <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
-                      <div class="mt-6 grid grid-cols-6 col-gap-2 sm:grid-cols-6">
-                        <div class="text-lg inline-flex leading-5 font-medium text-indigo-600 col-span-6 text-left mb-4">
-                            Submit feedback
-                        </div>
-                        <div class="col-span-6">
-                            <div class="mt-1 mb-3 rounded-md shadow-sm">
-                              <input id="email" name="email" readonly placeholder="Your email" value="amy@recurrify.io" required type="email" class="form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
+                    <ul class="mt-10">
+                        <li>
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <div class="flex items-center justify-center text-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                        <i class="si si-speech h-5 w-5" style="font-size:22px;"></i>
+                                    </div>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-lg leading-6 font-medium text-gray-900">Users can submit, comment,
+                                        and vote on feedback
+                                    </h5>
+                                    <p class="mt-2 text-base leading-6 text-gray-500">
+                                        Get real product suggestions from your users. That way, you can know exactly
+                                        which features they want the most.
+                                    </p>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-span-6">
-                          <div class="mt-1 mb-3 rounded-md shadow-sm">
-                            <input id="title" name="title" readonly placeholder="Title" value="Allow users to submit feedback" required type="text" class="form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5" />
-                          </div>
-                        </div>
+                        </li>
+                        <li class="mt-10">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <div class="flex items-center justify-center text-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                        <i class="si si-map h-5 w-5" style="font-size:22px;"></i>
+                                    </div>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-lg leading-6 font-medium text-gray-900">Create product roadmaps
+                                    </h5>
+                                    <p class="mt-2 text-base leading-6 text-gray-500">
+                                        Create public product roadmaps and keep your users in the loop about what's to
+                                        come for your product.
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                        <li class="mt-10">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <div class="flex items-center justify-center text-center h-12 w-12 rounded-md bg-indigo-500 text-white">
+                                        <i class="si si-puzzle h-5 w-5" style="font-size:22px;"></i>
+                                    </div>
+                                </div>
+                                <div class="ml-4">
+                                    <h5 class="text-lg leading-6 font-medium text-gray-900">Embed widgets anywhere in
+                                        your site
+                                    </h5>
+                                    <p class="mt-2 text-base leading-6 text-gray-500">
+                                        Recurrify gives lets you collect feedback in two ways: with your public
+                                        dashboard, or with embdeddable widgets. Your users can use either to submit
+                                        feedback.
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
 
-                        <div class="col-span-6">
-                          <div class="mt-1 rounded-md shadow-sm">
-                            <textarea id="description" name="description" required readonly placeholder="What would you like to share?" rows="5" class="form-textarea w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5">I would love to let my users submit feedback anywhere on my site. It would be nice if it was a widget. Make it happen!</textarea>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="mt-4 mb-4 border-t border-gray-200 pt-3 pb-2 mb-10">
-                        <div class="flex justify-end">
+                <div class="mt-10 -mx-4 relative lg:mt-0">
+                    <div class="bg-white overflow-hidden shadow rounded-lg mb-4"
+                         style="width:90%;min-width:300px;margin: 0 auto;">
+                        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8">
+                            <div class="mt-6 grid grid-cols-6 col-gap-2 sm:grid-cols-6">
+                                <div class="text-lg inline-flex leading-5 font-medium text-indigo-600 col-span-6 text-left mb-4">
+                                    Submit feedback
+                                </div>
+                                <div class="col-span-6">
+                                    <div class="mt-1 mb-3 rounded-md shadow-sm">
+                                        <input id="email" name="email" readonly placeholder="Your email"
+                                               value="amy@recurrify.io" required type="email"
+                                               class="form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"/>
+                                    </div>
+                                </div>
+                                <div class="col-span-6">
+                                    <div class="mt-1 mb-3 rounded-md shadow-sm">
+                                        <input id="title" name="title" readonly placeholder="Title"
+                                               value="Allow users to submit feedback" required type="text"
+                                               class="form-input w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5"/>
+                                    </div>
+                                </div>
+
+                                <div class="col-span-6">
+                                    <div class="mt-1 rounded-md shadow-sm">
+                                        <textarea id="description" name="description" required readonly
+                                                  placeholder="What would you like to share?" rows="5"
+                                                  class="form-textarea w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5">I would love to let my users submit feedback anywhere on my site. It would be nice if it was a widget. Make it happen!</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mt-4 mb-4 border-t border-gray-200 pt-3 pb-2 mb-10">
+                                <div class="flex justify-end">
                           <span class="ml-3 inline-flex rounded-md shadow-sm">
-                            <button type="button" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                            <button type="button"
+                                    class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
                               Submit
                             </button>
                           </span>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                  </div>
-                </div>
+                    </div>
 
-                <div class="mt-2 mb-4 text-center">
-                    <a href="{{ url_for('user.dashboard') }}" class="text-sm leading-5 font-medium text-gray-500">
-                        Powered by <span class="font-medium text-indigo-600"><u>Recurrify</u></span>
-                    </a>
+                    <div class="mt-2 mb-4 text-center">
+                        <a href="{{ url_for('user.dashboard') }}" class="text-sm leading-5 font-medium text-gray-500">
+                            Powered by <span class="font-medium text-indigo-600"><u>Recurrify</u></span>
+                        </a>
+                    </div>
                 </div>
-              </div>
             </div>
 
             <div class="mt-12 text-center justify-center" style="width:100%">
               <span class="inline-flex rounded-md shadow-sm ml-5 mr-5 mb-5">
-                <a type="button" href="{{ url_for('user.signup') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                <a type="button" href="{{ url_for('user.signup') }}"
+                   class="inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                   Get started for free
                 </a>
               </span>
-              <span class="inline-flex rounded-md shadow-sm ml-5 mr-5">
-                <a type="button" href="{{ url_for('user.dashboard') }}" class="inline-flex items-center text-center px-6 py-3 border justify-center leading-6 font-medium rounded-md text-indigo-600 bg-transparent focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150" style="width:193px;">
+                <span class="inline-flex rounded-md shadow-sm ml-5 mr-5">
+                <a type="button" href="{{ url_for('user.dashboard') }}"
+                   class="inline-flex items-center text-center px-6 py-3 border justify-center leading-6 font-medium rounded-md text-indigo-600 bg-transparent focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150"
+                   style="width:193px;">
                   Try the demo
                 </a>
               </span>
             </div>
 
-            <svg class="hidden lg:block absolute right-full transform translate-x-1/2 translate-y-12" width="404" height="784" fill="none" viewBox="0 0 404 784">
-              <defs>
-                <pattern id="64e643ad-2176-4f86-b3d7-f2c5da3b6a6d" x="0" y="0" width="20" height="20" patternUnits="userSpaceOnUse">
-                  <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor" />
-                </pattern>
-              </defs>
-              <rect width="404" height="784" fill="url(#64e643ad-2176-4f86-b3d7-f2c5da3b6a6d)" />
+            <svg class="hidden lg:block absolute right-full transform translate-x-1/2 translate-y-12" width="404"
+                 height="784" fill="none" viewBox="0 0 404 784">
+                <defs>
+                    <pattern id="64e643ad-2176-4f86-b3d7-f2c5da3b6a6d" x="0" y="0" width="20" height="20"
+                             patternUnits="userSpaceOnUse">
+                        <rect x="0" y="0" width="4" height="4" class="text-gray-200" fill="currentColor"/>
+                    </pattern>
+                </defs>
+                <rect width="404" height="784" fill="url(#64e643ad-2176-4f86-b3d7-f2c5da3b6a6d)"/>
             </svg>
 
             <!-- <div class="relative mt-12 sm:mt-16 lg:mt-24">
@@ -266,263 +304,303 @@
                 </div>
               </div>
             </div> -->
-          </div>
         </div>
+    </div>
 
-        <div id="features" class="bg-gray-100">
-          <div class="max-w-screen-xl mx-auto pt-12 pb-16 sm:pt-16 sm:pb-20 px-4 sm:px-6 lg:pt-20 lg:pb-28 lg:px-8">
+    <div id="features" class="bg-gray-100">
+        <div class="max-w-screen-xl mx-auto pt-12 pb-16 sm:pt-16 sm:pb-20 px-4 sm:px-6 lg:pt-20 lg:pb-28 lg:px-8">
             <h2 class="text-3xl leading-9 font-bold text-gray-900">
-              Know who gave the feedback, and how many others want it.
+                Know who gave the feedback, and how many others want it.
             </h2>
             <div class="mt-6 border-t-2 border-gray-100 pt-10">
-              <dl class="md:grid md:grid-cols-2 md:gap-8">
-                <div>
-                  <div>
-                    <div class="bg-white overflow-hidden shadow rounded-lg feedback-item" style="margin-bottom:20px;">
-                      <div style="padding:10px 25px 0 0;">
-                          <div class="pull-right text-right" style="cursor:pointer">
+                <dl class="md:grid md:grid-cols-2 md:gap-8">
+                    <div>
+                        <div>
+                            <div class="bg-white overflow-hidden shadow rounded-lg feedback-item"
+                                 style="margin-bottom:20px;">
+                                <div style="padding:10px 25px 0 0;">
+                                    <div class="pull-right text-right" style="cursor:pointer">
                                 <span class="h-10 w-10 text-indigo-600" style="font-size:24px;margin-bottom:0;">
-                                    <i class="fa fa-thumbs-o-up" style="margin-right:5px;"></i> <span>375</span><br />
+                                    <i class="fa fa-thumbs-o-up" style="margin-right:5px;"></i> <span>375</span><br/>
                                 </span>
-                                <span style="font-size:14px;">votes</span>
-                          </div>
-                      </div>
-                      <div class="border-b border-gray-200 px-4 py-5 sm:px-6 sm:grid sm:grid-cols-10">
-                        <div class="sm:col-span-1">
-                          <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white shadow-solid" src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
-                        </div>
-                        <div class="text-lg leading-5 font-medium text-indigo-600 truncate sm:col-span-9 text-left">
-                            <div style="cursor:pointer">
-                              Allow users to submit feedback
-                            </div>
-                        </div>
-                      </div>
-                        <div style="cursor:pointer;">
-                          <div class="pull-right" style="padding:1.5em 25px 0 0;vertical-align:middle">
-                            <svg class="h-7 w-7 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                          </div>
-                            <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5" style="padding-left:20px;">
-                              <dt class="text-sm leading-5 font-medium text-gray-500 sm:mt-0 sm:col-span-3">
-                                I would love to let my users submit feedback anywhere on my site. It would be even better if it was a widget. Make it happen!
-                              </dt>
-                            </div>
-                          </div>
-                      <div class="bg-gray-50 text-gray-400 px-4 py-4 sm:px-6">
+                                        <span style="font-size:14px;">votes</span>
+                                    </div>
+                                </div>
+                                <div class="border-b border-gray-200 px-4 py-5 sm:px-6 sm:grid sm:grid-cols-10">
+                                    <div class="sm:col-span-1">
+                                        <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white shadow-solid"
+                                             src="https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                             alt=""/>
+                                    </div>
+                                    <div class="text-lg leading-5 font-medium text-indigo-600 truncate sm:col-span-9 text-left">
+                                        <div style="cursor:pointer">
+                                            Allow users to submit feedback
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="cursor:pointer;">
+                                    <div class="pull-right" style="padding:1.5em 25px 0 0;vertical-align:middle">
+                                        <svg class="h-7 w-7 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5"
+                                         style="padding-left:20px;">
+                                        <dt class="text-sm leading-5 font-medium text-gray-500 sm:mt-0 sm:col-span-3">
+                                            I would love to let my users submit feedback anywhere on my site. It would
+                                            be even better if it was a widget. Make it happen!
+                                        </dt>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 text-gray-400 px-4 py-4 sm:px-6">
                         <span class="text-sm leading-5 font-medium text-gray-500">
                             <i class="si si-clock mr-2"></i>Posted 3 hours ago by
                             <span style="font-weight:900">
                                 Amy
                             </span>
                         </span>
-                            <span style="margin-left:20px;" class="inline-flex items-center px-2 py-0.5 ml-5 rounded text-sm font-medium leading-4 bg-blue-100 text-blue-800">
+                                    <span style="margin-left:20px;"
+                                          class="inline-flex items-center px-2 py-0.5 ml-5 rounded text-sm font-medium leading-4 bg-blue-100 text-blue-800">
                                 In development
                             </span>
-                        <div class="pull-right text-gray-400">
-                            <i class="fa fa-comments"></i> 120 comments
+                                    <div class="pull-right text-gray-400">
+                                        <i class="fa fa-comments"></i> 120 comments
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
 
-                  <div class="mt-12">
-                    <div class="bg-white overflow-hidden shadow rounded-lg feedback-item" style="margin-bottom:20px;">
-                      <div style="padding:10px 25px 0 0;">
-                          <div class="pull-right text-right" style="cursor:pointer">
+                        <div class="mt-12">
+                            <div class="bg-white overflow-hidden shadow rounded-lg feedback-item"
+                                 style="margin-bottom:20px;">
+                                <div style="padding:10px 25px 0 0;">
+                                    <div class="pull-right text-right" style="cursor:pointer">
                                 <span class="h-10 w-10 text-green-400" style="font-size:24px;margin-bottom:0;">
-                                    <i class="fa fa-thumbs-o-up" style="margin-right:5px;"></i> <span>219</span><br />
+                                    <i class="fa fa-thumbs-o-up" style="margin-right:5px;"></i> <span>219</span><br/>
                                 </span>
-                                <span style="font-size:14px;">votes</span>
-                          </div>
-                      </div>
-                      <div class="border-b border-gray-200 px-4 py-5 sm:px-6 sm:grid sm:grid-cols-10">
-                        <div class="sm:col-span-1">
-                          <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white shadow-solid" src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
-                        </div>
-                        <div class="text-lg leading-5 font-medium text-indigo-600 truncate sm:col-span-9 text-left">
-                            <div style="cursor:pointer">
-                              User login and membership
-                            </div>
-                        </div>
-                      </div>
-                        <div style="cursor:pointer;">
-                          <div class="pull-right" style="padding:1.5em 25px 0 0;vertical-align:middle">
-                            <svg class="h-7 w-7 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                          </div>
-                            <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5" style="padding-left:20px;">
-                              <dt class="text-sm leading-5 font-medium text-gray-500 sm:mt-0 sm:col-span-3">
-                                I have tons of digital goods that I sell, with lots of return customers. It would be great if I could have users sign up and become members. That way, I could offer special discounts to the people who are most loyal to my store! I would totally pay for that.
-                              </dt>
-                            </div>
-                          </div>
-                      <div class="bg-gray-50 text-gray-400 px-4 py-4 sm:px-6">
+                                        <span style="font-size:14px;">votes</span>
+                                    </div>
+                                </div>
+                                <div class="border-b border-gray-200 px-4 py-5 sm:px-6 sm:grid sm:grid-cols-10">
+                                    <div class="sm:col-span-1">
+                                        <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white shadow-solid"
+                                             src="https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                             alt=""/>
+                                    </div>
+                                    <div class="text-lg leading-5 font-medium text-indigo-600 truncate sm:col-span-9 text-left">
+                                        <div style="cursor:pointer">
+                                            User login and membership
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="cursor:pointer;">
+                                    <div class="pull-right" style="padding:1.5em 25px 0 0;vertical-align:middle">
+                                        <svg class="h-7 w-7 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5"
+                                         style="padding-left:20px;">
+                                        <dt class="text-sm leading-5 font-medium text-gray-500 sm:mt-0 sm:col-span-3">
+                                            I have tons of digital goods that I sell, with lots of return customers. It
+                                            would be great if I could have users sign up and become members. That way, I
+                                            could offer special discounts to the people who are most loyal to my store!
+                                            I would totally pay for that.
+                                        </dt>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 text-gray-400 px-4 py-4 sm:px-6">
                         <span class="text-sm leading-5 font-medium text-gray-500">
                             <i class="si si-clock mr-2"></i>Posted 2 days ago by
                             <span style="font-weight:900">
                                 Tim
                             </span>
                         </span>
-                            <span style="margin-left:20px;" class="inline-flex items-center px-2 py-0.5 ml-5 rounded text-sm font-medium leading-4 bg-yellow-100 text-yellow-800">
+                                    <span style="margin-left:20px;"
+                                          class="inline-flex items-center px-2 py-0.5 ml-5 rounded text-sm font-medium leading-4 bg-yellow-100 text-yellow-800">
                                 In backlog
                             </span>
-                        <div class="pull-right text-gray-400">
-                            <i class="fa fa-comments"></i> 92 comments
+                                    <div class="pull-right text-gray-400">
+                                        <i class="fa fa-comments"></i> 92 comments
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
-                </div>
-                <div class="mt-12 md:mt-0">
-                  <div>
-                    <div class="bg-white overflow-hidden shadow rounded-lg feedback-item" style="margin-bottom:20px;">
-                      <div style="padding:10px 25px 0 0;">
-                          <div class="pull-right text-right" style="cursor:pointer">
+                    <div class="mt-12 md:mt-0">
+                        <div>
+                            <div class="bg-white overflow-hidden shadow rounded-lg feedback-item"
+                                 style="margin-bottom:20px;">
+                                <div style="padding:10px 25px 0 0;">
+                                    <div class="pull-right text-right" style="cursor:pointer">
                                 <span class="h-10 w-10 text-indigo-600" style="font-size:24px;margin-bottom:0;">
-                                    <i class="fa fa-thumbs-o-up" style="margin-right:5px;"></i> <span>2.6k</span><br />
+                                    <i class="fa fa-thumbs-o-up" style="margin-right:5px;"></i> <span>2.6k</span><br/>
                                 </span>
-                                <span style="font-size:14px;">votes</span>
-                          </div>
-                      </div>
-                      <div class="border-b border-gray-200 px-4 py-5 sm:px-6 sm:grid sm:grid-cols-10">
-                        <div class="sm:col-span-1">
-                          <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white shadow-solid" src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80" alt="" />
-                        </div>
-                        <div class="text-lg leading-5 font-medium text-indigo-600 truncate sm:col-span-9 text-left">
-                            <div style="cursor:pointer">
-                              Sorting and filtering
-                            </div>
-                        </div>
-                      </div>
-                        <div style="cursor:pointer;">
-                          <div class="pull-right" style="padding:1.5em 25px 0 0;vertical-align:middle">
-                            <svg class="h-7 w-7 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                          </div>
-                            <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5" style="padding-left:20px;">
-                              <dt class="text-sm leading-5 font-medium text-gray-500 sm:mt-0 sm:col-span-3">
-                                Is there any way you can add sorting and filtering? It's a pain to have to scroll all the way down to find what I'm looking for.
-                              </dt>
-                            </div>
-                          </div>
-                      <div class="bg-gray-50 text-gray-400 px-4 py-4 sm:px-6">
+                                        <span style="font-size:14px;">votes</span>
+                                    </div>
+                                </div>
+                                <div class="border-b border-gray-200 px-4 py-5 sm:px-6 sm:grid sm:grid-cols-10">
+                                    <div class="sm:col-span-1">
+                                        <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white shadow-solid"
+                                             src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2.25&w=256&h=256&q=80"
+                                             alt=""/>
+                                    </div>
+                                    <div class="text-lg leading-5 font-medium text-indigo-600 truncate sm:col-span-9 text-left">
+                                        <div style="cursor:pointer">
+                                            Sorting and filtering
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="cursor:pointer;">
+                                    <div class="pull-right" style="padding:1.5em 25px 0 0;vertical-align:middle">
+                                        <svg class="h-7 w-7 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5"
+                                         style="padding-left:20px;">
+                                        <dt class="text-sm leading-5 font-medium text-gray-500 sm:mt-0 sm:col-span-3">
+                                            Is there any way you can add sorting and filtering? It's a pain to have to
+                                            scroll all the way down to find what I'm looking for.
+                                        </dt>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 text-gray-400 px-4 py-4 sm:px-6">
                         <span class="text-sm leading-5 font-medium text-gray-500">
                             <i class="si si-clock mr-2"></i>Posted a week ago by
                             <span style="font-weight:900">
                                 Mike
                             </span>
                         </span>
-                            <span style="margin-left:20px;" class="inline-flex items-center px-2 py-0.5 ml-5 rounded text-sm font-medium leading-4 bg-orange-100 text-orange-800">
+                                    <span style="margin-left:20px;"
+                                          class="inline-flex items-center px-2 py-0.5 ml-5 rounded text-sm font-medium leading-4 bg-orange-100 text-orange-800">
                                 In planning
                             </span>
-                        <div class="pull-right text-gray-400">
-                            <i class="fa fa-comments"></i> 292 comments
+                                    <div class="pull-right text-gray-400">
+                                        <i class="fa fa-comments"></i> 292 comments
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="mt-12">
-                    <div class="bg-white overflow-hidden shadow rounded-lg feedback-item" style="margin-bottom:20px;">
-                      <div style="padding:10px 25px 0 0;">
-                          <div class="pull-right text-right" style="cursor:pointer">
+                        <div class="mt-12">
+                            <div class="bg-white overflow-hidden shadow rounded-lg feedback-item"
+                                 style="margin-bottom:20px;">
+                                <div style="padding:10px 25px 0 0;">
+                                    <div class="pull-right text-right" style="cursor:pointer">
                                 <span class="h-10 w-10 text-indigo-600" style="font-size:24px;margin-bottom:0;">
-                                    <i class="fa fa-thumbs-o-up" style="margin-right:5px;"></i> <span>104</span><br />
+                                    <i class="fa fa-thumbs-o-up" style="margin-right:5px;"></i> <span>104</span><br/>
                                 </span>
-                                <span style="font-size:14px;">votes</span>
-                          </div>
-                      </div>
-                      <div class="border-b border-gray-200 px-4 py-5 sm:px-6 sm:grid sm:grid-cols-10">
-                        <div class="sm:col-span-1">
-                          <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white shadow-solid" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="" />
-                        </div>
-                        <div class="text-lg leading-5 font-medium text-indigo-600 truncate sm:col-span-9 text-left">
-                            <div style="cursor:pointer">
-                              Offline mode please!
-                            </div>
-                        </div>
-                      </div>
-                        <div style="cursor:pointer;">
-                          <div class="pull-right" style="padding:1.5em 25px 0 0;vertical-align:middle">
-                            <svg class="h-7 w-7 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
-                              <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"/>
-                            </svg>
-                          </div>
-                            <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5" style="padding-left:20px;">
-                              <dt class="text-sm leading-5 font-medium text-gray-500 sm:mt-0 sm:col-span-3">
-                                I love your site, and it's essential for my business. However, when I'm travelling, I don't always have access to wifi. I would love if your software had an offline mode. That way, whenever I'm on the road, I can still update the spreadsheets and keep on top of my customer accounts.
-                              </dt>
-                            </div>
-                          </div>
-                      <div class="bg-gray-50 text-gray-400 px-4 py-4 sm:px-6">
+                                        <span style="font-size:14px;">votes</span>
+                                    </div>
+                                </div>
+                                <div class="border-b border-gray-200 px-4 py-5 sm:px-6 sm:grid sm:grid-cols-10">
+                                    <div class="sm:col-span-1">
+                                        <img class="-ml-2 inline-block h-10 w-10 rounded-full text-white shadow-solid"
+                                             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                                             alt=""/>
+                                    </div>
+                                    <div class="text-lg leading-5 font-medium text-indigo-600 truncate sm:col-span-9 text-left">
+                                        <div style="cursor:pointer">
+                                            Offline mode please!
+                                        </div>
+                                    </div>
+                                </div>
+                                <div style="cursor:pointer;">
+                                    <div class="pull-right" style="padding:1.5em 25px 0 0;vertical-align:middle">
+                                        <svg class="h-7 w-7 text-gray-400" fill="currentColor" viewBox="0 0 20 20">
+                                            <path fill-rule="evenodd"
+                                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                  clip-rule="evenodd"/>
+                                        </svg>
+                                    </div>
+                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5"
+                                         style="padding-left:20px;">
+                                        <dt class="text-sm leading-5 font-medium text-gray-500 sm:mt-0 sm:col-span-3">
+                                            I love your site, and it's essential for my business. However, when I'm
+                                            travelling, I don't always have access to wifi. I would love if your
+                                            software had an offline mode. That way, whenever I'm on the road, I can
+                                            still update the spreadsheets and keep on top of my customer accounts.
+                                        </dt>
+                                    </div>
+                                </div>
+                                <div class="bg-gray-50 text-gray-400 px-4 py-4 sm:px-6">
                         <span class="text-sm leading-5 font-medium text-gray-500">
                             <i class="si si-clock mr-2"></i>Posted an hour ago by
                             <span style="font-weight:900">
                                 John
                             </span>
                         </span>
-                            <span style="margin-left:20px;" class="inline-flex items-center px-2 py-0.5 ml-5 rounded text-sm font-medium leading-4 bg-blue-100 text-blue-800">
+                                    <span style="margin-left:20px;"
+                                          class="inline-flex items-center px-2 py-0.5 ml-5 rounded text-sm font-medium leading-4 bg-blue-100 text-blue-800">
                                 In development
                             </span>
-                        <div class="pull-right text-gray-400">
-                            <i class="fa fa-comments"></i> 47 comments
+                                    <div class="pull-right text-gray-400">
+                                        <i class="fa fa-comments"></i> 47 comments
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
                     </div>
-                  </div>
-                </div>
-              </dl>
+                </dl>
             </div>
 
             <div class="mt-12 text-center justify-center" style="width:100%">
               <span class="inline-flex rounded-md shadow-sm ml-5 mr-5 mb-5">
-                <a type="button" href="{{ url_for('user.signup') }}" class="inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
+                <a type="button" href="{{ url_for('user.signup') }}"
+                   class="inline-flex items-center px-6 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150">
                   Get started for free
                 </a>
               </span>
-              <span class="inline-flex rounded-md shadow-sm ml-5 mr-5">
-                <a type="button" href="{{ url_for('user.dashboard') }}" class="inline-flex items-center text-center px-6 py-3 border justify-center leading-6 font-medium rounded-md text-indigo-600 bg-transparent focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150" style="width:193px;">
+                <span class="inline-flex rounded-md shadow-sm ml-5 mr-5">
+                <a type="button" href="{{ url_for('user.dashboard') }}"
+                   class="inline-flex items-center text-center px-6 py-3 border justify-center leading-6 font-medium rounded-md text-indigo-600 bg-transparent focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition ease-in-out duration-150"
+                   style="width:193px;">
                   Try the demo
                 </a>
               </span>
             </div>
 
-          </div>
+        </div>
+    </div>
+
+    <!-- pricing -->
+    <div id="pricing" class="bg-gray-900">
+        <div class="pt-12 px-4 sm:px-6 lg:px-8 lg:pt-20">
+            <div class="text-center">
+                <!-- <h2 class="text-lg leading-6 font-semibold text-gray-300 uppercase tracking-wider">
+                  Pricing
+                </h2> -->
+                <p class="mt- text-3xl leading-9 font-bold text-white sm:text-4xl sm:leading-10 lg:text-5xl lg:leading-none">
+                    Simple pricing.
+                </p>
+                <p class="mt-3 max-w-4xl mx-auto text-xl leading-7 text-gray-300 sm:mt-5 sm:text-2xl sm:leading-8">
+                    During our beta period, Recurrify is completely free to use.
+                </p>
+            </div>
         </div>
 
-        <!-- pricing -->
-        <div id="pricing" class="bg-gray-900">
-          <div class="pt-12 px-4 sm:px-6 lg:px-8 lg:pt-20">
-            <div class="text-center">
-              <!-- <h2 class="text-lg leading-6 font-semibold text-gray-300 uppercase tracking-wider">
-                Pricing
-              </h2> -->
-              <p class="mt- text-3xl leading-9 font-bold text-white sm:text-4xl sm:leading-10 lg:text-5xl lg:leading-none">
-                Simple pricing.
-              </p>
-              <p class="mt-3 max-w-4xl mx-auto text-xl leading-7 text-gray-300 sm:mt-5 sm:text-2xl sm:leading-8">
-                During our beta period, Recurrify is completely free to use.
-              </p>
-            </div>
-          </div>
-
-          {% import 'billing/macros/billing.html' as billing with context %}
-          <div class="mt-16 bg-white pb-12 lg:mt-20 lg:pb-20">
+        {% import 'billing/macros/billing.html' as billing with context %}
+        <div class="mt-16 bg-white pb-12 lg:mt-20 lg:pb-20">
             <div class="relative z-0">
-              <div class="absolute inset-0 h-5/6 bg-gray-900 lg:h-2/3"></div>
-              <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
-                <div class="relative lg:grid lg:grid-cols-7">
-                  <div class="mx-auto max-w-md lg:mx-0 lg:max-w-none lg:col-start-1 lg:col-end-3 lg:row-start-2 lg:row-end-3">
-                    <div class="h-full flex flex-col rounded-lg shadow-lg overflow-hidden lg:rounded-none lg:rounded-l-lg">
-                      <div class="flex-1 flex flex-col">
-                        <div class="bg-white px-6 py-10">
-                          <div>
-                            <h3 class="text-center text-2xl leading-8 font-medium text-gray-300" id="tier-hobby">
-                              Startup
-                            </h3>
-                            <div class="mt-4 flex items-center justify-center">
+                <div class="absolute inset-0 h-5/6 bg-gray-900 lg:h-2/3"></div>
+                <div class="max-w-screen-xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div class="relative lg:grid lg:grid-cols-7">
+                        <div class="mx-auto max-w-md lg:mx-0 lg:max-w-none lg:col-start-1 lg:col-end-3 lg:row-start-2 lg:row-end-3">
+                            <div class="h-full flex flex-col rounded-lg shadow-lg overflow-hidden lg:rounded-none lg:rounded-l-lg">
+                                <div class="flex-1 flex flex-col">
+                                    <div class="bg-white px-6 py-10">
+                                        <div>
+                                            <h3 class="text-center text-2xl leading-8 font-medium text-gray-300"
+                                                id="tier-hobby">
+                                                Startup
+                                            </h3>
+                                            <div class="mt-4 flex items-center justify-center">
                               <span class="px-3 flex items-start text-6xl leading-none tracking-tight text-gray-900">
                                 <span class="mt-2 mr-2 text-4xl font-medium text-gray-300">
                                   $
@@ -531,82 +609,92 @@
                                   49
                                 </span>
                               </span>
-                              <span class="text-xl leading-7 font-medium text-gray-300">
+                                                <span class="text-xl leading-7 font-medium text-gray-300">
                                 /month
                               </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 flex flex-col justify-between border-t-2 border-gray-100 p-6 bg-gray-50 sm:p-10 lg:p-6 xl:p-10">
+                                        <ul>
+                                            <li class="flex items-start">
+                                                <div class="flex-shrink-0">
+                                                    <svg class="h-6 w-6 text-green-500" stroke="currentColor"
+                                                         fill="none" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                              stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                    </svg>
+                                                </div>
+                                                <p class="ml-3 text-base leading-6 font-medium text-gray-300">
+                                                    5 admin accounts
+                                                </p>
+                                            </li>
+                                            <li class="mt-4 flex items-start">
+                                                <div class="flex-shrink-0">
+                                                    <svg class="h-6 w-6 text-green-500" stroke="currentColor"
+                                                         fill="none" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                              stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                    </svg>
+                                                </div>
+                                                <p class="ml-3 text-base leading-6 font-medium text-gray-300">
+                                                    5 feedback dashboards
+                                                </p>
+                                            </li>
+                                            <li class="mt-4 flex items-start">
+                                                <div class="flex-shrink-0">
+                                                    <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24"
+                                                         stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                              stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                    </svg>
+                                                </div>
+                                                <p class="ml-3 text-base leading-6 font-medium text-gray-300">
+                                                    5 public roadmaps
+                                                </p>
+                                            </li>
+                                            <li class="mt-4 flex items-start">
+                                                <div class="flex-shrink-0">
+                                                    <svg class="h-6 w-6 text-green-500" stroke="currentColor"
+                                                         fill="none" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                              stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                    </svg>
+                                                </div>
+                                                <p class="ml-3 text-base leading-6 font-medium text-gray-300">
+                                                    1000 comments/votes
+                                                </p>
+                                            </li>
+                                        </ul>
+                                        <div class="mt-8">
+                                            <div class="rounded-lg shadow-md">
+                                                <div class="block w-full text-center rounded-lg border border-transparent bg-white px-6 py-3 text-base leading-6 font-medium text-gray-300 hover:text-indigo-500 focus:outline-none focus:shadow-outline transition ease-in-out duration-150"
+                                                     aria-describedby="tier-hobby">
+                                                    Coming soon
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                        <div class="flex-1 flex flex-col justify-between border-t-2 border-gray-100 p-6 bg-gray-50 sm:p-10 lg:p-6 xl:p-10">
-                          <ul>
-                            <li class="flex items-start">
-                              <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-green-500" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                              </div>
-                              <p class="ml-3 text-base leading-6 font-medium text-gray-300">
-                                5 admin accounts
-                              </p>
-                            </li>
-                            <li class="mt-4 flex items-start">
-                              <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-green-500" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                              </div>
-                              <p class="ml-3 text-base leading-6 font-medium text-gray-300">
-                                5 feedback dashboards
-                              </p>
-                            </li>
-                            <li class="mt-4 flex items-start">
-                              <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                </svg>
-                              </div>
-                              <p class="ml-3 text-base leading-6 font-medium text-gray-300">
-                                5 public roadmaps
-                              </p>
-                            </li>
-                            <li class="mt-4 flex items-start">
-                              <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-green-500" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                              </div>
-                              <p class="ml-3 text-base leading-6 font-medium text-gray-300">
-                                1000 comments/votes
-                              </p>
-                            </li>
-                          </ul>
-                          <div class="mt-8">
-                            <div class="rounded-lg shadow-md">
-                              <div class="block w-full text-center rounded-lg border border-transparent bg-white px-6 py-3 text-base leading-6 font-medium text-gray-300 hover:text-indigo-500 focus:outline-none focus:shadow-outline transition ease-in-out duration-150" aria-describedby="tier-hobby">
-                                Coming soon
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="mt-10 max-w-lg mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-start-3 lg:col-end-6 lg:row-start-1 lg:row-end-4">
-                    <div class="relative z-10 rounded-lg shadow-xl">
-                      <div class="pointer-events-none absolute inset-0 rounded-lg border-2 border-indigo-600"></div>
-                      <div class="absolute inset-x-0 top-0 transform translate-y-px">
-                        <div class="flex justify-center transform -translate-y-1/2">
+                        <div class="mt-10 max-w-lg mx-auto lg:mt-0 lg:max-w-none lg:mx-0 lg:col-start-3 lg:col-end-6 lg:row-start-1 lg:row-end-4">
+                            <div class="relative z-10 rounded-lg shadow-xl">
+                                <div class="pointer-events-none absolute inset-0 rounded-lg border-2 border-indigo-600"></div>
+                                <div class="absolute inset-x-0 top-0 transform translate-y-px">
+                                    <div class="flex justify-center transform -translate-y-1/2">
                           <span class="inline-flex rounded-full bg-indigo-600 px-4 py-1 text-sm leading-5 font-semibold tracking-wider uppercase text-white">
                             Special pricing
                           </span>
-                        </div>
-                      </div>
-                      <div class="bg-white rounded-t-lg px-6 pt-12 pb-10">
-                        <div>
-                          <h3 class="text-center text-3xl leading-9 font-semibold text-gray-900 sm:-mx-6" id="tier-growth">
-                            BETA
-                          </h3>
-                          {#<div class="mt-4 flex items-center justify-center">
+                                    </div>
+                                </div>
+                                <div class="bg-white rounded-t-lg px-6 pt-12 pb-10">
+                                    <div>
+                                        <h3 class="text-center text-3xl leading-9 font-semibold text-gray-900 sm:-mx-6"
+                                            id="tier-growth">
+                                            BETA
+                                        </h3>
+                                        {#<div class="mt-4 flex items-center justify-center">
                             <span class="px-3 flex items-start text-6xl leading-none tracking-tight text-gray-900 sm:text-6xl">
                               <span class="mt-2 mr-2 text-4xl font-medium">
                                 $
@@ -619,82 +707,95 @@
                               /month
                             </span>
                           </div>#}
-                          <div class="flex items-center justify-center text-6xl font-extrabold">FREE</div>
-                          <div class="flex items-center justify-center">during beta. Then $19/month.</div>
+                                        <div class="flex items-center justify-center text-6xl font-extrabold">FREE</div>
+                                        <div class="flex items-center justify-center">during beta. Then $19/month.</div>
+                                    </div>
+                                </div>
+                                <div class="border-t-2 border-gray-100 rounded-b-lg pt-10 pb-8 px-6 bg-gray-50 sm:px-10 sm:py-10">
+                                    <ul>
+                                        <li class="flex items-start">
+                                            <div class="flex-shrink-0">
+                                                <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24"
+                                                     stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                          stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                            </div>
+                                            <p class="ml-3 text-base leading-6 font-medium text-gray-500">
+                                                1 admin account
+                                            </p>
+                                        </li>
+                                        <li class="mt-4 flex items-start">
+                                            <div class="flex-shrink-0">
+                                                <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24"
+                                                     stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                          stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                            </div>
+                                            <p class="ml-3 text-base leading-6 font-medium text-gray-500">
+                                                1 feedback dashboard
+                                            </p>
+                                        </li>
+                                        <li class="mt-4 flex items-start">
+                                            <div class="flex-shrink-0">
+                                                <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24"
+                                                     stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                          stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                            </div>
+                                            <p class="ml-3 text-base leading-6 font-medium text-gray-500">
+                                                1 public roadmap (coming soon)
+                                            </p>
+                                        </li>
+                                        <li class="mt-4 flex items-start">
+                                            <div class="flex-shrink-0">
+                                                <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24"
+                                                     stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                          stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                            </div>
+                                            <p class="ml-3 text-base leading-6 font-medium text-gray-500">
+                                                500 comments/votes
+                                            </p>
+                                        </li>
+                                        <li class="mt-4 flex items-start">
+                                            <div class="flex-shrink-0">
+                                                <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24"
+                                                     stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                          stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                </svg>
+                                            </div>
+                                            <p class="ml-3 text-base leading-6 font-medium text-gray-500">
+                                                Embeddable widgets to collect feedback from anywhere (coming soon)
+                                            </p>
+                                        </li>
+                                    </ul>
+                                    <div class="mt-10">
+                                        <div class="rounded-lg shadow-md">
+                                            <a href="{{ url_for('user.signup') }}"
+                                               class="block w-full text-center rounded-lg border border-transparent bg-indigo-600 px-6 py-4 text-xl leading-6 font-medium text-white hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150"
+                                               aria-describedby="tier-growth">
+                                                Start for free
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                      </div>
-                      <div class="border-t-2 border-gray-100 rounded-b-lg pt-10 pb-8 px-6 bg-gray-50 sm:px-10 sm:py-10">
-                        <ul>
-                          <li class="flex items-start">
-                            <div class="flex-shrink-0">
-                              <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                              </svg>
-                            </div>
-                            <p class="ml-3 text-base leading-6 font-medium text-gray-500">
-                              1 admin account
-                            </p>
-                          </li>
-                          <li class="mt-4 flex items-start">
-                            <div class="flex-shrink-0">
-                              <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                              </svg>
-                            </div>
-                            <p class="ml-3 text-base leading-6 font-medium text-gray-500">
-                              1 feedback dashboard
-                            </p>
-                          </li>
-                          <li class="mt-4 flex items-start">
-                            <div class="flex-shrink-0">
-                              <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                              </svg>
-                            </div>
-                            <p class="ml-3 text-base leading-6 font-medium text-gray-500">
-                              1 public roadmap (coming soon)
-                            </p>
-                          </li>
-                          <li class="mt-4 flex items-start">
-                            <div class="flex-shrink-0">
-                              <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                              </svg>
-                            </div>
-                            <p class="ml-3 text-base leading-6 font-medium text-gray-500">
-                              500 comments/votes
-                            </p>
-                          </li>
-                          <li class="mt-4 flex items-start">
-                            <div class="flex-shrink-0">
-                              <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                              </svg>
-                            </div>
-                            <p class="ml-3 text-base leading-6 font-medium text-gray-500">
-                              Embeddable widgets to collect feedback from anywhere (coming soon)
-                            </p>
-                          </li>
-                        </ul>
-                        <div class="mt-10">
-                          <div class="rounded-lg shadow-md">
-                            <a href="{{ url_for('user.signup') }}" class="block w-full text-center rounded-lg border border-transparent bg-indigo-600 px-6 py-4 text-xl leading-6 font-medium text-white hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150" aria-describedby="tier-growth">
-                              Start for free
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="mt-10 mx-auto max-w-md lg:m-0 lg:max-w-none lg:col-start-6 lg:col-end-8 lg:row-start-2 lg:row-end-3">
-                    <div class="h-full flex flex-col rounded-lg shadow-lg overflow-hidden lg:rounded-none lg:rounded-r-lg">
-                      <div class="flex-1 flex flex-col">
-                        <div class="bg-white px-6 py-10">
-                          <div>
-                            <h3 class="text-center text-2xl leading-8 font-medium text-gray-300" id="tier-scale">
-                              Business
-                            </h3>
-                            <div class="mt-4 flex items-center justify-center">
+                        <div class="mt-10 mx-auto max-w-md lg:m-0 lg:max-w-none lg:col-start-6 lg:col-end-8 lg:row-start-2 lg:row-end-3">
+                            <div class="h-full flex flex-col rounded-lg shadow-lg overflow-hidden lg:rounded-none lg:rounded-r-lg">
+                                <div class="flex-1 flex flex-col">
+                                    <div class="bg-white px-6 py-10">
+                                        <div>
+                                            <h3 class="text-center text-2xl leading-8 font-medium text-gray-300"
+                                                id="tier-scale">
+                                                Business
+                                            </h3>
+                                            <div class="mt-4 flex items-center justify-center">
                               <span class="px-3 flex items-start text-6xl leading-none tracking-tight text-gray-900">
                                 <span class="mt-2 mr-2 text-4xl font-medium text-gray-300">
                                   $
@@ -703,117 +804,127 @@
                                   149
                                 </span>
                               </span>
-                              <span class="text-xl leading-7 font-medium text-gray-300">
+                                                <span class="text-xl leading-7 font-medium text-gray-300">
                                 /month
                               </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex-1 flex flex-col justify-between border-t-2 border-gray-100 p-6 bg-gray-50 sm:p-10 lg:p-6 xl:p-10">
+                                        <ul>
+                                            <li class="flex items-start">
+                                                <div class="flex-shrink-0">
+                                                    <svg class="h-6 w-6 text-green-500" stroke="currentColor"
+                                                         fill="none" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                              stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                    </svg>
+                                                </div>
+                                                <p class="ml-3 text-base leading-6 font-medium text-gray-300">
+                                                    Unlimited admin accounts
+                                                </p>
+                                            </li>
+                                            <li class="mt-4 flex items-start">
+                                                <div class="flex-shrink-0">
+                                                    <svg class="h-6 w-6 text-green-500" stroke="currentColor"
+                                                         fill="none" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                              stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                    </svg>
+                                                </div>
+                                                <p class="ml-3 text-base leading-6 font-medium text-gray-300">
+                                                    Unlimited feedback dashboards
+                                                </p>
+                                            </li>
+                                            <li class="mt-4 flex items-start">
+                                                <div class="flex-shrink-0">
+                                                    <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24"
+                                                         stroke="currentColor">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                              stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                    </svg>
+                                                </div>
+                                                <p class="ml-3 text-base leading-6 font-medium text-gray-300">
+                                                    Umlimited product roadmaps
+                                                </p>
+                                            </li>
+                                            <li class="mt-4 flex items-start">
+                                                <div class="flex-shrink-0">
+                                                    <svg class="h-6 w-6 text-green-500" stroke="currentColor"
+                                                         fill="none" viewBox="0 0 24 24">
+                                                        <path stroke-linecap="round" stroke-linejoin="round"
+                                                              stroke-width="2" d="M5 13l4 4L19 7"/>
+                                                    </svg>
+                                                </div>
+                                                <p class="ml-3 text-base leading-6 font-medium text-gray-300">
+                                                    Unlimited comments/votes
+                                                </p>
+                                            </li>
+                                        </ul>
+                                        <div class="mt-8">
+                                            <div class="rounded-lg shadow-md">
+                                                <div class="block w-full text-center rounded-lg border border-transparent bg-white px-6 py-3 text-base leading-6 font-medium text-gray-300 hover:text-indigo-500 focus:outline-none focus:shadow-outline transition ease-in-out duration-150"
+                                                     aria-describedby="tier-scale">
+                                                    Coming soon
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
                         </div>
-                        <div class="flex-1 flex flex-col justify-between border-t-2 border-gray-100 p-6 bg-gray-50 sm:p-10 lg:p-6 xl:p-10">
-                          <ul>
-                            <li class="flex items-start">
-                              <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-green-500" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                              </div>
-                              <p class="ml-3 text-base leading-6 font-medium text-gray-300">
-                                Unlimited admin accounts
-                              </p>
-                            </li>
-                            <li class="mt-4 flex items-start">
-                              <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-green-500" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                              </div>
-                              <p class="ml-3 text-base leading-6 font-medium text-gray-300">
-                                Unlimited feedback dashboards
-                              </p>
-                            </li>
-                            <li class="mt-4 flex items-start">
-                              <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
-                                </svg>
-                              </div>
-                              <p class="ml-3 text-base leading-6 font-medium text-gray-300">
-                                Umlimited product roadmaps
-                              </p>
-                            </li>
-                            <li class="mt-4 flex items-start">
-                              <div class="flex-shrink-0">
-                                <svg class="h-6 w-6 text-green-500" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-                                </svg>
-                              </div>
-                              <p class="ml-3 text-base leading-6 font-medium text-gray-300">
-                                Unlimited comments/votes
-                              </p>
-                            </li>
-                          </ul>
-                          <div class="mt-8">
-                            <div class="rounded-lg shadow-md">
-                              <div class="block w-full text-center rounded-lg border border-transparent bg-white px-6 py-3 text-base leading-6 font-medium text-gray-300 hover:text-indigo-500 focus:outline-none focus:shadow-outline transition ease-in-out duration-150" aria-describedby="tier-scale">
-                                Coming soon
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
         </div>
+    </div>
 
-        <!-- footer -->
-        <div class="bg-white">
-          <div class="max-w-screen-xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
+    <!-- footer -->
+    <div class="bg-white">
+        <div class="max-w-screen-xl mx-auto py-12 px-4 overflow-hidden sm:px-6 lg:px-8">
             <nav class="-mx-5 -my-2 flex flex-wrap justify-center">
-              <div class="px-5 py-2">
-                <a href="#product" class="text-base leading-6 text-gray-500 hover:text-gray-900">
-                  Product
-                </a>
-              </div>
-              <div class="px-5 py-2">
-                <a href="#features" class="text-base leading-6 text-gray-500 hover:text-gray-900">
-                  Features
-                </a>
-              </div>
-              <div class="px-5 py-2">
-                <a href="#pricing" class="text-base leading-6 text-gray-500 hover:text-gray-900">
-                  Pricing
-                </a>
-              </div>
-              <div class="px-5 py-2">
-                <a href="{{ url_for('user.contact') }}" class="text-base leading-6 text-gray-500 hover:text-gray-900">
-                  Contact Us
-                </a>
-              </div>
+                <div class="px-5 py-2">
+                    <a href="#product" class="text-base leading-6 text-gray-500 hover:text-gray-900">
+                        Product
+                    </a>
+                </div>
+                <div class="px-5 py-2">
+                    <a href="#features" class="text-base leading-6 text-gray-500 hover:text-gray-900">
+                        Features
+                    </a>
+                </div>
+                <div class="px-5 py-2">
+                    <a href="#pricing" class="text-base leading-6 text-gray-500 hover:text-gray-900">
+                        Pricing
+                    </a>
+                </div>
+                <div class="px-5 py-2">
+                    <a href="{{ url_for('user.contact') }}"
+                       class="text-base leading-6 text-gray-500 hover:text-gray-900">
+                        Contact Us
+                    </a>
+                </div>
             </nav>
             <div class="mt-8 flex justify-center">
-              <a href="https://twitter.com/rickyio7" class="ml-6 text-gray-400 hover:text-gray-500">
-                <span class="sr-only">Twitter</span>
-                <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-                </svg>
-              </a>
+                <a href="https://twitter.com/rickyio7" class="ml-6 text-gray-400 hover:text-gray-500">
+                    <span class="sr-only">Twitter</span>
+                    <svg class="h-6 w-6" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84"/>
+                    </svg>
+                </a>
             </div>
             <div class="mt-8">
-              <p class="text-center text-base leading-6 text-gray-400">
-                &copy; {{ current_year() }} Recurrify. All rights reserved.
-              </p>
+                <p class="text-center text-base leading-6 text-gray-400">
+                    &copy; {{ current_year() }} Recurrify. All rights reserved.
+                </p>
             </div>
-          </div>
         </div>
+    </div>
 
-      </div>
+</div>
 
-    <!-- jQuery -->
-    <script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
 
 </body>
 

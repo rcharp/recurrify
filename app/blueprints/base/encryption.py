@@ -12,5 +12,3 @@ def decrypt_string(cipher):
     key = os.environ.get('SECRET_KEY')
     plaintext = decrypt(key, cipher).decode('utf-8')
     return plaintext
-
-

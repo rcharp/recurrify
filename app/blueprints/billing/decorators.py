@@ -11,6 +11,7 @@ def subscription_required(f):
 
     :return: Function
     """
+
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if not current_user.customer:
@@ -29,6 +30,7 @@ def handle_stripe_exceptions(f):
     :type f: Function
     :return: Function
     """
+
     @wraps(f)
     def decorated_function(*args, **kwargs):
         try:

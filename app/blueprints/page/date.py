@@ -87,19 +87,19 @@ def get_creation_date(path_to_file):
 # Time conversions ###################################
 def get_short_date_string(timestamp):
     dt = dtime.fromtimestamp(timestamp)
-    dt=dt.replace(tzinfo=None)
+    dt = dt.replace(tzinfo=None)
     return dt.strftime("%B %d")
 
 
 def get_formatted_date_string(timestamp):
     dt = dtime.fromtimestamp(timestamp)
-    dt=dt.replace(tzinfo=None)
+    dt = dt.replace(tzinfo=None)
     return dt.strftime("%B %d, %Y")
 
 
 def get_datetime_string(timestamp):
     dt = dtime.fromtimestamp(timestamp)
-    dt=dt.replace(tzinfo=None)
+    dt = dt.replace(tzinfo=None)
     return dt.strftime("%B %d, %Y %H:%M:%S")
 
 
@@ -149,7 +149,7 @@ def convert_timestamp_to_datetime_utc(timestamp):
 
 def get_datetime(timestamp):
     dt = dtime.fromtimestamp(timestamp)
-    dt=dt.replace(tzinfo=None)
+    dt = dt.replace(tzinfo=None)
     return dt
 
 
@@ -203,13 +203,17 @@ def get_today_date_string():
 
 
 def get_year_date_string(dt):
-    if dt is not None: return dt.strftime('%Y-%m-%d')
-    else: return None
+    if dt is not None:
+        return dt.strftime('%Y-%m-%d')
+    else:
+        return None
 
 
 def get_month_date_string(dt):
-    if dt is not None: return dt.strftime('%m-%d-%Y')
-    else: return ''
+    if dt is not None:
+        return dt.strftime('%m-%d-%Y')
+    else:
+        return ''
 
 
 def convert_local_timestring_to_utc_string(time_string):
@@ -225,7 +229,8 @@ def convert_local_timestring_to_utc_string(time_string):
     minutes = int(offset[4:])
 
     dt = dtime.strptime(time_string, '%Y-%m-%dT%H:%M:%S')
-    dt = dt + timedelta(hours=hours, minutes=minutes) if direction == 'forward' else dt - timedelta(hours=hours, minutes=minutes)
+    dt = dt + timedelta(hours=hours, minutes=minutes) if direction == 'forward' else dt - timedelta(hours=hours,
+                                                                                                    minutes=minutes)
     return get_shortened_iso_string_from_utc_datetime(dt)
 
 
@@ -285,7 +290,7 @@ def json_serial(obj):
     if isinstance(obj, datetime.datetime):
         serial = obj.isoformat()
         return serial
-    raise TypeError ("Type not serializable")
+    raise TypeError("Type not serializable")
 
 
 def jsonify(datetime_obj):

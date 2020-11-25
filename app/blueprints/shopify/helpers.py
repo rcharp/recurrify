@@ -41,6 +41,7 @@ def verify_web_call(f):
             logging.error(f"Shop name received is invalid: \n\tshop {shop}")
             abort(401)
         return f(*args, **kwargs)
+
     return wrapper
 
 
@@ -55,6 +56,7 @@ def verify_webhook_call(f):
             logging.error(f"HMAC could not be verified: \n\thmac {hmac}\n\tdata {data}")
             abort(401)
         return f(*args, **kwargs)
+
     return wrapper
 
 

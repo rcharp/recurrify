@@ -7,7 +7,6 @@ from flask import current_app
 from cryptography.fernet import Fernet
 from requests.exceptions import ConnectionError
 
-
 # Tokens ###########################################
 '''
 Create a token for the user using JWT
@@ -70,7 +69,6 @@ def decrypt_string(b):
 
 
 def graphql_query(shop_url, token, parameters=None):
-
     from app.blueprints.base.functions import print_traceback
     try:
         api_version = current_app.config.get('SHOPIFY_API_VERSION')

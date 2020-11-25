@@ -7,26 +7,25 @@ from app.extensions import db
 
 
 class Shop(ResourceMixin, db.Model):
-
     __tablename__ = 'shops'
 
     # Objects.
     id = db.Column(db.Integer, primary_key=True)
     shop_id = db.Column(db.BigInteger, unique=True, index=True, nullable=False)
-    source_store_id = db.Column(db.BigInteger, unique=False, index=True, nullable=True)
-    shop = db.Column(db.String(255))
+    shopify_id = db.Column(db.BigInteger, unique=True, index=True, nullable=False)
+    url = db.Column(db.String(255))
     token = db.Column(db.String(255))
     status = db.Column(db.SmallInteger, default=1)
     source = db.Column('is_source', db.Boolean(), nullable=False, server_default='1')
 
     # Relationships.
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'),
-                           index=True, nullable=True, primary_key=False, unique=False)
+                        index=True, nullable=True, primary_key=False, unique=False)
 
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
         super(Shop, self).__init__(**kwargs)
-        # self.shop_id = Shop.generate_id()
+        self.shop_id = Shop.generate_id()
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -53,7 +52,7 @@ class Shop(ResourceMixin, db.Model):
         :return: User instance
         """
         return Shop.query.filter(
-          (Shop.id == identity).first())
+            (Shop.id == identity).first())
 
     @classmethod
     def search(cls, query):

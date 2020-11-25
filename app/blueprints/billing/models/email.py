@@ -20,7 +20,6 @@ from app.extensions import db
 
 
 class Email(ResourceMixin, db.Model):
-
     __tablename__ = 'emails'
     # Relationships.
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'),
@@ -48,7 +47,7 @@ class Email(ResourceMixin, db.Model):
         :return: User instance
         """
         return Email.query.filter(
-          (Email.message_id == identity).first())
+            (Email.message_id == identity).first())
 
     @classmethod
     def search(cls, query):

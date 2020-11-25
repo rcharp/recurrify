@@ -66,8 +66,7 @@ class User(UserMixin, ResourceMixin, db.Model):
         # Call Flask-SQLAlchemy's constructor.
         super(User, self).__init__(**kwargs)
 
-        self.password = User.encrypt_password(kwargs.get('password', ''))\
-
+        self.password = User.encrypt_password(kwargs.get('password', ''))
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -82,7 +81,7 @@ class User(UserMixin, ResourceMixin, db.Model):
         :return: User instance
         """
         return User.query.filter(
-          (User.email == identity) | (User.username == identity)).first()
+            (User.email == identity) | (User.username == identity)).first()
 
     @classmethod
     def encrypt_password(cls, plaintext_password):

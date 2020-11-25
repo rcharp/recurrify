@@ -5,21 +5,27 @@
     <title>Title</title>
 </head>
 <body>
-      <nav class="bg-indigo-700">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div class="flex items-center justify-between h-16">
+<nav class="bg-indigo-700">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
             <div class="flex items-center">
-              <a href="{{ url_for('page.home') }}" class="flex-shrink-0" style="cursor:pointer">
-                <img class="h-12 w-12" src="{{ url_for('static', filename='logo/logo.png') }}" alt="Recurrify logo">
-              </a>
-              <div class="hidden md:block">
-                <div class="ml-10 flex items-baseline">
-                  <a href="{{ url_for('user.dashboard') }}" class="px-3 py-2 rounded-md text-sm font-medium {% if page == 'dashboard' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Dashboard</a>
-                  <span class="px-3 py-2 rounded-md ml-3 text-sm font-medium {% if page == 'product' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Product</span>
-                  <a href="{{ url_for('user.settings') }}" class="ml-2 px-3 py-2 rounded-md text-sm font-medium {% if page == 'settings' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Settings</a>
-                  <a href="{{ url_for('user.sync') }}" class="ml-5 px-3 py-2 rounded-md text-sm font-medium text-indigo-700 bg-white hover:text-white hover:bg-indigo-600 focus:outline-none focus:text-white focus:bg-indigo-600">Sync a store!</a>
+                <a href="{{ url_for('page.home') }}" class="flex-shrink-0" style="cursor:pointer">
+                    <img class="h-12 w-12" src="{{ url_for('static', filename='logo/logo.png') }}" alt="Recurrify logo">
+                </a>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline">
+                        <a href="{{ url_for('user.dashboard') }}"
+                           class="px-3 py-2 rounded-md text-sm font-medium {% if page == 'dashboard' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Dashboard</a>
+                        <span class="px-3 py-2 rounded-md ml-3 text-sm font-medium {% if page == 'product' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Product</span>
+                        <a href="{{ url_for('user.stores') }}"
+                           class="ml-2 px-3 py-2 rounded-md text-sm font-medium {% if page == 'stores' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Stores</a>
+                        <a href="{{ url_for('user.settings') }}"
+                           class="ml-2 px-3 py-2 rounded-md text-sm font-medium {% if page == 'settings' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Settings</a>
+                        <a href="{{ url_for('user.sync') }}"
+                           class="ml-5 px-3 py-2 rounded-md text-sm font-medium text-indigo-700 bg-white hover:text-white hover:bg-indigo-600 focus:outline-none focus:text-white focus:bg-indigo-600">Sync
+                            a store!</a>
+                    </div>
                 </div>
-              </div>
             </div>
             {% if page == 'dashboard' and current_user.authenticated and current_user.role == 'creator' %}
                 {% include '/user/includes/privacy_switch.html' ignore missing %}
@@ -33,34 +39,36 @@
                     {% endif %}
                 </div>
             </div>
-          </div>
         </div>
+    </div>
 
-        <!--
-          Mobile menu, toggle classes based on menu state.
+    <!--
+      Mobile menu, toggle classes based on menu state.
 
-          Open: "block", closed: "hidden"
-        -->
-        <div id="sidebar" class="hidden md:hidden">
-          <div class="px-2 pt-2 pb-3 sm:px-3">
-            <a href="{{ url_for('user.dashboard') }}" class="px-3 py-2 rounded-md text-sm font-medium {% if page == 'dashboard' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Dashboard</a>
-            <a href="{{ url_for('user.settings') }}" class="ml-4 px-3 py-2 rounded-md text-sm font-medium {% if page == 'settings' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Settings</a>
-          </div>
+      Open: "block", closed: "hidden"
+    -->
+    <div id="sidebar" class="hidden md:hidden">
+        <div class="px-2 pt-2 pb-3 sm:px-3">
+            <a href="{{ url_for('user.dashboard') }}"
+               class="px-3 py-2 rounded-md text-sm font-medium {% if page == 'dashboard' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Dashboard</a>
+            <a href="{{ url_for('user.settings') }}"
+               class="ml-4 px-3 py-2 rounded-md text-sm font-medium {% if page == 'settings' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Settings</a>
         </div>
-      </nav>
+    </div>
+</nav>
 
-        <script>
-            function OpenSidebar(){
-                var sidebar = document.getElementById('sidebar');
+<script>
+    function OpenSidebar() {
+        var sidebar = document.getElementById('sidebar');
 
-                if (sidebar.classList.contains('hidden')) {
-                    sidebar.classList.remove('hidden');
-                    sidebar.classList.add('block');
-                }else{
-                    sidebar.classList.remove('block');
-                    sidebar.classList.add('hidden');
-                }
-            }
-        </script>
+        if (sidebar.classList.contains('hidden')) {
+            sidebar.classList.remove('hidden');
+            sidebar.classList.add('block');
+        } else {
+            sidebar.classList.remove('block');
+            sidebar.classList.add('hidden');
+        }
+    }
+</script>
 </body>
 </html>

@@ -1,387 +1,412 @@
 {% import 'macros/flash.html' as flash with context %}
 <!DOCTYPE html>
-<!--[if IE 9]>         <html class="ie9 no-focus" lang="en"> <![endif]-->
-<!--[if gt IE 9]><!--> <html class="no-focus" lang="en"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
+<!--[if IE 9]>
+<html class="ie9 no-focus" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-focus" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
 
-        <title>Dashboard - {{ 'site_name'|site_name_filter }}</title>
+    <title>Dashboard - {{ 'site_name'|site_name_filter }}</title>
 
-        <meta name="description" content="Recurrify - Subscriptions for your Shopify store">
-        <meta name="author" content="pixelcave">
-        <meta name="robots" content="noindex, nofollow">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="description" content="Recurrify - Subscriptions for your Shopify store">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
-        <!-- Icons -->
-        <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-        <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico') }}">
+    <!-- Icons -->
+    <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico') }}">
 
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="96x96">
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="160x160">
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="192x192">
-        <!-- END Icons -->
-        <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="192x192">
+    <!-- END Icons -->
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
 
-        <!-- Tailwind CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
 
-        <!-- END Stylesheets -->
-    </head>
-    <body>
-        {#{% include '/user/includes/mobile.html' ignore missing %}#}
-            <div class="bg-gray-100" style="height:100vh;overflow-y:hidden;">
-              {% with page='dashboard' %}{% include '/user/includes/main_header.html' ignore missing %}{% endwith %}
-                <div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
-                  <button class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:bg-gray-100 focus:text-gray-600 md:hidden" aria-label="Open sidebar" onclick="OpenSidebar()">
-                    <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7" />
-                    </svg>
-                  </button>
-                  <div class="flex-1 px-4 flex justify-between">
-                    <div class="flex-1 flex">
-                      <div class="w-full flex md:ml-0">
-                        <label for="search_field" class="sr-only">Search</label>
-                        <div class="relative w-full text-gray-400 focus-within:text-gray-600">
-                          <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none">
+    <!-- END Stylesheets -->
+</head>
+<body>
+{#{% include '/user/includes/mobile.html' ignore missing %}#}
+<div class="bg-gray-100" style="height:100vh;overflow-y:hidden;">
+    {% with page='dashboard' %}{% include '/user/includes/main_header.html' ignore missing %}{% endwith %}
+    <div class="relative z-10 flex-shrink-0 flex h-16 bg-white shadow">
+        <button class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:bg-gray-100 focus:text-gray-600 md:hidden"
+                aria-label="Open sidebar" onclick="OpenSidebar()">
+            <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"/>
+            </svg>
+        </button>
+        <div class="flex-1 px-4 flex justify-between">
+            <div class="flex-1 flex">
+                <div class="w-full flex md:ml-0">
+                    <label for="search_field" class="sr-only">Search</label>
+                    <div class="relative w-full text-gray-400 focus-within:text-gray-600">
+                        <div class="absolute inset-y-0 left-0 flex items-center pointer-events-none">
                             <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                              <path fill-rule="evenodd" clip-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" />
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                      d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"/>
                             </svg>
-                          </div>
-                          <input id="search_field" class="block w-full h-full pl-8 pr-3 py-2 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 sm:text-sm" placeholder="Search products" type="search" onkeyup="SearchProducts(this)" />
                         </div>
-                      </div>
+                        <input id="search_field"
+                               class="block w-full h-full pl-8 pr-3 py-2 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 sm:text-sm"
+                               placeholder="Search products" type="search" onkeyup="SearchProducts(this)"/>
                     </div>
-                  </div>
                 </div>
-                  <main class="flex-1 relative z-0 overflow-y-auto pb-6 focus:outline-none font-w400 mb-5" style="max-height:100%;">
-                    {{ flash.render() }}
-                    <div class="max-w-10xl mx-auto px-4 sm:px-6 md:px-8" style="height:80vh;">
-                        <!-- Replace with your content -->
-                        <div class="mt-5 mb-4 grid lg:grid-cols-4 sm:gap-1 lg:gap-5 sm:grid-cols-2 text-right">
-                            <div class="sm:col-span-2 lg:col-span-3 text-lg leading-5 font-medium py-3">
-                                <div id="search-results" class="text-gray-500 text-left" style="display:none">Showing results for: '<span id="search-term" class="text-gray-700"></span>'</div>
-                            </div>
-                            <div class="pull-right sm:col-span-2 lg:col-span-1">
-                                <div class="relative inline-block text-left">
-                                  <div>
+            </div>
+        </div>
+    </div>
+    <main class="flex-1 relative z-0 overflow-y-auto pb-6 focus:outline-none font-w400 mb-5" style="max-height:100%;">
+        {{ flash.render() }}
+        <div class="max-w-10xl mx-auto px-4 sm:px-6 md:px-8" style="height:80vh;">
+            <!-- Replace with your content -->
+            <div class="mt-5 mb-4 grid lg:grid-cols-4 sm:gap-1 lg:gap-5 sm:grid-cols-2 text-right">
+                <div class="sm:col-span-2 lg:col-span-3 text-lg leading-5 font-medium py-3">
+                    <div id="search-results" class="text-gray-500 text-left" style="display:none">Showing results for: '<span
+                            id="search-term" class="text-gray-700"></span>'
+                    </div>
+                </div>
+                <div class="pull-right sm:col-span-2 lg:col-span-1">
+                    <div class="relative inline-block text-left">
+                        <div>
                                     <span class="rounded-md shadow-sm">
-                                      <button id="sort-dropdown-button" type="button" onclick="ShowDropdown('sort-dropdown-menu');" class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
-                                        Sorted by: {% if s == 'alphabetical' %}Alphabetical{#{% elif s == 'price_lowest' %}Price (Lowest){% elif s == 'price_highest' %}Price (Highest)#}{% else %}Most recent{% endif %}
-                                        <svg class="-mr-1 ml-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                                          <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd"/>
+                                      <button id="sort-dropdown-button" type="button"
+                                              onclick="ShowDropdown('sort-dropdown-menu');"
+                                              class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
+                                        Sorted by: {% if s == 'alphabetical' %}Alphabetical
+                                          {#{% elif s == 'price_lowest' %}Price (Lowest){% elif s == 'price_highest' %}Price (Highest)#}{% else %}
+                                          Most recent{% endif %}
+                                          <svg class="-mr-1 ml-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+                                          <path fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd"/>
                                         </svg>
                                       </button>
                                     </span>
-                                  </div>
+                        </div>
 
-                                  <!--
-                                    Dropdown panel, show/hide based on dropdown state.
+                        <!--
+                          Dropdown panel, show/hide based on dropdown state.
 
-                                    Entering: "transition ease-out duration-100"
-                                      From: "transform opacity-0 scale-95"
-                                      To: "transform opacity-100 scale-100"
-                                    Leaving: "transition ease-in duration-75"
-                                      From: "transform opacity-100 scale-100"
-                                      To: "transform opacity-0 scale-95"
-                                  -->
-                                  <div id="sort-dropdown-menu" class="origin-top-right absolute right-0 w-56 rounded-md shadow-lg transform opacity-0 scale-95" style="z-index:999; display:none;">
-                                    <div class="rounded-md bg-white shadow-xs">
-                                      <div class="py-1">
-                                        <a href="{{ url_for('user.sort_products', s='newest') }}" class="block px-4 py-2 text-sm leading-5 {% if sort == 'newest' or not sort %}bg-indigo-100 text-indigo-600{% else %}text-gray-700{% endif %} hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 remove-margin">Most Recent</a>
-                                        <a href="{{ url_for('user.sort_products', s='alphabetical') }}" class="block px-4 py-2 text-sm leading-5 {% if sort == 'alphabetical' %}bg-indigo-100 text-indigo-600{% else %}text-gray-700{% endif %} hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 remove-margin">Alphabetical</a>
-{#                                        <a href="#" class="block px-4 py-2 text-sm leading-5 {% if sort == 'price_lowest' %}bg-indigo-100 text-indigo-600{% else %}text-gray-700{% endif %} hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 remove-margin">Price (Low -> High)</a>#}
-{#                                        <a href="#" class="block px-4 py-2 text-sm leading-5 {% if sort == 'price_highest' %}bg-indigo-100 text-indigo-600{% else %}text-gray-700{% endif %} hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 remove-margin">Price (High -> Low)</a>#}
-                                      </div>
-                                    </div>
-                                  </div>
+                          Entering: "transition ease-out duration-100"
+                            From: "transform opacity-0 scale-95"
+                            To: "transform opacity-100 scale-100"
+                          Leaving: "transition ease-in duration-75"
+                            From: "transform opacity-100 scale-100"
+                            To: "transform opacity-0 scale-95"
+                        -->
+                        <div id="sort-dropdown-menu"
+                             class="origin-top-right absolute right-0 w-56 rounded-md shadow-lg transform opacity-0 scale-95"
+                             style="z-index:999; display:none;">
+                            <div class="rounded-md bg-white shadow-xs">
+                                <div class="py-1">
+                                    <a href="{{ url_for('user.sort_products', s='newest') }}"
+                                       class="block px-4 py-2 text-sm leading-5 {% if sort == 'newest' or not sort %}bg-indigo-100 text-indigo-600{% else %}text-gray-700{% endif %} hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 remove-margin">Most
+                                        Recent</a>
+                                    <a href="{{ url_for('user.sort_products', s='alphabetical') }}"
+                                       class="block px-4 py-2 text-sm leading-5 {% if sort == 'alphabetical' %}bg-indigo-100 text-indigo-600{% else %}text-gray-700{% endif %} hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 remove-margin">Alphabetical</a>
+                                    {#                                        <a href="#" class="block px-4 py-2 text-sm leading-5 {% if sort == 'price_lowest' %}bg-indigo-100 text-indigo-600{% else %}text-gray-700{% endif %} hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 remove-margin">Price (Low -> High)</a>#}
+                                    {#                                        <a href="#" class="block px-4 py-2 text-sm leading-5 {% if sort == 'price_highest' %}bg-indigo-100 text-indigo-600{% else %}text-gray-700{% endif %} hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 remove-margin">Price (High -> Low)</a>#}
                                 </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
 
-                        <h1 class="mb-5 text-xl font-w700 text-gray-900">Products</h1>
-                        {% if products|length > 0 %}
-                        <div class="flex flex-col mb-5">
-                          <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                              <div class="shadow overflow-hidden border-gray-200 sm:rounded-lg" style="max-height:575px;">
+            <h1 class="mb-5 text-xl font-w700 text-gray-900">Products</h1>
+            {% if products|length > 0 %}
+                <div class="flex flex-col mb-5">
+                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                            <div class="shadow overflow-hidden border-gray-200 sm:rounded-lg" style="max-height:575px;">
                                 <table class="min-w-full divide-y divide-gray-200">
-                                  <thead>
+                                    <thead>
                                     <tr>
-                                      <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                        Title
-                                      </th>
-                                      <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                        Description
-                                      </th>
-                                      <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                        SKU
-                                      </th>
-                                      <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                        Options
-                                      </th>
-                                      <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                        Price
-                                      </th>
-                                      <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
-                                        Quantity
-                                      </th>
-                                      <th class="px-6 py-3 bg-gray-50"></th>
+                                        <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Title
+                                        </th>
+                                        <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Description
+                                        </th>
+                                        <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            SKU
+                                        </th>
+                                        <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Options
+                                        </th>
+                                        <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Price
+                                        </th>
+                                        <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider">
+                                            Quantity
+                                        </th>
+                                        <th class="px-6 py-3 bg-gray-50"></th>
                                     </tr>
-                                  </thead>
-                                  <tbody class="bg-white divide-y divide-gray-200">
+                                    </thead>
+                                    <tbody class="bg-white divide-y divide-gray-200">
                                     {% for product in products %}
-                                    <tr class="product-row">
-                                      <td class="px-6 py-4 whitespace-no-wrap" style="max-width:350px">
-                                        <div class="flex items-center">
-                                          <div class="flex-shrink-0 h-10 w-10">
-                                            <img class="h-10 w-10 rounded-full" src="{{ product['image']['src'] }}" alt="">
-                                          </div>
-                                          <div class="ml-4 truncate">
-                                            <div class="text-sm leading-5 font-medium text-gray-900 truncate">
-                                                {{ product.title }}
-                                            </div>
-                                            <div class="text-sm leading-5 text-gray-500">
-                                              {% if product['variants'] | any_filter('requires_shipping', true) %}
-                                                  Physical product
-                                              {% else %}
-                                                  Digital product
-                                              {% endif %}
-                                            </div>
-                                          </div>
-                                        </div>
-                                      </td>
-                                      <td class="px-6 py-4 whitespace-no-wrap" style="max-width:400px;">
-                                        <div class="text-sm leading-5 text-gray-500 truncate">{{ product['body_html'] }}</div>
-                                      </td>
-                                      <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                          {% for variant in product['variants'] %}
-                                            <div class="text-sm {% if not loop.last %}mb-2{% endif %} leading-5 text-gray-500">#{{ variant['sku'] }}</div>
-                                          {% endfor %}
-                                      </td>
-                                      <td class="px-6 py-4 whitespace-no-wrap">
-                                      {% if product['variants'] | any_filter('requires_shipping', true) %}
-                                          {% for variant in product['variants'] %}
-                                            <div class="text-sm {% if not loop.last %}mb-2{% endif %} leading-5 text-gray-500">{{ variant['option1'] }}</div>
-                                          {% endfor %}
-                                      {% else %}
-                                          <div class="text-sm leading-5 text-gray-500">N/A</div>
-                                      {% endif %}
-                                      </td>
-                                      <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                          {% for variant in product['variants'] %}
-                                            <div class="text-sm {% if not loop.last %}mb-2{% endif %} leading-5 text-gray-500">${{ variant['price'] }}</div>
-                                          {% endfor %}
-                                      </td>
-                                      <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
-                                      {% if product['variants'] | any_filter('requires_shipping', true) %}
-                                          {% for variant in product['variants'] %}
-                                            <div class="text-sm {% if not loop.last %}mb-2{% endif %} leading-5 text-gray-500">{{ variant['inventory_quantity'] }}</div>
-                                          {% endfor %}
-                                      {% else %}
-                                          <div class="text-sm leading-5 text-gray-500">N/A</div>
-                                      {% endif %}
-                                      </td>
-                                      <td class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
-                                        <a href="{{ url_for('user.product', product_id=product['id']) }}" class="text-indigo-600 hover:text-indigo-900">
-                                            <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
-                                                <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
-                                            </svg>
-                                        </a>
-                                      </td>
-                                    </tr>
+                                        <tr class="product-row">
+                                            <td class="px-6 py-4 whitespace-no-wrap" style="max-width:350px">
+                                                <div class="flex items-center">
+                                                    <div class="flex-shrink-0 h-10 w-10">
+                                                        <img class="h-10 w-10 rounded-full"
+                                                             src="{{ product['image']['src'] }}" alt="">
+                                                    </div>
+                                                    <div class="ml-4 truncate">
+                                                        <div class="text-sm leading-5 font-medium text-gray-900 truncate">
+                                                            {{ product.title }}
+                                                        </div>
+                                                        <div class="text-sm leading-5 text-gray-500">
+                                                            {% if product['variants'] | any_filter('requires_shipping', true) %}
+                                                                Physical product
+                                                            {% else %}
+                                                                Digital product
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap" style="max-width:400px;">
+                                                <div class="text-sm leading-5 text-gray-500 truncate">{{ product['body_html'] }}</div>
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                                                {% for variant in product['variants'] %}
+                                                    <div class="text-sm {% if not loop.last %}mb-2{% endif %} leading-5 text-gray-500">
+                                                        #{{ variant['sku'] }}</div>
+                                                {% endfor %}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap">
+                                                {% if product['variants'] | any_filter('requires_shipping', true) %}
+                                                    {% for variant in product['variants'] %}
+                                                        <div class="text-sm {% if not loop.last %}mb-2{% endif %} leading-5 text-gray-500">{{ variant['option1'] }}</div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <div class="text-sm leading-5 text-gray-500">N/A</div>
+                                                {% endif %}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                                                {% for variant in product['variants'] %}
+                                                    <div class="text-sm {% if not loop.last %}mb-2{% endif %} leading-5 text-gray-500">
+                                                        ${{ variant['price'] }}</div>
+                                                {% endfor %}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500">
+                                                {% if product['variants'] | any_filter('requires_shipping', true) %}
+                                                    {% for variant in product['variants'] %}
+                                                        <div class="text-sm {% if not loop.last %}mb-2{% endif %} leading-5 text-gray-500">{{ variant['inventory_quantity'] }}</div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <div class="text-sm leading-5 text-gray-500">N/A</div>
+                                                {% endif %}
+                                            </td>
+                                            <td class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium">
+                                                <a href="{{ url_for('user.product', product_id=product['id']) }}"
+                                                   class="text-indigo-600 hover:text-indigo-900">
+                                                    <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg"
+                                                         viewBox="0 0 20 20" fill="currentColor">
+                                                        <path fill-rule="evenodd"
+                                                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                                              clip-rule="evenodd"/>
+                                                    </svg>
+                                                </a>
+                                            </td>
+                                        </tr>
                                     {% endfor %}
-                                  </tbody>
+                                    </tbody>
                                 </table>
-                              </div>
-                              {% include '/user/includes/pagination.html' ignore missing %}
                             </div>
-                          </div>
+                            {% include '/user/includes/pagination.html' ignore missing %}
                         </div>
-                        {% else %}
-                            <div class="py-4 grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1 col-span-4">
-                              <div class="rounded-lg h-96 text-center" style="display:flex; align-items:center;">
-                                  <span class="inline-flex text-lg leading-5 font-medium text-gray-500" style="float:none;margin:0 auto;">
+                    </div>
+                </div>
+            {% else %}
+                <div class="py-4 grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1 col-span-4">
+                    <div class="rounded-lg h-96 text-center" style="display:flex; align-items:center;">
+                                  <span class="inline-flex text-lg leading-5 font-medium text-gray-500"
+                                        style="float:none;margin:0 auto;">
                                       There are no products.
                                   </span>
-                              </div>
-                            </div>
-                        {% endif %}
-                        <!-- /End replace -->
-                      </div>
-                  </main>
-            </div>
-        <!-- jQuery -->
-        <script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
+                    </div>
+                </div>
+            {% endif %}
+            <!-- /End replace -->
+        </div>
+    </main>
+</div>
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
 
-        <script>
-            function ShowDropdown(id) {
-                var dropdown = document.getElementById(id);
-                if (dropdown.classList.contains('opacity-0')){
-                    dropdown.classList.remove('opacity-0');
-                    dropdown.classList.remove('scale-95');
-                    dropdown.classList.add('opacity-100');
-                    dropdown.classList.add('scale-100');
+<script>
+    function ShowDropdown(id) {
+        var dropdown = document.getElementById(id);
+        if (dropdown.classList.contains('opacity-0')) {
+            dropdown.classList.remove('opacity-0');
+            dropdown.classList.remove('scale-95');
+            dropdown.classList.add('opacity-100');
+            dropdown.classList.add('scale-100');
 
-                    dropdown.style.display = '';
-                }
-                else {
-                    dropdown.classList.remove('opacity-100');
-                    dropdown.classList.remove('scale-100');
-                    dropdown.classList.add('opacity-0');
-                    dropdown.classList.add('scale-95');
+            dropdown.style.display = '';
+        } else {
+            dropdown.classList.remove('opacity-100');
+            dropdown.classList.remove('scale-100');
+            dropdown.classList.add('opacity-0');
+            dropdown.classList.add('scale-95');
 
-                    dropdown.style.display = 'none';
-                }
+            dropdown.style.display = 'none';
+        }
+    }
+
+    function ShowSuccessMessage() {
+        document.getElementById('success-message').style.display = '';
+        setTimeout(function () {
+            return true
+        }, 4000);
+    }
+
+    function ShowLoginModal(action, member_id) {
+        if ('{{ demo }}' === 'True') {
+            return false;
+        }
+
+        var login_overlay = document.getElementById('login-overlay-' + action);
+        login_overlay.style.display = '';
+        document.getElementById('member_id').value = member_id;
+
+        var login_overlay_modal = document.getElementById('login-overlay-modal');
+
+        if (login_overlay_modal !== null) {
+            login_overlay_modal.addEventListener("click", function () {
+                login_overlay.style.display = 'none';
+            }, false);
+        }
+    }
+
+
+    function SearchProducts(e) {
+        var input = '';
+        input += e.value;
+
+        var product_rows = document.getElementsByClassName('product-row');
+        document.getElementById('search-term').innerText = input;
+
+        for (var i = 0; i < product_rows.length; i++) {
+            var item = product_rows[i];
+            if (item.textContent.toLowerCase().includes(input.toLowerCase()) === false) {
+                item.style.display = 'none';
+            } else {
+                item.style.display = '';
             }
+        }
 
-            function ShowSuccessMessage(){
-                document.getElementById('success-message').style.display = '';
-                setTimeout(function() {return true}, 4000);
+        if (input) {
+            document.getElementById('search-results').style.display = '';
+        } else {
+            document.getElementById('search-results').style.display = 'none';
+        }
+    }
+
+    function TogglePrivacy() {
+        var public_toggle = document.getElementById('public-toggle');
+        var private_toggle = document.getElementById('private-toggle');
+        var privacy;
+
+        if (public_toggle.classList.contains('bg-green-400')) {
+            public_toggle.classList.remove('bg-green-400');
+            public_toggle.classList.add('bg-gray-200');
+
+            private_toggle.classList.remove('translate-x-5');
+            private_toggle.classList.add('translate-x-0');
+
+            privacy = false;
+        } else {
+            public_toggle.classList.remove('bg-gray-200');
+            public_toggle.classList.add('bg-green-400');
+
+            private_toggle.classList.remove('translate-x-0');
+            private_toggle.classList.add('translate-x-5');
+
+            privacy = true;
+        }
+
+        SetPrivacy(privacy, 'ricky')
+    }
+
+    function SetPrivacy(privacy, domain_id) {
+        var url = "#";
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {'domain_id': domain_id, 'privacy': privacy},
+            success: function (response) {
+            },
+            error: function (xhr) {
             }
+        });
+    }
+</script>
+<script>
+    var body = document.getElementsByTagName("body")[0];
+    var user_dropdown = document.getElementById('user-dropdown-menu');
+    var sort_dropdown = document.getElementById('sort-dropdown-menu');
+    var notification_dropdown = document.getElementById('notification-dropdown-menu');
+    var variant_dropdowns = document.getElementsByClassName('variant-dropdown');
+    var search_field = document.getElementById('search_field');
 
-            function ShowLoginModal(action, member_id){
-                if ('{{ demo }}' === 'True'){
-                    return false;
-                }
+    if (user_dropdown !== null) {
+        body.addEventListener("click", function () {
+            // Hide the user dropdown when you click outside of it
+            user_dropdown.classList.remove('opacity-100');
+            user_dropdown.classList.remove('scale-100');
+            user_dropdown.classList.add('opacity-0');
+            user_dropdown.classList.add('scale-95');
+            user_dropdown.style.display = 'none';
+        }, false);
+        document.getElementById('user-menu').addEventListener("click", function (ev) {
+            ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+        }, false);
+    }
 
-                var login_overlay = document.getElementById('login-overlay-' + action);
-                login_overlay.style.display = '';
-                document.getElementById('member_id').value = member_id;
+    if (sort_dropdown !== null) {
+        body.addEventListener("click", function () {
+            // Hide the sort dropdown when you click outside of it
+            sort_dropdown.classList.remove('opacity-100');
+            sort_dropdown.classList.remove('scale-100');
+            sort_dropdown.classList.add('opacity-0');
+            sort_dropdown.classList.add('scale-95');
+            sort_dropdown.style.display = 'none';
+        }, false);
+        document.getElementById('sort-dropdown-button').addEventListener("click", function (ev) {
+            ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+        }, false);
+    }
 
-                var login_overlay_modal = document.getElementById('login-overlay-modal');
+    if (notification_dropdown !== null) {
+        body.addEventListener("click", function () {
+            // Hide the user dropdown when you click outside of it
+            notification_dropdown.classList.remove('opacity-100');
+            notification_dropdown.classList.remove('scale-100');
+            notification_dropdown.classList.add('opacity-0');
+            notification_dropdown.classList.add('scale-95');
+            notification_dropdown.style.display = 'none';
+        }, false);
+        document.getElementById('notification-menu').addEventListener("click", function (ev) {
+            ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+        }, false);
+    }
 
-                if (login_overlay_modal !== null){
-                    login_overlay_modal.addEventListener("click", function () {
-                        login_overlay.style.display = 'none';
-                    }, false);
-                }
-            }
-
-
-
-            function SearchProducts(e){
-                var input = '';
-                input += e.value;
-
-                var product_rows = document.getElementsByClassName('product-row');
-                document.getElementById('search-term').innerText = input;
-
-                for (var i = 0; i < product_rows.length; i++) {
-                    var item = product_rows[i];
-                    if(item.textContent.toLowerCase().includes(input.toLowerCase()) === false){
-                        item.style.display = 'none';
-                    }
-                    else {
-                        item.style.display = '';
-                    }
-                }
-
-                if (input){
-                    document.getElementById('search-results').style.display = '';
-                }
-                else {
-                    document.getElementById('search-results').style.display = 'none';
-                }
-            }
-
-            function TogglePrivacy(){
-                var public_toggle = document.getElementById('public-toggle');
-                var private_toggle = document.getElementById('private-toggle');
-                var privacy;
-
-                if (public_toggle.classList.contains('bg-green-400')){
-                    public_toggle.classList.remove('bg-green-400');
-                    public_toggle.classList.add('bg-gray-200');
-
-                    private_toggle.classList.remove('translate-x-5');
-                    private_toggle.classList.add('translate-x-0');
-
-                    privacy = false;
-                }else{
-                    public_toggle.classList.remove('bg-gray-200');
-                    public_toggle.classList.add('bg-green-400');
-
-                    private_toggle.classList.remove('translate-x-0');
-                    private_toggle.classList.add('translate-x-5');
-
-                    privacy = true;
-                }
-
-                SetPrivacy(privacy, 'ricky')
-            }
-
-            function SetPrivacy(privacy, domain_id){
-                var url = "#";
-                $.ajax({
-                    url: url,
-                    type: 'POST',
-                    data: {'domain_id': domain_id, 'privacy': privacy},
-                    success: function (response) {
-                    },
-                    error: function (xhr) {
-                    }
-                });
-            }
-        </script>
-        <script>
-            var body = document.getElementsByTagName("body")[0];
-            var user_dropdown = document.getElementById('user-dropdown-menu');
-            var sort_dropdown = document.getElementById('sort-dropdown-menu');
-            var notification_dropdown = document.getElementById('notification-dropdown-menu');
-            var variant_dropdowns = document.getElementsByClassName('variant-dropdown');
-            var search_field = document.getElementById('search_field');
-
-            if (user_dropdown !== null){
-                body.addEventListener("click", function () {
-                    // Hide the user dropdown when you click outside of it
-                    user_dropdown.classList.remove('opacity-100');
-                    user_dropdown.classList.remove('scale-100');
-                    user_dropdown.classList.add('opacity-0');
-                    user_dropdown.classList.add('scale-95');
-                    user_dropdown.style.display = 'none';
-                }, false);
-                document.getElementById('user-menu').addEventListener("click", function (ev) {
-                    ev.stopPropagation(); //this is important! If removed, you'll get both alerts
-                }, false);
-            }
-
-            if (sort_dropdown !== null){
-                body.addEventListener("click", function () {
-                    // Hide the sort dropdown when you click outside of it
-                    sort_dropdown.classList.remove('opacity-100');
-                    sort_dropdown.classList.remove('scale-100');
-                    sort_dropdown.classList.add('opacity-0');
-                    sort_dropdown.classList.add('scale-95');
-                    sort_dropdown.style.display = 'none';
-                }, false);
-                document.getElementById('sort-dropdown-button').addEventListener("click", function (ev) {
-                    ev.stopPropagation(); //this is important! If removed, you'll get both alerts
-                }, false);
-            }
-
-            if (notification_dropdown !== null){
-                body.addEventListener("click", function () {
-                    // Hide the user dropdown when you click outside of it
-                    notification_dropdown.classList.remove('opacity-100');
-                    notification_dropdown.classList.remove('scale-100');
-                    notification_dropdown.classList.add('opacity-0');
-                    notification_dropdown.classList.add('scale-95');
-                    notification_dropdown.style.display = 'none';
-                }, false);
-                document.getElementById('notification-menu').addEventListener("click", function (ev) {
-                    ev.stopPropagation(); //this is important! If removed, you'll get both alerts
-                }, false);
-            }
-
-            {#if (search_field !== null){
-                search_field.addEventListener("change", function (e) {
-                    SearchProducts(e);
-                })
-            }#}
-        </script>
-    </body>
+    {#if (search_field !== null){
+        search_field.addEventListener("change", function (e) {
+            SearchProducts(e);
+        })
+    }#}
+</script>
+</body>
 </html>

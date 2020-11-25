@@ -1,132 +1,135 @@
 {% import 'macros/flash.html' as flash with context %}
 <!DOCTYPE html>
-<!--[if IE 9]>         <html class="ie9 no-focus" lang="en"> <![endif]-->
-<!--[if gt IE 9]><!--> <html class="no-focus" lang="en"> <!--<![endif]-->
-    <head>
-        <meta charset="utf-8">
+<!--[if IE 9]>
+<html class="ie9 no-focus" lang="en"> <![endif]-->
+<!--[if gt IE 9]><!-->
+<html class="no-focus" lang="en"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
 
-        <title>404 - {{ 'site_name'|site_name_filter }}</title>
+    <title>404 - {{ 'site_name'|site_name_filter }}</title>
 
-        <meta name="description" content="Recurrify - Subscriptions for your Shopify store">
-        <meta name="author" content="pixelcave">
-        <meta name="robots" content="noindex, nofollow">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <meta name="description" content="Recurrify - Subscriptions for your Shopify store">
+    <meta name="author" content="pixelcave">
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
 
-        <!-- Icons -->
-        <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
-        <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico') }}">
+    <!-- Icons -->
+    <!-- The following icons can be replaced with your own, they are used by desktop and mobile browsers -->
+    <link rel="shortcut icon" href="{{ url_for('static', filename='logo/favicon.ico') }}">
 
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="96x96">
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="160x160">
-        <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="192x192">
-        <!-- END Icons -->
-        <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">
-        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="96x96">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="160x160">
+    <link rel="icon" type="image/png" href="../../../../static/logo/logo.png" sizes="192x192">
+    <!-- END Icons -->
+    <link href="https://fonts.googleapis.com/css?family=Baloo+Bhaina+2" rel="stylesheet">
+    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
 
-        <!-- Tailwind CSS -->
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
 
-        <!-- END Stylesheets -->
-    </head>
-    <body>
-        {#{% include '/user/includes/mobile.html' ignore missing %}#}
-            <div class="bg-gray-100" style="height:100vh;">
-              {% with page='dashboard' %}{% include '/user/includes/main_header.html' ignore missing %}{% endwith %}
-                  <main class="flex-1 relative z-0 overflow-y-auto py-6 focus:outline-none font-w400" style="height:auto;">
-                    <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8" style="height:80vh;">
-                        <!-- Replace with your content -->
-                        <div class="py-4 text-center">
-                          <div class="rounded-lg h-96 text-center" style="display:flex; align-items:center;">
-                              <img class="h-96 block" src="{{ url_for('static', filename='images/404.png') }}" style="float:none; margin:auto;display:block;" /><br />
-                          </div>
-                            <span class="text-center rounded-md text-gray-400" style="float:none;margin:0 auto;font-size:24px;">
-                                <span style="clear:both">Sorry, the page you're looking for doesn't exist!<br />
+    <!-- END Stylesheets -->
+</head>
+<body>
+{#{% include '/user/includes/mobile.html' ignore missing %}#}
+<div class="bg-gray-100" style="height:100vh;">
+    {% with page='dashboard' %}{% include '/user/includes/main_header.html' ignore missing %}{% endwith %}
+    <main class="flex-1 relative z-0 overflow-y-auto py-6 focus:outline-none font-w400" style="height:auto;">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-8" style="height:80vh;">
+            <!-- Replace with your content -->
+            <div class="py-4 text-center">
+                <div class="rounded-lg h-96 text-center" style="display:flex; align-items:center;">
+                    <img class="h-96 block" src="{{ url_for('static', filename='images/404.png') }}"
+                         style="float:none; margin:auto;display:block;"/><br/>
+                </div>
+                <span class="text-center rounded-md text-gray-400" style="float:none;margin:0 auto;font-size:24px;">
+                                <span style="clear:both">Sorry, the page you're looking for doesn't exist!<br/>
                                     <span style="font-size:18px;">
-                                        Please click <a href="{{ url_for('user.dashboard') }}"><span class="text-indigo-600">here</span></a> to return to the dashboard.
+                                        Please click <a href="{{ url_for('user.dashboard') }}"><span
+                                            class="text-indigo-600">here</span></a> to return to the dashboard.
                                     </span>
                                 </span>
                             </span>
-                        </div>
-                        <!-- /End replace -->
-                      </div>
-                  </main>
             </div>
+            <!-- /End replace -->
+        </div>
+    </main>
+</div>
 
 
-        <!-- jQuery -->
-        <script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
+<!-- jQuery -->
+<script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
 
-        <script>
-            function ShowDropdown(id) {
-                var dropdown = document.getElementById(id);
-                if (dropdown.classList.contains('opacity-0')){
-                    dropdown.classList.remove('opacity-0');
-                    dropdown.classList.remove('scale-95');
-                    dropdown.classList.add('opacity-100');
-                    dropdown.classList.add('scale-100');
+<script>
+    function ShowDropdown(id) {
+        var dropdown = document.getElementById(id);
+        if (dropdown.classList.contains('opacity-0')) {
+            dropdown.classList.remove('opacity-0');
+            dropdown.classList.remove('scale-95');
+            dropdown.classList.add('opacity-100');
+            dropdown.classList.add('scale-100');
 
-                    dropdown.style.display = '';
-                }
-                else {
-                    dropdown.classList.remove('opacity-100');
-                    dropdown.classList.remove('scale-100');
-                    dropdown.classList.add('opacity-0');
-                    dropdown.classList.add('scale-95');
+            dropdown.style.display = '';
+        } else {
+            dropdown.classList.remove('opacity-100');
+            dropdown.classList.remove('scale-100');
+            dropdown.classList.add('opacity-0');
+            dropdown.classList.add('scale-95');
 
-                    dropdown.style.display = 'none';
-                }
-            }
-        </script>
-        <script>
-            var body = document.getElementsByTagName("body")[0];
-            var user_dropdown = document.getElementById('user-dropdown-menu');
-            var sort_dropdown = document.getElementById('sort-dropdown-menu');
-            var notification_dropdown = document.getElementById('notification-dropdown-menu');
+            dropdown.style.display = 'none';
+        }
+    }
+</script>
+<script>
+    var body = document.getElementsByTagName("body")[0];
+    var user_dropdown = document.getElementById('user-dropdown-menu');
+    var sort_dropdown = document.getElementById('sort-dropdown-menu');
+    var notification_dropdown = document.getElementById('notification-dropdown-menu');
 
-            if (user_dropdown !== null){
-                body.addEventListener("click", function () {
-                    // Hide the user dropdown when you click outside of it
-                    user_dropdown.classList.remove('opacity-100');
-                    user_dropdown.classList.remove('scale-100');
-                    user_dropdown.classList.add('opacity-0');
-                    user_dropdown.classList.add('scale-95');
-                    user_dropdown.style.display = 'none';
-                }, false);
-                document.getElementById('user-menu').addEventListener("click", function (ev) {
-                    ev.stopPropagation(); //this is important! If removed, you'll get both alerts
-                }, false);
-            }
+    if (user_dropdown !== null) {
+        body.addEventListener("click", function () {
+            // Hide the user dropdown when you click outside of it
+            user_dropdown.classList.remove('opacity-100');
+            user_dropdown.classList.remove('scale-100');
+            user_dropdown.classList.add('opacity-0');
+            user_dropdown.classList.add('scale-95');
+            user_dropdown.style.display = 'none';
+        }, false);
+        document.getElementById('user-menu').addEventListener("click", function (ev) {
+            ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+        }, false);
+    }
 
-            if (sort_dropdown !== null){
-                body.addEventListener("click", function () {
-                    // Hide the sort dropdown when you click outside of it
-                    sort_dropdown.classList.remove('opacity-100');
-                    sort_dropdown.classList.remove('scale-100');
-                    sort_dropdown.classList.add('opacity-0');
-                    sort_dropdown.classList.add('scale-95');
-                    sort_dropdown.style.display = 'none';
-                }, false);
-                document.getElementById('sort-dropdown-button').addEventListener("click", function (ev) {
-                    ev.stopPropagation(); //this is important! If removed, you'll get both alerts
-                }, false);
-            }
+    if (sort_dropdown !== null) {
+        body.addEventListener("click", function () {
+            // Hide the sort dropdown when you click outside of it
+            sort_dropdown.classList.remove('opacity-100');
+            sort_dropdown.classList.remove('scale-100');
+            sort_dropdown.classList.add('opacity-0');
+            sort_dropdown.classList.add('scale-95');
+            sort_dropdown.style.display = 'none';
+        }, false);
+        document.getElementById('sort-dropdown-button').addEventListener("click", function (ev) {
+            ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+        }, false);
+    }
 
-            if (notification_dropdown !== null){
-                body.addEventListener("click", function () {
-                    // Hide the user dropdown when you click outside of it
-                    notification_dropdown.classList.remove('opacity-100');
-                    notification_dropdown.classList.remove('scale-100');
-                    notification_dropdown.classList.add('opacity-0');
-                    notification_dropdown.classList.add('scale-95');
-                    notification_dropdown.style.display = 'none';
-                }, false);
-                document.getElementById('notification-menu').addEventListener("click", function (ev) {
-                    ev.stopPropagation(); //this is important! If removed, you'll get both alerts
-                }, false);
-            }
-        </script>
-    </body>
+    if (notification_dropdown !== null) {
+        body.addEventListener("click", function () {
+            // Hide the user dropdown when you click outside of it
+            notification_dropdown.classList.remove('opacity-100');
+            notification_dropdown.classList.remove('scale-100');
+            notification_dropdown.classList.add('opacity-0');
+            notification_dropdown.classList.add('scale-95');
+            notification_dropdown.style.display = 'none';
+        }, false);
+        document.getElementById('notification-menu').addEventListener("click", function (ev) {
+            ev.stopPropagation(); //this is important! If removed, you'll get both alerts
+        }, false);
+    }
+</script>
+</body>
 </html>

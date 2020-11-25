@@ -4,47 +4,49 @@
 {% block title %}Login - {{ 'site_name'|site_name_filter }}{% endblock %}
 
 {% block body %}
-<head>
-    <!-- Tailwind CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
+    <head>
+        <!-- Tailwind CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tailwindcss/ui@latest/dist/tailwind-ui.min.css">
 
-    <!-- Icons -->
-    <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
-</head>
-  <div class="row">
-    <div class="block-content" style="width:50%;min-width:300px;max-width:350px;margin:0 auto;
+        <!-- Icons -->
+        <link rel=stylesheet type=text/css href="{{ url_for('static', filename='icons/styles.css') }}">
+    </head>
+    <div class="row">
+        <div class="block-content" style="width:50%;min-width:300px;max-width:350px;margin:0 auto;
     border:1px solid #c5c5c5;border-radius:4px; padding:20px;float:none;margin-top:50px; background-color:#fff;">
-    {% call f.form_tag('user.login') %}
-        <legend>Log in</legend>
+            {% call f.form_tag('user.login') %}
+                <legend>Log in</legend>
 
-        {% call f.form_group(form.identity, css_class='sm-margin-bottom', placeholder="Username or email",
+                {% call f.form_group(form.identity, css_class='sm-margin-bottom', placeholder="Username or email",
                              autofocus='autofocus') %}
-        {% endcall %}
+                {% endcall %}
 
-        {% call f.form_group(form.password, css_class='sm-margin-bottom', placeholder="Password") %}
-        {% endcall %}
+                {% call f.form_group(form.password, css_class='sm-margin-bottom', placeholder="Password") %}
+                {% endcall %}
 
-        <div class="row">
-          <div class="col-md-6">
-            <button type="submit" class="btn btn-block bg-indigo-500 text-white-800">
-                <span style="color:white">Log In</span>
-            </button>
-          </div>
-          <div class="col-md-6">
-            <div class="visible-xs visible-sm sm-margin-top"></div>
-            <a href="{{ url_for('user.signup') }}"
-               class="btn btn-default btn-block">
-              Sign Up
-            </a>
-          </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <button type="submit" class="btn btn-block bg-indigo-500 text-white-800">
+                            <span style="color:white">Log In</span>
+                        </button>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="visible-xs visible-sm sm-margin-top"></div>
+                        <a href="{{ url_for('user.signup') }}"
+                           class="btn btn-default btn-block">
+                            Sign Up
+                        </a>
+                    </div>
+                </div>
+            {% endcall %}
+            <div class="text-center md-margin-top">
+                <a href="{{ url_for('user.begin_password_reset') }}" class="text-muted">
+                    Forgot your password?
+                </a>
+            </div>
+            <br/>
+            <small>By logging in you agree to our <a href="{{ url_for('page.privacy') }}">Privacy Policy</a> and <a
+                    href="{{ url_for('page.terms') }}">Terms of Service</a></small>
         </div>
-      {% endcall %}
-      <div class="text-center md-margin-top">
-        <a href="{{ url_for('user.begin_password_reset') }}" class="text-muted">
-          Forgot your password?
-        </a>
-      </div><br />
-        <small>By logging in you agree to our <a href="{{ url_for('page.privacy') }}">Privacy Policy</a> and <a href="{{ url_for('page.terms') }}">Terms of Service</a></small>
     </div>
-  </div>
 {% endblock %}

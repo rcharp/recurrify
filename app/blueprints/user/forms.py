@@ -53,7 +53,7 @@ class SignupForm(ModelForm):
     # confirm = PasswordField("Repeat Password", [DataRequired(), EqualTo("password", message="Passwords don't match!"), Length(8, 128)])
 
 
-class SignupFormStoreOwner(ModelForm):
+class SignupFormSourceStore(ModelForm):
     # name = StringField(validators=[
     #     DataRequired()
     # ])
@@ -67,10 +67,22 @@ class SignupFormStoreOwner(ModelForm):
     ])
 
     password = PasswordField('Create a password', [DataRequired(), Length(8, 128)])
+
     # confirm = PasswordField("Repeat Password", [DataRequired(), EqualTo("password", message="Passwords don't match!"), Length(8, 128)])
 
+
+class SignupFormDestinationStore(ModelForm):
+    url = StringField('Store URL')
+
+    email = EmailField(validators=[
+        DataRequired(),
+        Email()
+    ])
+
+    password = PasswordField('Create a password', [DataRequired(), Length(8, 128)])
+
     def __init__(self, *args, **kwargs):
-        super(SignupFormStoreOwner, self).__init__(*args, **kwargs)
+        super(SignupFormDestinationStore, self).__init__(*args, **kwargs)
         read_only(self.url)
 
 

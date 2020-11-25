@@ -1,11 +1,11 @@
 from flask import (
-  Blueprint,
-  current_app,
-  render_template,
-  url_for,
-  request,
-  redirect,
-  flash,
+    Blueprint,
+    current_app,
+    render_template,
+    url_for,
+    request,
+    redirect,
+    flash,
 )
 
 from flask_login import login_required, current_user, logout_user
@@ -59,9 +59,9 @@ def create():
         if form.validate_on_submit():
             subscription = Subscription()
             created = subscription.create(user=current_user,
-                                        name=request.form.get('name'),
-                                        plan=request.form.get('plan'),
-                                        token=request.form.get('stripe_token'))
+                                          name=request.form.get('name'),
+                                          plan=request.form.get('plan'),
+                                          token=request.form.get('stripe_token'))
 
             print(created)
 
@@ -82,7 +82,7 @@ def create():
             return redirect(url_for('user.dashboard'))
 
         return render_template('billing/payment_method.html',
-                            form=form, plan=subscription_plan)
+                               form=form, plan=subscription_plan)
     except Exception as e:
 
         flash('There was an error. We weren\'t able to subscribe you to a plan at this time.', 'error')
@@ -113,8 +113,8 @@ def update():
         if form.validate_on_submit():
             subscription = Subscription()
             updated = subscription.update(user=current_user,
-                                        coupon=request.form.get('coupon_code'),
-                                        plan=plan.get('id'))
+                                          coupon=request.form.get('coupon_code'),
+                                          plan=plan.get('id'))
 
             if updated:
                 from app.blueprints.billing.billing_functions import change_limits
@@ -127,9 +127,9 @@ def update():
                 return redirect(url_for('user.dashboard'))
 
         return render_template('billing/pricing.html',
-                            form=form,
-                            plans=settings.STRIPE_PLANS,
-                            active_plan=active_plan)
+                               form=form,
+                               plans=settings.STRIPE_PLANS,
+                               active_plan=active_plan)
     except Exception as e:
 
         flash('There was an error. We weren\'t able to change your plan at this time.', 'error')
@@ -156,7 +156,6 @@ def cancel():
                 canceled = subscription.cancel(user=current_user)
 
             if canceled:
-
                 # Set the user to inactive
                 from app.blueprints.base.functions import set_inactive
                 set_inactive(current_user)

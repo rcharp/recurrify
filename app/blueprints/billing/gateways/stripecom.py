@@ -51,6 +51,7 @@ class Customer(object):
 
         return stripe.Customer.create(**params)
 
+
 # class Coupon(object):
 #     @classmethod
 #     def create(cls, code=None, duration=None, amount_off=None,

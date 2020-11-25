@@ -10,7 +10,6 @@ from app.extensions import cache, db
 from app.app import create_celery_app
 from app.blueprints.user.models.user import User
 
-
 celery = create_celery_app()
 
 send = True
@@ -83,5 +82,3 @@ def send_cancel_email(email):
     if send:
         send_cancel_email(email)
     return
-
-

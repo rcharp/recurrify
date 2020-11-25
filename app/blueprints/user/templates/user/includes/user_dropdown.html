@@ -1,90 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
-     <!-- Notifications -->
-     <span class="inline-block relative">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<!-- Notifications -->
+<span class="inline-block relative">
         <div>
-            <button id="notification-menu" class="p-1 border-2 border-transparent text-indigo-300 rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-indigo-600" aria-label="Notifications" onclick="ShowDropdown('notification-dropdown-menu');">
+            <button id="notification-menu"
+                    class="p-1 border-2 border-transparent text-indigo-300 rounded-full hover:text-white focus:outline-none focus:text-white focus:bg-indigo-600"
+                    aria-label="Notifications" onclick="ShowDropdown('notification-dropdown-menu');">
               <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                      d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
               </svg>
-              {% if new_feedback|length > 0 %}<span class="absolute top-1 right-1 block h-2 w-2 transform -translate-y-1/2 translate-x-1/2 rounded-full text-white shadow-solid bg-red-600"></span>{% endif %}
+                {% if new_feedback|length > 0 %}
+                    <span class="absolute top-1 right-1 block h-2 w-2 transform -translate-y-1/2 translate-x-1/2 rounded-full text-white shadow-solid bg-red-600"></span>{% endif %}
             </button>
         </div>
 
-        <div id="notification-dropdown-menu" class="origin-top-right absolute right-0 mt-2 w-100 rounded-md shadow-lg transform opacity-0 scale-95" style="display:none; z-index:999;width:300px;">
-          <div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical" aria-labelledby="notification-menu" style="padding:10px;">
+        <div id="notification-dropdown-menu"
+             class="origin-top-right absolute right-0 mt-2 w-100 rounded-md shadow-lg transform opacity-0 scale-95"
+             style="display:none; z-index:999;width:300px;">
+          <div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical"
+               aria-labelledby="notification-menu" style="padding:10px;">
             <span class="text-sm font-medium leading-none text-gray-500 ml-5">
                 You have no new notifications.
             </span>
           </div>
         </div>
      </span>
-      <!-- Profile dropdown -->
-      <div class="ml-3 relative">
-        <div>
-          <button class="max-w-xs flex items-center text-sm rounded-full focus:outline-none focus:shadow-outline" id="user-menu" aria-label="User menu" aria-haspopup="true" onclick="ShowDropdown('user-dropdown-menu');">
+<!-- Profile dropdown -->
+<div class="ml-3 relative">
+    <div>
+        <button class="max-w-xs flex items-center text-sm rounded-full focus:outline-none focus:shadow-outline"
+                id="user-menu" aria-label="User menu" aria-haspopup="true"
+                onclick="ShowDropdown('user-dropdown-menu');">
               <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-gray-200">
                   {% if current_user.name %}
-                    <span class="text-sm font-medium leading-none text-gray-500">{{ current_user.name|initial_filter }}</span>
+                      <span class="text-sm font-medium leading-none text-gray-500">{{ current_user.name|initial_filter }}</span>
                   {% else %}
-                    <i class="si si-user"></i>
+                      <i class="si si-user"></i>
                   {% endif %}
               </span>
-          </button>
-        </div>
-        <!--
-          Profile dropdown panel, show/hide based on dropdown state.
+        </button>
+    </div>
+    <!--
+      Profile dropdown panel, show/hide based on dropdown state.
 
-          Entering: "transition ease-out duration-100"
-            From: "transform opacity-0 scale-95"
-            To: "transform opacity-100 scale-100"
-          Leaving: "transition ease-in duration-75"
-            From: "transform opacity-100 scale-100"
-            To: "transform opacity-0 scale-95"
-        -->
-        <div id="user-dropdown-menu" class="origin-top-right absolute right-0 mt-2 w-100 rounded-md shadow-lg transform opacity-0 scale-95" style="display:none; z-index:999;width:300px;">
-          <div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
-                <div class="px-4 py-3">
-                    <p class="text-sm leading-5 font-medium text-gray-900 truncate">
-                        {% if current_user.is_authenticated and current_user.name %}
-                            {{ current_user.name|title }}{% if current_user.role == 'owner' %} (Owner){% endif %}<br />
-                        {% endif %}
-                        {{ current_user.email }}
-                    </p>
-                </div>
+      Entering: "transition ease-out duration-100"
+        From: "transform opacity-0 scale-95"
+        To: "transform opacity-100 scale-100"
+      Leaving: "transition ease-in duration-75"
+        From: "transform opacity-100 scale-100"
+        To: "transform opacity-0 scale-95"
+    -->
+    <div id="user-dropdown-menu"
+         class="origin-top-right absolute right-0 mt-2 w-100 rounded-md shadow-lg transform opacity-0 scale-95"
+         style="display:none; z-index:999;width:300px;">
+        <div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical"
+             aria-labelledby="user-menu">
+            <div class="px-4 py-3">
+                <p class="text-sm leading-5 font-medium text-gray-900 truncate">
+                    {% if current_user.is_authenticated and current_user.name %}
+                        {{ current_user.name|title }}{% if current_user.role == 'owner' %} (Owner){% endif %}<br/>
+                    {% endif %}
+                    {{ current_user.email }}
+                </p>
+            </div>
             <div class="border-t border-gray-100"></div>
-            <a href="{{ url_for('user.settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin" role="menuitem"><i class="si si-settings mr-2"></i>Settings</a>
-            <a href="{{ url_for('user.contact') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin" role="menuitem"><i class="si si-bubble mr-2"></i>Contact us</a>
-            <a href="{{ url_for('user.logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin" role="menuitem"><i class="si si-logout mr-2"></i>Sign out</a>
-          </div>
+            <a href="{{ url_for('user.settings') }}"
+               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin"
+               role="menuitem"><i class="si si-settings mr-2"></i>Settings</a>
+            <a href="{{ url_for('user.contact') }}"
+               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin"
+               role="menuitem"><i class="si si-bubble mr-2"></i>Contact us</a>
+            <a href="{{ url_for('user.logout') }}"
+               class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 transition ease-in-out duration-150 remove-margin"
+               role="menuitem"><i class="si si-logout mr-2"></i>Sign out</a>
         </div>
-      </div>
+    </div>
+</div>
 
-        <script>
-            function ShowInviteModal() {
-                var overlay = document.getElementById('invite-modal-overlay');
-                var panel = document.getElementById('invite-modal-panel');
+<script>
+    function ShowInviteModal() {
+        var overlay = document.getElementById('invite-modal-overlay');
+        var panel = document.getElementById('invite-modal-panel');
 
-                if (overlay.classList.contains('opacity-0')){
-                    overlay.classList.remove('opacity-0');
-                    overlay.classList.add('opacity-100');
+        if (overlay.classList.contains('opacity-0')) {
+            overlay.classList.remove('opacity-0');
+            overlay.classList.add('opacity-100');
 
-                    panel.classList.remove("opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95");
-                    panel.classList.add("opacity-100 translate-y-0 sm:scale-100");
-                }
-                else {
-                    overlay.classList.remove('opacity-100');
-                    overlay.classList.add('opacity-0');
+            panel.classList.remove("opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95");
+            panel.classList.add("opacity-100 translate-y-0 sm:scale-100");
+        } else {
+            overlay.classList.remove('opacity-100');
+            overlay.classList.add('opacity-0');
 
-                    panel.classList.remove("opacity-100 translate-y-0 sm:scale-100");
-                    panel.classList.add("opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95");
-                }
-            }
-        </script>
-    </body>
+            panel.classList.remove("opacity-100 translate-y-0 sm:scale-100");
+            panel.classList.add("opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95");
+        }
+    }
+</script>
+</body>
 </html>

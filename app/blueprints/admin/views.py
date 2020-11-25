@@ -141,7 +141,6 @@ def users_cancel_subscription():
 
     return redirect(url_for('admin.users'))
 
-
 # # Coupons ---------------------------------------------------------------------
 # @admin.route('/coupons', defaults={'page': 1})
 # @admin.route('/coupons/page/<int:page>')

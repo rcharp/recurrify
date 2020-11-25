@@ -6,8 +6,10 @@ from app.app import create_app
 from app.extensions import db
 from app.blueprints.base.functions import generate_id, generate_name, generate_private_key
 from app.blueprints.user.models.user import User
-from app.blueprints.shopify.models.membership import Membership
 from app.blueprints.shopify.models.product import Product
+from app.blueprints.shopify.models.plan import Plan
+from app.blueprints.shopify.models.shop import Shop
+from app.blueprints.shopify.models.sync import Sync
 
 # Create an app context for the database connection.
 app = create_app()
@@ -67,39 +69,52 @@ def seed_users():
         'name': 'Ricky Charpentier'
     }
 
-    for x in range(10):
-        member = {
-            'role': 'member',
-            'email': 'user' + str(x) + '@gmail.com',
-            'username': 'member' + str(x),
-            'password': app.config['SEED_ADMIN_PASSWORD'],
-            'name': generate_name()
-        }
-        User(**member).save()
+    # User(**owner).save()
 
     return User(**admin).save()
 
 
 @click.command()
-def seed_memberships():
+def seed_plans():
+    """
+    Seed the database with plans.
 
-    # Delete all existing memberships
-    # User.query.filter(User.role == 'member').delete()
+    :return: Plan instance
+    """
 
-    # Create new memberships
-    members = User.query.filter(User.role == 'member').all()
+    hobby = {
+        'title': 'Hobby',
+        'tag': 'hobby',
+        'limit': 100,
+        'price': 19
+    }
 
-    for member in members:
-        time.sleep(1)
-        membership = {
-            'membership_id': generate_id(Membership),
-            'shop_id': app.config['SHOPIFY_SHOP_ID'],
-            'member_id': member.id
-        }
+    startup = {
+        'title': 'Startup',
+        'tag': 'startup',
+        'limit': 500,
+        'price': 39
+    }
 
-        Membership(**membership).save()
+    business = {
+        'title': 'Business',
+        'tag': 'business',
+        'limit': 1000,
+        'price': 69
+    }
 
-    return
+    enterprise = {
+        'title': 'Enterprise',
+        'tag': 'enterprise',
+        'limit': 5000,
+        'price': 129
+    }
+
+    Plan(**hobby).save()
+    Plan(**startup).save()
+    Plan(**business).save()
+
+    return Plan(**enterprise).save()
 
 
 @click.command()
@@ -115,20 +130,7 @@ def reset(ctx, with_testdb):
     """
     ctx.invoke(init, with_testdb=with_testdb)
     ctx.invoke(seed_users)
-
-    return None
-
-
-@click.command()
-@click.pass_context
-def memberships(ctx):
-    """
-    Init and seed_users automatically.
-
-    :param with_testdb: Create a test database
-    :return: None
-    """
-    ctx.invoke(seed_memberships)
+    ctx.invoke(seed_plans)
 
     return None
 
@@ -149,5 +151,5 @@ def backup():
 
 cli.add_command(init)
 cli.add_command(seed_users)
+cli.add_command(seed_plans)
 cli.add_command(reset)
-cli.add_command(memberships)

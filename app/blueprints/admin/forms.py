@@ -2,25 +2,27 @@ from collections import OrderedDict
 
 from flask_wtf import Form
 from wtforms import (
-  SelectField,
-  StringField,
-  BooleanField,
-  IntegerField,
-  FloatField,
-  DateTimeField
+    SelectField,
+    StringField,
+    BooleanField,
+    IntegerField,
+    FloatField,
+    DateTimeField
 )
 from wtforms.validators import (
-  DataRequired,
-  Length,
-  Optional,
-  Regexp,
-  NumberRange
+    DataRequired,
+    Length,
+    Optional,
+    Regexp,
+    NumberRange
 )
 from wtforms_alchemy import Unique
 
 from lib.locale import Currency
 from lib.util_wtforms import ModelForm, choices_from_dict
 from app.blueprints.user.models.user import db, User
+
+
 # from app.blueprints.billing.models.coupon import Coupon
 
 
@@ -59,7 +61,6 @@ class UserForm(ModelForm):
 
 class UserCancelSubscriptionForm(Form):
     pass
-
 
 # class CouponForm(Form):
 #     percent_off = IntegerField('Percent off (%)', [Optional(),

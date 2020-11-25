@@ -9,25 +9,26 @@
 {% block meta_description %}Different plans for different needs.{% endblock %}
 
 {% block heading %}
-  {% if current_user.subscription %}
-    <h2 class="text-center" style="font-family:'Gotham', sans-serif !important; font-weight:200">You're about to change plans.</h2>
-{#    <div class="alert alert-danger text-center margin-bottom">#}
-{#      Note: If you downgrade from a higher plan to a lower one, all of your integrations will be deactivated and you'll have to reactivate the ones you want, up to the new limit.#}
-{#      <br /><b>Please be sure you want to do this.</b>#}
-{#    </div>#}
-    <div class="alert alert-warning text-center margin-bottom">
-      Your plan will change <strong>immediately</strong> after clicking
-      'Change plan'.
-    </div>
-  {% else %}
-    <h2 class="text-center">Choose a Plan</h2>
-    <h3 class="text-center text-muted">
-        Select the plan that best fits your needs.
-    </h3>
-    <h6 class="text-center text-muted lg-margin-bottom">
-        All plans come with a free 14-day trial. No credit card required.
-    </h6>
-  {% endif %}
+    {% if current_user.subscription %}
+        <h2 class="text-center" style="font-family:'Gotham', sans-serif !important; font-weight:200">You're about to
+            change plans.</h2>
+        {#    <div class="alert alert-danger text-center margin-bottom">#}
+        {#      Note: If you downgrade from a higher plan to a lower one, all of your integrations will be deactivated and you'll have to reactivate the ones you want, up to the new limit.#}
+        {#      <br /><b>Please be sure you want to do this.</b>#}
+        {#    </div>#}
+        <div class="alert alert-warning text-center margin-bottom">
+            Your plan will change <strong>immediately</strong> after clicking
+            'Change plan'.
+        </div>
+    {% else %}
+        <h2 class="text-center">Choose a Plan</h2>
+        <h3 class="text-center text-muted">
+            Select the plan that best fits your needs.
+        </h3>
+        <h6 class="text-center text-muted lg-margin-bottom">
+            All plans come with a free 14-day trial. No credit card required.
+        </h6>
+    {% endif %}
 {% endblock %}
 
 <!-- Original plan caller -->
@@ -93,50 +94,50 @@
 
 <!-- New plan caller -->
 {% block body %}
-  {% call f.form_tag('billing.update', class='text-center') %}
-      {% call billing.plan(plans['1']) %}
-        <dl>
-          <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
-            <dt class="text-sm leading-5 font-bold text-gray-500">
-              1
-            </dt>
-            <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-              admin account
-            </dd>
-          </div>
-          <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
-            <dt class="text-sm leading-5 font-bold text-gray-500">
-              1
-            </dt>
-            <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-              feedback dashboard
-            </dd>
-          </div>
-          <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
-            <dt class="text-sm leading-5 font-bold text-gray-500">
-              1
-            </dt>
-            <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-              public roadmap (coming soon)
-            </dd>
-          </div>
-          <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
-            <dt class="text-sm leading-5 font-bold text-gray-500">
-              500
-            </dt>
-            <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-              comments and votes
-            </dd>
-          </div>
-          <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
-            <dt class="text-sm leading-5 font-bold text-gray-500">
-              1
-            </dt>
-            <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-              embeddable widget to collect feedback from anywhere (coming soon)
-            </dd>
-          </div>
-        </dl>
-      {% endcall %}
-  {% endcall %}
+    {% call f.form_tag('billing.update', class='text-center') %}
+        {% call billing.plan(plans['1']) %}
+            <dl>
+                <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6 sm:py-5">
+                    <dt class="text-sm leading-5 font-bold text-gray-500">
+                        1
+                    </dt>
+                    <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                        admin account
+                    </dd>
+                </div>
+                <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                    <dt class="text-sm leading-5 font-bold text-gray-500">
+                        1
+                    </dt>
+                    <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                        feedback dashboard
+                    </dd>
+                </div>
+                <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                    <dt class="text-sm leading-5 font-bold text-gray-500">
+                        1
+                    </dt>
+                    <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                        public roadmap (coming soon)
+                    </dd>
+                </div>
+                <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                    <dt class="text-sm leading-5 font-bold text-gray-500">
+                        500
+                    </dt>
+                    <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                        comments and votes
+                    </dd>
+                </div>
+                <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                    <dt class="text-sm leading-5 font-bold text-gray-500">
+                        1
+                    </dt>
+                    <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                        embeddable widget to collect feedback from anywhere (coming soon)
+                    </dd>
+                </div>
+            </dl>
+        {% endcall %}
+    {% endcall %}
 {% endblock %}

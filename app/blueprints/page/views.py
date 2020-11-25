@@ -23,6 +23,7 @@ from app.blueprints.shopify.decorators import shopify_auth_required
 
 page = Blueprint('page', __name__, template_folder='templates')
 
+
 # ACCESS_TOKEN = None
 # NONCE = None
 # ACCESS_MODE = []  # Defaults to offline access mode if left blank or omitted. https://shopify.dev/concepts/about-apis/authentication#api-access-modes
@@ -121,7 +122,6 @@ def terms():
 @cross_origin()
 def privacy():
     return render_template('page/privacy.html')
-
 
 # @page.route('/index')
 # @cross_origin()

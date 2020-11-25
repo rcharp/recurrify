@@ -14,7 +14,6 @@ class Dashboard(object):
         """
         return Dashboard._group_and_count(User, User.role)
 
-
     @classmethod
     def group_and_count_coupons(cls):
         """

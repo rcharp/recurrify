@@ -7,7 +7,6 @@ from requests.exceptions import HTTPError
 
 from app.blueprints.shopify.config import SHOPIFY_SECRET, SHOPIFY_API_KEY
 
-
 SHOPIFY_API_VERSION = "2020-01"
 
 REQUEST_METHODS = {
@@ -41,7 +40,8 @@ class ShopifyStoreClient():
             logging.exception(ex)
             return None
 
-    def authenticated_shopify_call(self, call_path: str, method: str, params: dict = None, payload: dict = None, headers: dict = {}) -> dict:
+    def authenticated_shopify_call(self, call_path: str, method: str, params: dict = None, payload: dict = None,
+                                   headers: dict = {}) -> dict:
         url = f"{self.base_url}{call_path}"
         request_func = REQUEST_METHODS[method]
         headers['X-Shopify-Access-Token'] = self.access_token
@@ -130,7 +130,8 @@ class ShopifyStoreClient():
         # Broken currently,authenticated_shopify_call expects JSON but this returns nothing
         call_path = f'recurring_application_charges/{recurring_application_charge_id}.json'
         method = 'DEL'
-        delete_recurring_application_charge_response = self.authenticated_shopify_call(call_path=call_path, method=method)
+        delete_recurring_application_charge_response = self.authenticated_shopify_call(call_path=call_path,
+                                                                                       method=method)
         if delete_recurring_application_charge_response is None:
             return False
         return True
@@ -139,7 +140,9 @@ class ShopifyStoreClient():
         call_path = f'recurring_application_charges/{recurring_application_charge_id}/activate.json'
         method = 'POST'
         payload = {}
-        recurring_application_charge_activation_response = self.authenticated_shopify_call(call_path=call_path, method=method, payload=payload)
+        recurring_application_charge_activation_response = self.authenticated_shopify_call(call_path=call_path,
+                                                                                           method=method,
+                                                                                           payload=payload)
         if not recurring_application_charge_activation_response:
             return None
         return recurring_application_charge_activation_response['recurring_application_charge']

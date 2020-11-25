@@ -18,9 +18,10 @@ load_dotenv(find_dotenv())
 stripe.api_key = os.getenv('STRIPE_SECRET_KEY')
 stripe.api_version = os.getenv('STRIPE_API_VERSION')
 
-static_dir = str(os.path.abspath(os.path.join(__file__ , "..", os.getenv("STATIC_DIR"))))
+static_dir = str(os.path.abspath(os.path.join(__file__, "..", os.getenv("STATIC_DIR"))))
 app = Flask(__name__, static_folder=static_dir,
             static_url_path="", template_folder=static_dir)
+
 
 @app.route('/', methods=['GET'])
 def get_example():
@@ -75,7 +76,8 @@ def generate_response(intent):
     status = intent['status']
     if status == 'requires_action' or status == 'requires_source_action':
         # Card requires authentication
-        return jsonify({'requiresAction': True, 'paymentIntentId': intent['id'], 'clientSecret': intent['client_secret']})
+        return jsonify(
+            {'requiresAction': True, 'paymentIntentId': intent['id'], 'clientSecret': intent['client_secret']})
     elif status == 'requires_payment_method' or status == 'requires_source':
         # Card was not properly authenticated, suggest a new payment method
         return jsonify({'error': 'Your card was denied, please provide a new payment method'})

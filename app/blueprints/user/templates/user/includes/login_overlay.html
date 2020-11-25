@@ -1,99 +1,108 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Title</title>
-    </head>
-    <body>
-        <div class="fixed bottom-0 inset-x-0 px-4 pb-6 sm:inset-0 sm:p-0 sm:flex sm:items-center sm:justify-center">
-          <!--
-            Background overlay, show/hide based on modal state.
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="fixed bottom-0 inset-x-0 px-4 pb-6 sm:inset-0 sm:p-0 sm:flex sm:items-center sm:justify-center">
+    <!--
+      Background overlay, show/hide based on modal state.
 
-            Entering: "ease-out duration-300"
-              From: "opacity-0"
-              To: "opacity-100"
-            Leaving: "ease-in duration-200"
-              From: "opacity-100"
-              To: "opacity-0"
-          -->
-          <div id="login-overlay-modal" class="fixed inset-0 transition-opacity">
-            <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
-          </div>
+      Entering: "ease-out duration-300"
+        From: "opacity-0"
+        To: "opacity-100"
+      Leaving: "ease-in duration-200"
+        From: "opacity-100"
+        To: "opacity-0"
+    -->
+    <div id="login-overlay-modal" class="fixed inset-0 transition-opacity">
+        <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+    </div>
 
-          <!--
-            Modal panel, show/hide based on modal state.
+    <!--
+      Modal panel, show/hide based on modal state.
 
-            Entering: "ease-out duration-300"
-              From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              To: "opacity-100 translate-y-0 sm:scale-100"
-            Leaving: "ease-in duration-200"
-              From: "opacity-100 translate-y-0 sm:scale-100"
-              To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-          -->
-          <div id="login-overlay-box" class="bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6" role="dialog" aria-modal="true" aria-labelledby="modal-headline">
-            <div>
-              <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
+      Entering: "ease-out duration-300"
+        From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+        To: "opacity-100 translate-y-0 sm:scale-100"
+      Leaving: "ease-in duration-200"
+        From: "opacity-100 translate-y-0 sm:scale-100"
+        To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+    -->
+    <div id="login-overlay-box"
+         class="bg-white rounded-lg px-4 pt-5 pb-4 overflow-hidden shadow-xl transform transition-all sm:max-w-lg sm:w-full sm:p-6"
+         role="dialog" aria-modal="true" aria-labelledby="modal-headline">
+        <div>
+            <div class="mx-auto flex items-center justify-center h-12 w-12 rounded-full bg-green-100">
                 <i class="si si-lock text-green-600"></i>
-              </div>
-              <div class="mt-3 text-center sm:mt-5">
+            </div>
+            <div class="mt-3 text-center sm:mt-5">
                 <h3 class="text-lg leading-6 font-medium text-gray-900" id="modal-headline">
-                  You're not currently logged in.
+                    You're not currently logged in.
                 </h3>
                 <div class="mt-2">
-                  <p class="text-sm leading-5 text-gray-500 mb-4">
-                    In order to <span id="modal-action">vote or comment</span> on feedback, please leave your email address so that I know who left it.
-                  </p>
-                  <div class="mb-6">
-                      <form id="login-overlay-form">
-                          <div class="mt-1 relative rounded-md shadow-sm">
-                            <input type="hidden" id="feedback_id" name="feedback_id" value="" />
-                            <input id="login-overlay-email" name="login-overlay-email" type="email" autofocus="autofocus" required class="form-input block w-full sm:text-sm sm:leading-5" placeholder="you@example.com" />
-                          </div>
-                          <div class="text-center flex justify-center">
+                    <p class="text-sm leading-5 text-gray-500 mb-4">
+                        In order to <span id="modal-action">vote or comment</span> on feedback, please leave your email
+                        address so that I know who left it.
+                    </p>
+                    <div class="mb-6">
+                        <form id="login-overlay-form">
+                            <div class="mt-1 relative rounded-md shadow-sm">
+                                <input type="hidden" id="feedback_id" name="feedback_id" value=""/>
+                                <input id="login-overlay-email" name="login-overlay-email" type="email"
+                                       autofocus="autofocus" required
+                                       class="form-input block w-full sm:text-sm sm:leading-5"
+                                       placeholder="you@example.com"/>
+                            </div>
+                            <div class="text-center flex justify-center">
                               <span class="flex w-1/2 rounded-md shadow-sm sm:col-start-2 mt-4">
-                                <button type="submit" class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-indigo-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                                <button type="submit"
+                                        class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-indigo-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                                   <span id="modal-submit">Send vote</span>
                                 </button>
                               </span>
-                          </div>
-                      </form>
-                  </div>
-                  <hr class="mb-4" />
-                  <p class="text-sm leading-5 text-gray-500">
-                    If you already have an account, or would like to sign up, you can do that below.
-                  </p>
+                            </div>
+                        </form>
+                    </div>
+                    <hr class="mb-4"/>
+                    <p class="text-sm leading-5 text-gray-500">
+                        If you already have an account, or would like to sign up, you can do that below.
+                    </p>
                 </div>
-              </div>
             </div>
-            <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
+        </div>
+        <div class="mt-5 sm:mt-6 sm:grid sm:grid-cols-2 sm:gap-3 sm:grid-flow-row-dense">
               <span class="flex w-full rounded-md shadow-sm sm:col-start-2">
-                <a href="{{ url_for('user.signup') }}" type="button" class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-indigo-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+                <a href="{{ url_for('user.signup') }}" type="button"
+                   class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-indigo-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                   Sign up
                 </a>
               </span>
-              <span class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:col-start-1">
-                <a href="{{ url_for('user.login') }}" type="button" class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5">
+            <span class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:col-start-1">
+                <a href="{{ url_for('user.login') }}" type="button"
+                   class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5">
                   Log in
                 </a>
               </span>
-            </div>
-          </div>
         </div>
+    </div>
+</div>
 
-        <script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
+<script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
 
-        <script>
-            $(document).ready(function() {
-                // Don't submit the form normally
-                $('#login-overlay-form').submit(function(e){
-                    e.preventDefault(e);
-                });
+<script>
+    $(document).ready(function () {
+        // Don't submit the form normally
+        $('#login-overlay-form').submit(function (e) {
+            e.preventDefault(e);
+        });
 
-                // If there is an email in localStorage, fill the overlay box with that
-                if (localStorage.getItem("email") !== null && localStorage.getItem("email").includes('@')){
-                    document.getElementById('login-overlay-email').value = localStorage.getItem("email");
-                }
-            });
-        </script>
-    </body>
+        // If there is an email in localStorage, fill the overlay box with that
+        if (localStorage.getItem("email") !== null && localStorage.getItem("email").includes('@')) {
+            document.getElementById('login-overlay-email').value = localStorage.getItem("email");
+        }
+    });
+</script>
+</body>
 </html>

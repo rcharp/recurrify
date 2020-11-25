@@ -39,8 +39,10 @@ def install():
     s = shopify.Session(shop_url, api_version)
 
     scope = scopes()
+    r = url_for("shopify.finalize", _external=True, _scheme='https')
+
     permission_url = s.create_permission_url(
-        scope, url_for("shopify.finalize", _external=True, _scheme='https'))
+        scope, r)
 
     # Clear the session
     session.clear()
@@ -69,22 +71,22 @@ def finalize():
     result = rest_call(shop_url, 'shop', token)
 
     # Get the shop owner's email
-    shop_id = result['shop']['id'] if 'shop' in result and 'id' in result['shop'] else None
+    shopify_id = result['shop']['id'] if 'shop' in result and 'id' in result['shop'] else None
     email = result['shop']['email'] if 'shop' in result and 'email' in result['shop'] else None
 
-    if db.session.query(exists().where(and_(Shop.shop_id == shop_id, Shop.user_id is not None))).scalar():
+    if db.session.query(exists().where(and_(Shop.shopify_id == shopify_id, Shop.user_id is not None))).scalar():
         flash('There is already an account for this store. Please login or use a different store.', 'error')
-        return redirect(url_for('user.login'))
+        # return redirect(url_for('user.login'))
 
     # Add the shop to the database
-    shop = Shop(shop=shop_url, shop_id=shop_id, token=token)
-    db.session.add(shop)
-    db.session.commit()
+    shop = Shop(url=shop_url, shopify_id=shopify_id, token=token)
+    shop.save()
 
     # Set the session
     session['shopify_url'] = shop_url
     session['shopify_email'] = email
     session['shopify_token'] = token
-    session['shopify_id'] = shop_id
+    session['shopify_id'] = shopify_id
+    session['shop_id'] = shop.shop_id
 
     return redirect(url_for('user.signup'))

@@ -6,6 +6,7 @@ from sys import version as python_version
 from cgi import parse_header, parse_multipart
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from urllib.parse import parse_qs
+
 secret_key = "abcd1234"
 
 HOST_NAME = 'localhost'
@@ -31,7 +32,7 @@ class TestServerHandler(BaseHTTPRequestHandler):
             path = "embedjs.css"
         elif self.path == "/favicon.ico":
             return ""
-        
+
         self.end_headers()
         file = open(path, "r").read().encode('utf-8')
         self.wfile.write(file)
@@ -57,13 +58,13 @@ class TestServerHandler(BaseHTTPRequestHandler):
         elif ctype == 'application/x-www-form-urlencoded':
             length = int(self.headers['content-length'])
             postvars = parse_qs(
-                    self.rfile.read(length), 
-                    keep_blank_values=1)
+                self.rfile.read(length),
+                keep_blank_values=1)
         else:
             postvars = {}
-        postvars = {k.decode('utf-8'): v[0].decode('utf-8') for k,v in postvars.items()}
+        postvars = {k.decode('utf-8'): v[0].decode('utf-8') for k, v in postvars.items()}
         return postvars
-    
+
 
 if __name__ == '__main__':
     server_class = HTTPServer

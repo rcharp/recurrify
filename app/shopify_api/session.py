@@ -2,6 +2,7 @@ import time
 import hmac
 import json
 from hashlib import sha256
+
 try:
     import simplejson as json
 except ImportError:
@@ -12,8 +13,10 @@ from six.moves import urllib
 from shopify.api_version import ApiVersion, Release, Unstable
 import six
 
+
 class ValidationException(Exception):
     pass
+
 
 class Session(object):
     api_key = None
@@ -143,13 +146,14 @@ class Session(object):
         """
         Sort and combine query parameters into a single string, excluding those that should be removed and joining with '&'
         """
+
         def encoded_pairs(params):
             for k, v in six.iteritems(params):
                 if k == 'hmac':
                     continue
 
                 if k.endswith('[]'):
-                    #foo[]=1&foo[]=2 has to be transformed as foo=["1", "2"] note the whitespace after comma
+                    # foo[]=1&foo[]=2 has to be transformed as foo=["1", "2"] note the whitespace after comma
                     k = k.rstrip('[]')
                     v = json.dumps(list(map(str, v)))
 

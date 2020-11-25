@@ -44,7 +44,8 @@
                 <button class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:bg-gray-100 focus:text-gray-600 md:hidden"
                         aria-label="Open sidebar" onclick="OpenSidebar()">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h7"></path>
                     </svg>
                 </button>
                 <div class="flex-1 px-4 flex justify-between">
@@ -120,7 +121,7 @@
                                         Source store
                                     </dt>
                                     <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                        {{ shop.shop }}
+                                        {{ shop.url}}
                                     </dd>
                                 </div>
                                 <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
@@ -128,16 +129,16 @@
                                         Destination stores
                                     </dt>
                                     <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                    {% if destinations and destinations|length > 0 %}
-                                        {% for shop in destinations %}
-                                            {{ shop.shop }}
-                                        {% endfor %}
-                                    {% else %}
-                                        <a href="{{ url_for('user.sync') }}"
-                                             class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
-                                            Sync a store
-                                        </a>
-                                    {% endif %}
+                                        {% if destinations and destinations|length > 0 %}
+                                            {% for shop in destinations %}
+                                                {{ shop.url}}
+                                            {% endfor %}
+                                        {% else %}
+                                            <a href="{{ url_for('user.sync') }}"
+                                               class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm leading-5 font-medium rounded-md text-gray-700 bg-white hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:text-gray-800 active:bg-gray-50 transition ease-in-out duration-150">
+                                                Sync a store
+                                            </a>
+                                        {% endif %}
                                     </dd>
                                 </div>
                                 <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">

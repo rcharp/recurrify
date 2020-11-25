@@ -11,6 +11,7 @@ import six
 from shopify.collection import PaginatedCollection
 from pyactiveresource.collection import Collection
 
+
 # Store the response from the last request in the connection object
 
 
@@ -29,6 +30,7 @@ class ShopifyConnection(pyactiveresource.connection.Connection):
             self.response = err.response
             raise
         return self.response
+
 
 # Inherit from pyactiveresource's metaclass in order to use ShopifyConnection
 
@@ -154,7 +156,7 @@ class ShopifyResourceMeta(ResourceMeta):
         ShopifyResource._version = cls._threadlocal.version = value
 
     version = property(get_version, set_version, None,
-                      'Shopify Api Version')
+                       'Shopify Api Version')
 
     def get_url(cls):
         return getattr(cls._threadlocal, 'url', ShopifyResource._url)

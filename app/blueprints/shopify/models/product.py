@@ -5,7 +5,6 @@ from app.extensions import db
 
 
 class Product(ResourceMixin, db.Model):
-
     __tablename__ = 'products'
 
     # Objects.
@@ -18,7 +17,7 @@ class Product(ResourceMixin, db.Model):
 
     # Relationships.
     shop_id = db.Column(db.BigInteger, db.ForeignKey('shops.shop_id', onupdate='CASCADE', ondelete='CASCADE'),
-                           index=True, nullable=True, primary_key=False, unique=False)
+                        index=True, nullable=True, primary_key=False, unique=False)
 
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
@@ -37,7 +36,7 @@ class Product(ResourceMixin, db.Model):
         :return: User instance
         """
         return Product.query.filter(
-          (Product.id == identity).first())
+            (Product.id == identity).first())
 
     @classmethod
     def search(cls, query):

@@ -24,10 +24,11 @@ from app.blueprints.api.functions import deserialize_token
 from app.blueprints.billing import billing
 from app.blueprints.user.models.user import User
 from app.blueprints.errors import errors
-from app.blueprints.page.date import get_year_date_string, get_datetime_from_string, get_dt_string, is_date, format_datetime, format_datetime_string
+from app.blueprints.page.date import get_year_date_string, get_datetime_from_string, get_dt_string, is_date, \
+    format_datetime, format_datetime_string
 from app.blueprints.billing.template_processors import (
-  format_currency,
-  current_year
+    format_currency,
+    current_year
 )
 from app.extensions import (
     debug_toolbar,
@@ -38,7 +39,6 @@ from app.extensions import (
     cache,
     cors,
 )
-
 
 CELERY_TASK_LIST = [
     'app.blueprints.base.tasks',
@@ -92,7 +92,7 @@ def create_app(settings_override=None):
         app.config['REMEMBER_COOKIE_DOMAIN'] = '.recurrify.io'
     else:
         # Set the app server name
-        SERVER_NAME = '40bda0bbf155.ngrok.io'
+        SERVER_NAME = 'd2cb8f49d595.ngrok.io'
         # SERVER_NAME = 'local.dev'
         app.config['SERVER_NAME'] = SERVER_NAME
         app.config['REMEMBER_COOKIE_DOMAIN'] = '.' + SERVER_NAME
@@ -231,7 +231,7 @@ def authentication(app, user_model):
     def load_user(uid):
         return user_model.query.get(uid)
 
-    #@login_manager.token_loader
+    # @login_manager.token_loader
     def load_token(token):
         duration = app.config['REMEMBER_COOKIE_DURATION'].total_seconds()
         max = 999999999999
@@ -349,7 +349,7 @@ def list_filter(arg):
 
 def dict_filter(obj):
     return {c.key: getattr(obj, c.key) for c in inspect(obj).mapper.column_attrs}
-    #return [x.as_dict() for x in l]
+    # return [x.as_dict() for x in l]
 
 
 def today_filter(arg):
@@ -368,7 +368,7 @@ def site_version_filter(arg):
 
 def site_url_filter(arg):
     from flask import current_app
-    return current_app.config.get('SERVER_NAME') # 'recurrify.io'
+    return current_app.config.get('SERVER_NAME')  # 'recurrify.io'
 
 
 def site_color_filter(arg):

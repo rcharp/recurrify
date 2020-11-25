@@ -43,7 +43,8 @@
                 <button class="px-4 border-r border-gray-200 text-gray-500 focus:outline-none focus:bg-gray-100 focus:text-gray-600 md:hidden"
                         aria-label="Open sidebar" onclick="OpenSidebar()">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h7"></path>
                     </svg>
                 </button>
                 <div class="flex-1 px-4 flex justify-between">
@@ -72,67 +73,88 @@
                       Tailwind UI components require Tailwind CSS v1.8 and the @tailwindcss/ui plugin.
                       Read the documentation to get started: https://tailwindui.com/documentation
                     -->
-                    <form action="{{ url_for('user.setup_shop') }}" method="POST">
-                      <div class="rounded-lg bg-white border border-gray-200 pb-10 pl-7 pr-7">
-                        <div class="mt-3 sm:mt-5 sm:pt-5">
-                            <div>
-                              <div role="group" aria-labelledby="label-notifications">
-                                <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-baseline">
-                                  <div>
-                                    <div class="text-base leading-6 font-medium text-gray-900 sm:text-sm sm:leading-5 sm:text-gray-700" id="label-notifications">
-                                      Store type
-                                    </div>
-                                  </div>
-                                  <div class="sm:col-span-2">
-                                    <div class="max-w-lg">
-                                        <div class="flex items-center">
-                                          <input id="source_radio" checked name="store_type" value="source" type="radio" class="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out" style="cursor:pointer" onchange="EnableSourceURL(false)">
-                                          <label for="source_radio" class="ml-3">
-                                            <span class="block text-sm leading-5 font-medium text-gray-700">Source store</span>
-                                            <span class="block text-sm leading-5 font-medium text-gray-500">You are the main store that allows other stores to sell its products.</span>
-                                          </label>
+                    <form action="{{ url_for('user.create_sync') }}" method="POST">
+                        <div class="rounded-lg bg-white border border-gray-200 pb-10 pl-7 pr-7">
+                            <div class="mt-3 sm:mt-5 sm:pt-5">
+                                <div>
+                                    <div role="group" aria-labelledby="label-notifications">
+                                        <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-baseline">
+                                            <div>
+                                                <div class="text-base leading-6 font-medium text-gray-900 sm:text-sm sm:leading-5 sm:text-gray-700"
+                                                     id="label-notifications">
+                                                    Store type
+                                                </div>
+                                            </div>
+                                            <div class="sm:col-span-2">
+                                                <div class="max-w-lg">
+                                                    <div class="flex items-center">
+                                                        <input id="source_radio" checked name="store_type"
+                                                               value="source" type="radio"
+                                                               class="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                                                               style="cursor:pointer" onchange="ShowPendingSyncs(false)">
+                                                        <label for="source_radio" class="ml-3">
+                                                            <span class="block text-sm leading-5 font-medium text-gray-700">Source store</span>
+                                                            <span class="block text-sm leading-5 font-medium text-gray-500">You are the main store that allows other stores to sell its products.</span>
+                                                        </label>
+                                                    </div>
+                                                    <div class="mt-4 flex items-center">
+                                                        <input id="destination_radio" name="store_type" type="radio"
+                                                               value="destination"
+                                                               class="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out"
+                                                               style="cursor:pointer" onchange="ShowPendingSyncs(true)">
+                                                        <label for="destination_radio" class="ml-3">
+                                                            <span class="block text-sm leading-5 font-medium text-gray-700">Destination store</span>
+                                                            <span class="block text-sm leading-5 font-medium text-gray-500">You are a store that sells another store's products.</span>
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="mt-4 flex items-center">
-                                          <input id="destination_radio" name="store_type" type="radio" value="destination" class="form-radio h-4 w-4 text-indigo-600 transition duration-150 ease-in-out" style="cursor:pointer" onchange="EnableSourceURL(true)">
-                                          <label for="destination_radio" class="ml-3">
-                                            <span class="block text-sm leading-5 font-medium text-gray-700">Destination store</span>
-                                            <span class="block text-sm leading-5 font-medium text-gray-500">You are a store that sells another store's products.</span>
-                                          </label>
-                                        </div>
                                     </div>
-                                  </div>
                                 </div>
-                              </div>
+                            </div>
+
+                            <div id="sync_div" style="display:none">
+                                <div class="mt-6 sm:mt-5">
+                                    <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
+                                        <label for="source_url"
+                                               class="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2">
+                                            Pending syncs for this store:
+                                        </label>
+                                        <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                            {% if pending|length > 0 %}
+                                                {% for sync in pending %}
+                                                    <span id="pending_sync" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5">
+                                                        {{ sync.source_url }}
+                                                    </span>
+                                                    <span class="ml-3 inline-flex rounded-md shadow-sm">
+                                                        <button type="submit"
+                                                                class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                                                          Continue
+                                                        </button>
+                                                    </span>
+                                                {% endfor %}
+                                            {% else %}
+                                                <span class="mt-2 block text-sm leading-5 font-medium text-gray-500">There are no pending syncs for this store.</span>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div id="url_div" style="display:none">
-                          <div class="mt-6 sm:mt-5">
-                            <div class="sm:grid sm:grid-cols-3 sm:gap-4 sm:items-start sm:pt-5">
-                              <label for="source_url" class="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2">
-                                URL of source store to sync with
-                              </label>
-                              <div class="mt-1 sm:mt-0 sm:col-span-2">
-                                <div class="max-w-lg rounded-md shadow-sm sm:max-w-xs">
-                                  <input id="source_url" name="source_url" disabled placeholder="sourceurl.myshopify.com" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5">
-                                </div>
-                              </div>
+                        <input type="hidden" name="shop_id" value="{{ shop_id }}"/>
+
+                        <div class="mt-8 border-t border-gray-200 pt-5">
+                            <div class="flex justify-end">
+                              <span class="ml-3 inline-flex rounded-md shadow-sm">
+                                <button type="submit"
+                                        class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
+                                  Continue
+                                </button>
+                              </span>
                             </div>
-                          </div>
                         </div>
-                      </div>
-
-                      <input type="hidden" name="shop_id" value="{{ shop_id }}" />
-
-                      <div class="mt-8 border-t border-gray-200 pt-5">
-                        <div class="flex justify-end">
-                          <span class="ml-3 inline-flex rounded-md shadow-sm">
-                            <button type="submit" class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
-                              Continue
-                            </button>
-                          </span>
-                        </div>
-                      </div>
                     </form>
 
                 </div>
@@ -166,16 +188,11 @@
         }
     }
 
-    function EnableSourceURL(val) {
-        var field = document.getElementById('source_url');
-        field.disabled = val !== true;
-        field.required = val === true;
-
-        if (val === true){
-            document.getElementById('url_div').style.display = '';
-        }
-        else{
-            document.getElementById('url_div').style.display = 'none';
+    function ShowPendingSyncs(val) {
+        if (val === true) {
+            document.getElementById('sync_div').style.display = '';
+        } else {
+            document.getElementById('sync_div').style.display = 'none';
         }
     }
 
