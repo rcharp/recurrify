@@ -5,7 +5,9 @@ from app import shopify_api as shopify
 from app.blueprints.api.functions import rest_call, graphql_query
 from flask import (
     Blueprint, render_template, current_app, request, redirect, session, flash, url_for)
+from flask_login import logout_user, current_user
 
+from app.blueprints.user.models.user import User
 from app.blueprints.shopify.models.shop import Shop
 from .decorators import shopify_auth_required
 from .helpers import scopes
@@ -92,5 +94,13 @@ def finalize():
     session['shopify_token'] = token
     session['shopify_id'] = shopify_id
     session['shop_id'] = shop.shop_id
+
+    # Logout the user if they're logged in
+    if current_user.is_authenticated:
+        logout_user()
+
+    # The user already exists in the database, so have them login
+    if db.session.query(exists().where(User.email == email)).scalar():
+        return redirect(url_for('user.login'))
 
     return redirect(url_for('user.signup'))

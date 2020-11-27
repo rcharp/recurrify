@@ -60,40 +60,75 @@ User
 @anonymous_required()
 @csrf.exempt
 def login():
-    form = LoginForm(next=request.args.get('next'))
 
-    if form.validate_on_submit():
-        u = User.find_by_identity(request.form.get('identity'))
+    # This is when setting up a destination store, and the user already has an account with a source store
+    if 'shopify_url' in session and session['shopify_url'] is not None and 'shopify_email' in session and session['shopify_email'] is not None:
+        form = LoginFormExistingStore()
+        form.url.data = session['shopify_url']
+        form.identity.data = session['shopify_email']
 
-        if u and u.is_active() and u.authenticated(password=request.form.get('password')):
+        if form.validate_on_submit():
+            u = User.find_by_identity(request.form.get('identity'))
 
-            if login_user(u, remember=True) and u.is_active():
-                if current_user.role == 'admin':
-                    return redirect(url_for('admin.dashboard'))
+            if u and u.is_active() and u.authenticated(password=request.form.get('password')):
 
-                u.update_activity_tracking(request.remote_addr)
+                if login_user(u, remember=True) and u.is_active():
 
-                next_url = request.form.get('next')
+                    u.update_activity_tracking(request.remote_addr)
 
-                if next_url == url_for('user.login') or next_url == '' or next_url is None:
-                    # Take them to the settings page
-                    next_url = url_for('user.dashboard')
+                    next_url = request.form.get('next')
 
-                if next_url:
-                    return redirect(safe_next_url(next_url), code=307)
+                    if next_url == url_for('user.login') or next_url == '' or next_url is None:
+                        # Take them to the settings page
+                        next_url = url_for('user.start', shop_url=session['shopify_url'])
 
-                if current_user.role == 'admin':
-                    return redirect(url_for('admin.dashboard'))
+                    if next_url:
+                        return redirect(safe_next_url(next_url), code=307)
+                else:
+                    flash('This account has been disabled.', 'error')
             else:
-                flash('This account has been disabled.', 'error')
+                flash('Your username/email or password is incorrect.', 'error')
+
         else:
-            flash('Your username/email or password is incorrect.', 'error')
+            if len(form.errors) > 0:
+                print(form.errors)
 
+        return render_template('user/login_existing_store.html', form=form, url=session['shopify_url'])
     else:
-        if len(form.errors) > 0:
-            print(form.errors)
+        form = LoginForm(next=request.args.get('next'))
 
-    return render_template('user/login.html', form=form)
+        if form.validate_on_submit():
+            u = User.find_by_identity(request.form.get('identity'))
+
+            if u and u.is_active() and u.authenticated(password=request.form.get('password')):
+
+                if login_user(u, remember=True) and u.is_active():
+                    if current_user.role == 'admin':
+                        return redirect(url_for('admin.dashboard'))
+
+                    u.update_activity_tracking(request.remote_addr)
+
+                    next_url = request.form.get('next')
+
+                    if next_url == url_for('user.login') or next_url == '' or next_url is None:
+                        # Take them to the settings page
+                        next_url = url_for('user.dashboard')
+
+                    if next_url:
+                        return redirect(safe_next_url(next_url), code=307)
+
+                    if current_user.role == 'admin':
+                        return redirect(url_for('admin.dashboard'))
+                else:
+                    flash('This account has been disabled.', 'error')
+            else:
+                flash('Your username/email or password is incorrect.', 'error')
+
+        else:
+            if len(form.errors) > 0:
+                print(form.errors)
+
+        return render_template('user/login.html', form=form)
 
 
 '''
@@ -105,117 +140,58 @@ Signup with an account
 @anonymous_required()
 @csrf.exempt
 def signup():
-    print(session)
     from app.blueprints.base.functions import print_traceback
     form = SignupFormSourceStore()
-    print("Session is")
-    print(session)
-    # Ensure the Shopify URL and the store's email exist in the session
-    if 'shopify_url' in session and session['shopify_url'] is not None and 'shopify_email' in session and session['shopify_email'] is not None:
+    try:
+        if form.validate_on_submit():
+            if db.session.query(exists().where(User.email == request.form.get('email'))).scalar():
+                flash(Markup("There is already an account using this email. Please use another or <a href='" + url_for(
+                    'user.login') + "'><span class='text-indigo-700'><u>login</span></u></a>."), category='error')
+                return redirect(url_for('user.signup'))
 
-        # This email already exists in the db, so connect this store to their account
-        if db.session.query(exists().where(User.email == session['shopify_email'])).scalar():
+            u = User()
 
-            # Show the form to login the user
-            form = LoginFormExistingStore()
-            form.url.data = session['shopify_url']
-            form.identity.data = session['shopify_email']
+            form.populate_obj(u)
+            u.password = User.encrypt_password(request.form.get('password'))
+            u.role = 'owner'
 
-            try:
-                if form.validate_on_submit():
+            # Save the user to the database
+            u.save()
 
-                    # Get the user
-                    u = User.query.filter(User.email == session['shopify_email']).scalar()
+            if login_user(u):
 
-                    # Make them enter their password to continue
-                    if u.authenticated(password=request.form.get('password')):
+                # Set the shop's user id to the current user
+                if 'shopify_id' in session and session['shopify_id'] is not None:
+                    shop = Shop.query.filter(Shop.shopify_id == session['shopify_id']).scalar()
+                    if shop is not None:
+                        shop.user_id = u.id
+                        shop.save()
 
-                        # Set the shop's user id to the current user
-                        if 'shopify_id' in session and session['shopify_id'] is not None:
-                            shop = Shop.query.filter(Shop.shopify_id == session['shopify_id']).scalar()
-                            if shop is not None:
-                                shop.user_id = u.id
-                                shop.save()
-
-                                # Redirect to the start page
-                                flash(Markup("You've successfully connected " + session['shopify_url'] + " to your account!"), category='success')
-                                return redirect(url_for('user.start', shop_id=shop.shop_id))
-
-                    flash(Markup("There was an error. Please try again."), category='error')
-                    return redirect(url_for('user.settings'))
-
-                    # # There is a pending sync to this store
-                    # if db.session.query(exists().where(Sync.destination_url == session['shopify_url'])).scalar():
-                    #
-                    #     # Update the sync
-                    #     t = Sync.query.filter(and_(Sync.source_id == session['source_id'],
-                    #                                Sync.destination_url == session['shopify_url'])).scalar()
-                    #
-                    #     if t is not None:
-                    #         t.destination_id = session['shop_id']
-                    #         t.active = True
-                    #         t.save()
-                    #
-                    #         return redirect(url_for('user.stores'))
-            except Exception as e:
-                print_traceback(e)
-
-            return render_template('user/login_existing_store.html', form=form, url=session['shopify_url'])
-        else:
-            # Set the url and the email on the form
-            form.url.data = session['shopify_url']
-            form.email.data = session['shopify_email']
-
-            try:
-                if form.validate_on_submit():
-                    if db.session.query(exists().where(User.email == request.form.get('email'))).scalar():
-                        flash(Markup("There is already an account using this email. Please use another or <a href='" + url_for(
-                            'user.login') + "'><span class='text-indigo-700'><u>login</span></u></a>."), category='error')
-                        return redirect(url_for('user.signup'))
-
-                    u = User()
-
-                    form.populate_obj(u)
-                    u.password = User.encrypt_password(request.form.get('password'))
-                    u.role = 'owner'
-
-                    # Save the user to the database
-                    u.save()
-
-                    if login_user(u):
-
-                        # Set the shop's user id to the current user
-                        if 'shopify_id' in session and session['shopify_id'] is not None:
-                            shop = Shop.query.filter(Shop.shopify_id == session['shopify_id']).scalar()
-                            if shop is not None:
-                                shop.user_id = u.id
-                                shop.save()
-
-                                flash("You've successfully signed up!", 'success')
-                                return redirect(url_for('user.start', shop_id=shop.shop_id))
-
-                        # from app.blueprints.user.tasks import send_owner_welcome_email
-                        # from app.blueprints.contact.mailerlite import create_subscriber
-
-                        # send_owner_welcome_email.delay(current_user.email)
-                        # create_subscriber(current_user.email)
-
-                        # Log the user in
                         flash("You've successfully signed up!", 'success')
-                        return redirect(url_for('user.start'))
-                    else:
-                        # Delete the shop from the database
-                        if 'shopify_id' in session and session['shopify_id'] is not None:
-                            shop = Shop.query.filter(Shop.shopify_id == session['shopify_id']).scalar()
-                            if shop is not None:
-                                shop.delete()
-            except Exception as e:
+                        return redirect(url_for('user.start', shop_url=shop.url))
+
+                # from app.blueprints.user.tasks import send_owner_welcome_email
+                # from app.blueprints.contact.mailerlite import create_subscriber
+
+                # send_owner_welcome_email.delay(current_user.email)
+                # create_subscriber(current_user.email)
+
+                # Log the user in
+                flash("You've successfully signed up!", 'success')
+                return redirect(url_for('user.dashboard'))
+            else:
                 # Delete the shop from the database
                 if 'shopify_id' in session and session['shopify_id'] is not None:
                     shop = Shop.query.filter(Shop.shopify_id == session['shopify_id']).scalar()
                     if shop is not None:
                         shop.delete()
-                print_traceback(e)
+    except Exception as e:
+        # Delete the shop from the database
+        if 'shopify_id' in session and session['shopify_id'] is not None:
+            shop = Shop.query.filter(Shop.shopify_id == session['shopify_id']).scalar()
+            if shop is not None:
+                shop.delete()
+        print_traceback(e)
 
     return render_template('user/signup.html', form=form)
 
@@ -327,15 +303,20 @@ def dashboard(page=1):
 
 
 @user.route('/start', methods=['GET', 'POST'])
-@user.route('/start/<shop_id>', methods=['GET', 'POST'])
+@user.route('/start/<shop_url>', methods=['GET', 'POST'])
 @login_required
-def start(shop_id):
+def start(shop_url):
     if not current_user.is_authenticated:
         return redirect(url_for('user.login'))
 
-    pending = Sync.query.filter(Sync.destination_id == shop_id).all()
+    shop = Shop.query.filter(Shop.url == shop_url).scalar()
+    if shop is None:
+        return redirect(url_for('user.dashboard'))
 
-    return render_template('user/start.html', current_user=current_user, shop_id=shop_id, pending=pending)
+    pending = Sync.query.filter(and_(Sync.destination_url == shop_url, Sync.active.is_(False))).all()
+    plans = Plan.query.all()
+
+    return render_template('user/start.html', current_user=current_user, shop_id=shop.shop_id, pending=pending, plans=plans)
 
 
 # Settings -------------------------------------------------------------------
@@ -357,16 +338,26 @@ Syncing
 
 
 @user.route('/sync/', methods=['GET', 'POST'])
+@user.route('/sync/<sync_id>', methods=['GET', 'POST'])
 @csrf.exempt
 @cross_origin()
-def sync():
-    if request.method == 'POST':
-        return
+def sync(sync_id=None):
+    if sync_id is not None:
+        s = Sync.query.filter(Sync.sync_id == sync_id).scalar()
+        if s is None:
+            return redirect(url_for('user.dashboard'))
+
+        source = Shop.query.filter(Shop.shop_id == s.source_id).scalar()
+        destination = Shop.query.filter(Shop.shop_id == s.destination_id).scalar()
+
+        if source is None or destination is None:
+            return redirect(url_for('user.dashboard'))
+
+        return render_template('user/sync.html', sync=s, source=source, destination=destination)
     else:
         shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
         plans = Plan.query.all()
-
-    return render_template('user/sync.html', shop=shop, plans=plans)
+        return render_template('user/create_sync.html', shop=shop, plans=plans)
 
 
 @user.route('/create_sync', methods=['GET', 'POST'])
@@ -390,7 +381,7 @@ def create_sync():
 
                             flash(Markup("You're successfully synced with " + request.form['source_url'] + "."),
                                   category='success')
-                            return redirect(url_for('user.stores', store_id=s.shop_id))
+                            return redirect(url_for('user.stores'))
                         else:
                             flash("There was an error.", "error")
                             return redirect(url_for('user.settings'))
@@ -440,31 +431,45 @@ def create_sync():
     return redirect(url_for('user.dashboard'))
 
 
+@user.route('/activate_sync', methods=['GET', 'POST'])
+@login_required
+def activate_sync():
+    try:
+        if request.method == 'POST':
+            if 'sync_id' in request.form and 'shop_id' in request.form:
+                sync_id = request.form['sync_id']
+                shop_id = request.form['shop_id']
+
+                s = Sync.query.filter(Sync.sync_id == sync_id).scalar()
+                if s is not None:
+                    s.destination_id = shop_id
+                    s.active = True
+                    s.save()
+
+                return jsonify({'success': 'Success'})
+        return jsonify({'error': 'Error'})
+    except Exception as e:
+        return jsonify({'error': 'Error'})
+
 """
 Stores and Products
 """
 
 
 @user.route('/stores/', methods=['GET', 'POST'])
-@user.route('/stores/<store_id>', methods=['GET', 'POST'])
 @csrf.exempt
 @cross_origin()
-def stores(store_id=None):
-    store = Shop.query.filter(Shop.user_id == current_user.id).scalar()
-    token = store.token
-    url = store.url
+def stores():
+    # store = Shop.query.filter(Shop.user_id == current_user.id).scalar()
+    # token = store.token
+    # url = store.url
 
-    product_count = len(rest_call(url, 'products', token)['products'])
-    if store is None:
-        return redirect(url_for('user.settings'))
+    product_count = 10  # len(rest_call(url, 'products', token)['products'])
 
-    if store_id is not None:
-        return redirect(url_for('user.settings'))
-
-    sources = list()  # Shop.query.filter(Shop.source_shop_id == store.shop_id).all()
-    destinations = Sync.query.filter(Sync.source_id == store.shop_id).all()
+    sources = Shop.query.filter(and_(Shop.user_id == current_user.id, Shop.source.is_(True))).all()
+    destinations = Sync.query.filter(Sync.user_id == current_user.id).all()
     plans = Plan.query.all()
-    return render_template('user/stores.html', store=store, plans=plans,
+    return render_template('user/stores.html', plans=plans,
                            sources=sources,
                            destinations=destinations,
                            product_count=product_count)

@@ -73,7 +73,7 @@
                       Tailwind UI components require Tailwind CSS v1.8 and the @tailwindcss/ui plugin.
                       Read the documentation to get started: https://tailwindui.com/documentation
                     -->
-                    <form action="{{ url_for('user.create_sync') }}" method="POST">
+                    <form action="{{ url_for('user.dashboard') }}" method="GET">
                         <div class="rounded-lg bg-white border border-gray-200 pb-10 pl-7 pr-7">
                             <div class="mt-3 sm:mt-5 sm:pt-5">
                                 <div>
@@ -121,18 +121,24 @@
                                                class="block text-sm font-medium leading-5 text-gray-700 sm:mt-px sm:pt-2">
                                             Pending syncs for this store:
                                         </label>
-                                        <div class="mt-1 sm:mt-0 sm:col-span-2">
+                                        <div class="mt-1 sm:mt-0 sm:col-span-2 pt-2">
                                             {% if pending|length > 0 %}
                                                 {% for sync in pending %}
-                                                    <span id="pending_sync" class="form-input block w-full transition duration-150 ease-in-out sm:text-sm sm:leading-5">
-                                                        {{ sync.source_url }}
-                                                    </span>
-                                                    <span class="ml-3 inline-flex rounded-md shadow-sm">
-                                                        <button type="submit"
-                                                                class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out">
-                                                          Continue
-                                                        </button>
-                                                    </span>
+                                                    <div class="grid grid-cols-4 mb-3">
+                                                        <div class="col-span-3 mt-2">
+                                                            {% set plan = plans|selectattr('id', 'equalto', sync.plan_id ) | list | first %}
+                                                            <span class="pending_sync block text-sm leading-5 font-medium text-gray-700">{{ sync.source_url }} - Sync up to {{ plan.limit }} products</span>
+                                                        </div>
+                                                        <div class="col-span-1">
+                                                            <span class="ml-3 inline-flex rounded-md shadow-sm">
+                                                                <button type="button"
+                                                                        class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
+                                                                        onclick="ActivateSync('{{ sync.sync_id }}', '{{ shop_id }}', this);">
+                                                                  Activate
+                                                                </button>
+                                                            </span>
+                                                        </div>
+                                                    </div>
                                                 {% endfor %}
                                             {% else %}
                                                 <span class="mt-2 block text-sm leading-5 font-medium text-gray-500">There are no pending syncs for this store.</span>
@@ -156,7 +162,6 @@
                             </div>
                         </div>
                     </form>
-
                 </div>
             </main>
 
@@ -194,6 +199,27 @@
         } else {
             document.getElementById('sync_div').style.display = 'none';
         }
+    }
+
+    function ActivateSync(sync_id, shop_id, el){
+        var url = "{{ url_for('user.activate_sync') }}";
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {'sync_id': sync_id, 'shop_id': shop_id},
+            success: function (response) {
+                if ('success' in response){
+                    el.innerText = "Activated";
+                    el.classList.remove('bg-indigo-600');
+                    el.classList.remove('hover:bg-indigo-500');
+                    el.classList.add('hover:bg-green-500');
+                    el.classList.add('bg-green-600');
+                    el.removeAttribute("onclick");
+                }
+            },
+            error: function (xhr) {
+            }
+        });
     }
 
 

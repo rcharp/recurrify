@@ -21,10 +21,8 @@ class LoginForm(Form):
 class LoginFormExistingStore(Form):
     next = HiddenField()
     url = StringField('Store URL')
-    identity = EmailField('Email', validators=[
-        DataRequired(),
-        Email()
-    ])
+    identity = StringField('Email',
+                           [DataRequired(), Length(3, 254)])
 
     password = PasswordField('Enter your password', [DataRequired(), Length(8, 128)])
 
@@ -76,7 +74,10 @@ class SignupFormSourceStore(ModelForm):
 
     password = PasswordField('Create a password', [DataRequired(), Length(8, 128)])
 
-    # confirm = PasswordField("Repeat Password", [DataRequired(), EqualTo("password", message="Passwords don't match!"), Length(8, 128)])
+    def __init__(self, *args, **kwargs):
+        super(SignupFormSourceStore, self).__init__(*args, **kwargs)
+        read_only(self.url)
+        # read_only(self.email)
 
 
 class SignupFormDestinationStore(ModelForm):
