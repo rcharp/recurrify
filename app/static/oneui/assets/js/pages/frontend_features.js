@@ -42,10 +42,10 @@ var FrontendFeatures = function() {
 
         // Init Lines Chart
         $featuresChartLines = new Chart($featuresChartLinesCon).Line($featuresChartLinesData, {
-            scaleFontFamily: "'Product Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+            scaleFontFamily: "'Prod Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
             scaleFontColor: '#fff',
             scaleFontStyle: '600',
-            tooltipTitleFontFamily: "'Product Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+            tooltipTitleFontFamily: "'Prod Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
             tooltipCornerRadius: 3,
             maintainAspectRatio: false,
             responsive: true,

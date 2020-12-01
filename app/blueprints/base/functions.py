@@ -62,7 +62,7 @@ def generate_private_key(size=16):
     enc = encrypt_string(id)
 
     # Check to make sure there isn't already that id in the database
-    if not db.session.query(exists().where(Domain.private_key == enc)).scalar():
+    if not db.session.query(exists().where(User.private_key == enc)).scalar():
         return enc
     else:
         generate_private_key()
@@ -105,9 +105,9 @@ def generate_name():
 
 
 def get_private_key(domain_id, user_id):
-    d = Domain.query.filter(Domain.domain_id == domain_id).scalar()
+    # d = Domain.query.filter(Domain.domain_id == domain_id).scalar()
     from app.blueprints.base.encryption import decrypt_string
-    return decrypt_string(d.private_key)
+    return decrypt_string(User.private_key)
 
 
 def set_inactive(current_user):

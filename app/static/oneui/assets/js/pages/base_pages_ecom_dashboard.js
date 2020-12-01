@@ -12,10 +12,10 @@ var BasePagesEcomDashboard = function() {
 
         // Set Chart Options
         var $chartOverviewOptions = {
-            scaleFontFamily: "'Product Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+            scaleFontFamily: "'Prod Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
             scaleFontColor: '#999',
             scaleFontStyle: '600',
-            tooltipTitleFontFamily: "'Product Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
+            tooltipTitleFontFamily: "'Prod Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif",
             tooltipCornerRadius: 3,
             maintainAspectRatio: false,
             responsive: true

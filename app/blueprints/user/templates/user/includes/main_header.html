@@ -10,13 +10,13 @@
         <div class="flex items-center justify-between h-16">
             <div class="flex items-center">
                 <a href="{{ url_for('page.home') }}" class="flex-shrink-0" style="cursor:pointer">
-                    <img class="h-12 w-12" src="{{ url_for('static', filename='logo/logo.png') }}" alt="Recurrify logo">
+                    <img class="h-12 w-12" src="{{ url_for('static', filename='logo/logo-30.png') }}" alt="Recurrify logo">
                 </a>
                 <div class="hidden md:block">
                     <div class="ml-10 flex items-baseline">
                         <a href="{{ url_for('user.dashboard') }}"
                            class="px-3 py-2 rounded-md text-sm font-medium {% if page == 'dashboard' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Dashboard</a>
-                        <span class="px-3 py-2 rounded-md ml-3 text-sm font-medium {% if page == 'product' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Product</span>
+                        <span class="px-3 py-2 rounded-md ml-3 text-sm font-medium {% if page == 'product' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Prod</span>
                         <a href="{{ url_for('user.stores') }}"
                            class="ml-2 px-3 py-2 rounded-md text-sm font-medium {% if page == 'stores' %}text-white bg-indigo-800{% else %}text-indigo-200 hover:text-white hover:bg-indigo-600{% endif %} focus:outline-none focus:text-white focus:bg-indigo-600">Stores</a>
                         <a href="{{ url_for('user.settings') }}"

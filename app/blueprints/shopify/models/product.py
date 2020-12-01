@@ -1,4 +1,6 @@
-from sqlalchemy import or_
+from sqlalchemy import or_, exists
+import string
+import random
 
 from lib.util_sqlalchemy import ResourceMixin, AwareDateTime
 from app.extensions import db
@@ -9,22 +11,35 @@ class Product(ResourceMixin, db.Model):
 
     # Objects.
     id = db.Column(db.Integer, primary_key=True)
-    product_name = db.Column(db.String(255))
-    description = db.Column(db.UnicodeText, unique=False, index=True, nullable=True, server_default='')
-    sku = db.Column(db.String(255), unique=True, index=True, nullable=False)
-    token = db.Column(db.String(255))
-    status = db.Column(db.SmallInteger, default=1)
+    product_id = db.Column(db.BigInteger, unique=True, index=True, nullable=False)
 
     # Relationships.
+    user_id = db.Column(db.Integer, db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'),
+                        index=True, nullable=True, primary_key=False, unique=False)
     shop_id = db.Column(db.BigInteger, db.ForeignKey('shops.shop_id', onupdate='CASCADE', ondelete='CASCADE'),
+                        index=True, nullable=True, primary_key=False, unique=False)
+    sync_id = db.Column(db.BigInteger, db.ForeignKey('syncs.sync_id', onupdate='CASCADE', ondelete='CASCADE'),
                         index=True, nullable=True, primary_key=False, unique=False)
 
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
         super(Product, self).__init__(**kwargs)
+        self.product_id = Product.generate_id()
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
+
+    @classmethod
+    def generate_id(cls, size=8):
+        # Generate a random 8-character id
+        chars = string.digits
+        result = int(''.join(random.choice(chars) for _ in range(size)))
+
+        # Check to make sure there isn't already that id in the database
+        if not db.session.query(exists().where(cls.id == result)).scalar():
+            return result
+        else:
+            Product.generate_id()
 
     @classmethod
     def find_by_id(cls, identity):

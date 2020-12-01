@@ -1,15 +1,10 @@
 import click
-import random
-import time
 from sqlalchemy_utils import database_exists, create_database
 from app.app import create_app
 from app.extensions import db
-from app.blueprints.base.functions import generate_id, generate_name, generate_private_key
 from app.blueprints.user.models.user import User
-from app.blueprints.shopify.models.product import Product
 from app.blueprints.shopify.models.plan import Plan
-from app.blueprints.shopify.models.shop import Shop
-from app.blueprints.shopify.models.sync import Sync
+from app.blueprints.shopify.models.product import Product
 
 # Create an app context for the database connection.
 app = create_app()

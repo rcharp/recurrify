@@ -131,7 +131,7 @@
                                                                 {% if sync.active %}
                                                                     <button type="button"
                                                                             class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
-                                                                            onclick="">
+                                                                            onclick="SyncProducts('{{ sync.sync_id }}', this)">
                                                                       Sync <i class="fa fa-refresh ml-3 pt-1"></i>
                                                                     </button>
                                                                 {% else %}
@@ -216,6 +216,28 @@
                     el.classList.add('hover:bg-green-500');
                     el.classList.add('bg-green-600');
                     el.removeAttribute("onclick");
+                }
+            },
+            error: function (xhr) {
+            }
+        });
+    }
+
+
+    function SyncProducts(sync_id, el){
+        var url = "{{ url_for('user.sync_products') }}";
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {'sync_id': sync_id},
+            success: function (response) {
+                if ('success' in response){
+                    {#el.innerText = "Synced";
+                    el.classList.remove('bg-indigo-600');
+                    el.classList.remove('hover:bg-indigo-500');
+                    el.classList.add('hover:bg-green-500');
+                    el.classList.add('bg-green-600');
+                    el.removeAttribute("onclick");#}
                 }
             },
             error: function (xhr) {

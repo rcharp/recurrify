@@ -25,7 +25,7 @@ from flask_cors import cross_origin
 from flask_paginate import Pagination, get_page_args
 from lib.safe_next_url import safe_next_url
 from app.blueprints.user.decorators import anonymous_required
-from app.blueprints.api.functions import rest_call, graphql_query
+from app.blueprints.shopify.functions import get_all_products, get_product_by_id
 from app.blueprints.user.models.user import User
 from app.blueprints.base.functions import get_pagination
 from app.blueprints.shopify.models.shop import Shop
@@ -142,6 +142,12 @@ Signup with an account
 def signup():
     from app.blueprints.base.functions import print_traceback
     form = SignupFormSourceStore()
+
+    # Populate the form
+    if 'shopify_url' in session and 'shopify_email' in session:
+        form.url.data = session['shopify_url']
+        form.email.data = session['shopify_email']
+
     try:
         if form.validate_on_submit():
             if db.session.query(exists().where(User.email == request.form.get('email'))).scalar():
@@ -278,14 +284,7 @@ Pages
 def dashboard(page=1):
     shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
 
-    if shop is None:
-        return redirect(url_for('user.logout'))
-
-    token = shop.token
-    url = shop.url
-    result = rest_call(url, 'products', token)
-    products = result['products'] if result is not None and 'products' in result else list()
-    products.sort(key=lambda x: x['created_at'], reverse=True)
+    products = get_all_products(shop)
 
     products = products * 25
 
@@ -451,6 +450,27 @@ def activate_sync():
     except Exception as e:
         return jsonify({'error': 'Error'})
 
+
+@user.route('/sync_products', methods=['GET', 'POST'])
+@login_required
+def sync_products():
+    try:
+        if request.method == 'POST':
+            if 'sync_id' in request.form:
+                sync_id = request.form['sync_id']
+
+                s = Sync.query.filter(Sync.sync_id == sync_id).scalar()
+                if s is not None:
+                    from app.blueprints.shopify.functions import sync_products
+                    result = sync_products(s)
+                    print(result)
+
+                    return jsonify({'success': 'Success'})
+        return jsonify({'error': 'Error'})
+    except Exception as e:
+        return jsonify({'error': 'Error'})
+
+
 """
 Stores and Products
 """
@@ -460,11 +480,8 @@ Stores and Products
 @csrf.exempt
 @cross_origin()
 def stores():
-    # store = Shop.query.filter(Shop.user_id == current_user.id).scalar()
-    # token = store.token
-    # url = store.url
-
-    product_count = 10  # len(rest_call(url, 'products', token)['products'])
+    # shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
+    product_count = 10  # len(get_all_products(shop))
 
     sources = Shop.query.filter(and_(Shop.user_id == current_user.id, Shop.source.is_(True))).all()
     destinations = Sync.query.filter(Sync.user_id == current_user.id).all()
@@ -480,13 +497,13 @@ def stores():
 @cross_origin()
 def product(product_id):
     shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
-    token = shop.token
-    url = shop.url
-    result = rest_call(url, 'products', token, product_id)
+    p = get_product_by_id(shop, product_id)
 
-    pprint.pprint(result)
+    if p is None:
+        flash("Product not found", 'error')
+        return redirect(url_for('user.dashboard'))
 
-    return render_template('user/product.html', current_user=current_user, product=result['product'])
+    return render_template('user/product.html', current_user=current_user, product=p)
 
 
 @user.route('/dashboard/<s>', methods=['GET', 'POST'])
@@ -494,18 +511,15 @@ def product(product_id):
 @cross_origin()
 def sort_products(s):
     shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
-    token = shop.token
-    url = shop.url
-    result = rest_call(url, 'products', token)
-    products = result['products'] if result is not None and 'products' in result else list()
+    products = get_all_products(shop)
 
     # Print the list
     pprint.pprint(products)
 
     if s == 'alphabetical':
-        products.sort(key=lambda x: x['title'])
+        products.sort(key=lambda x: x.title)
     else:
-        products.sort(key=lambda x: x['created_at'], reverse=True)
+        products.sort(key=lambda x: x.created, reverse=True)
 
     return render_template('user/dashboard.html', current_user=current_user, s=s, products=products)
 

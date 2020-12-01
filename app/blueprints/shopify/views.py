@@ -2,7 +2,7 @@ import pprint
 import requests
 from sqlalchemy import exists, and_
 from app import shopify_api as shopify
-from app.blueprints.api.functions import rest_call, graphql_query
+from .functions import rest_call, graphql_query
 from flask import (
     Blueprint, render_template, current_app, request, redirect, session, flash, url_for)
 from flask_login import logout_user, current_user
@@ -70,7 +70,7 @@ def finalize():
     token = s.request_token(request.args)
 
     # Get the current shop
-    result = rest_call(shop_url, 'shop', token)
+    result = rest_call(shop_url, 'shop', token, 'get')
 
     # Get the shop owner's email
     shopify_id = result['shop']['id'] if 'shop' in result and 'id' in result['shop'] else None
