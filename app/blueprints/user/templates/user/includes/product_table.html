@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <table class="min-w-full divide-y divide-gray-200">
+        <thead>
+            <tr class="product-row w-full">
+                <th class="px-6 py-3 bg-gray-50 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                    style="width:5%">
+                    <div class="flex items-center h-5">
+                        <input name="product" type="checkbox"
+                               class="cursor-pointer focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
+                        onchange="SelectAllProducts(this)">
+                    </div>
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                style="width:20%">
+                    Title
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                style="width:30%">
+                    Description
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                style="width:10%">
+                    SKU
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                style="width:10%">
+                    Options
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                style="width:10%">
+                    Price
+                </th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
+                style="width:10%">
+                    Quantity
+                </th>
+                <th class="px-6 py-3 bg-gray-50"
+                style="width:5%"></th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+        {% for product in products %}
+            <tr class="product-row">
+                <td class="px-6 py-4 whitespace-no-wrap text-center" style="width:5%">
+                    <div class="flex items-center h-5">
+                        <input name="product" type="checkbox"
+                               class="product-checkbox cursor-pointer focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded">
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap" style="width:20%">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 h-10 w-10">
+                            {% for image in product.images %}
+                                <img class="h-10 w-10 rounded-full"
+                                     src="{{ image['src'] }}" alt="">
+                            {% endfor %}
+                        </div>
+                        <div class="ml-4 truncate">
+                            <div class="text-sm leading-5 font-medium text-gray-900 truncate">
+                                {{ product.title }}
+                            </div>
+                            <div class="text-sm leading-5 text-gray-500">
+                                {% if product.variants | any_filter('requires_shipping', true) %}
+                                    Physical product
+                                {% else %}
+                                    Digital product
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap" style="width:30%">
+                    <div class="text-sm leading-5 text-gray-500 truncate">{{ product.description }}</div>
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500" style="width:10%">
+                    {% for variant in product.variants %}
+                        <div class="text-sm {% if not loop.last %}mb-2{% endif %} leading-5 text-gray-500">
+                            #{{ variant['sku'] }}</div>
+                    {% endfor %}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap" style="width:10%">
+                    {% if product.variants | any_filter('requires_shipping', true) %}
+                        {% for variant in product.variants %}
+                            <div class="text-sm {% if not loop.last %}mb-2{% endif %} leading-5 text-gray-500">{{ variant['option1'] }}</div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-sm leading-5 text-gray-500">N/A</div>
+                    {% endif %}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500" style="width:10%">
+                    {% for variant in product.variants %}
+                        <div class="text-sm {% if not loop.last %}mb-2{% endif %} leading-5 text-gray-500">
+                            ${{ variant['price'] }}</div>
+                    {% endfor %}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap text-sm leading-5 text-gray-500" style="width:10%">
+                    {% if product.variants | any_filter('requires_shipping', true) %}
+                        {% for variant in product.variants %}
+                            <div class="text-sm {% if not loop.last %}mb-2{% endif %} leading-5 text-gray-500">{{ variant['inventory_quantity'] }}</div>
+                        {% endfor %}
+                    {% else %}
+                        <div class="text-sm leading-5 text-gray-500">N/A</div>
+                    {% endif %}
+                </td>
+                <td class="px-6 py-4 whitespace-no-wrap text-right text-sm leading-5 font-medium" style="width:5%">
+                    <a href="{{ url_for('user.product', product_id=product.product_id) }}"
+                       class="text-indigo-600 hover:text-indigo-900">
+                        <svg class="h-7 w-7" xmlns="http://www.w3.org/2000/svg"
+                             viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                  d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                                  clip-rule="evenodd"/>
+                        </svg>
+                    </a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function SelectAllProducts(val){
+        var checkboxes = document.getElementsByClassName('product-checkbox');
+        for (var i=0; i< checkboxes.length; i++){
+            checkboxes[i].checked = val.checked;
+        }
+    }
+    </script>
+</body>
+</html>

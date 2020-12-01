@@ -4,7 +4,7 @@ from app.app import create_app
 from app.extensions import db
 from app.blueprints.user.models.user import User
 from app.blueprints.shopify.models.plan import Plan
-from app.blueprints.shopify.models.product import Product
+from app.blueprints.shopify.models.product import SyncedProduct
 
 # Create an app context for the database connection.
 app = create_app()

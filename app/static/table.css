@@ -1,0 +1,44 @@
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+thead, tbody, tr, td, th { display: block; }
+
+tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+thead th {
+    height: 40px;
+    line-height: 40px;
+    text-align: left;
+    padding: 20px;
+}
+
+tbody {
+    height: 600px;
+    overflow-y: auto;
+}
+
+thead {
+    /* fallback */
+    width: 97%;
+    /* minus scroll bar width */
+    width: calc(100% - 17px);
+}
+
+tbody { border-top: 2px solid black; }
+
+tbody td, thead th {
+    /*width: 33%;*/
+    float: left;
+}
+
+tbody td:last-child, thead th:last-child {
+    border-right: none;
+}

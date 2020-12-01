@@ -4,7 +4,7 @@
  * Material Dashboard - v1.2.0
  =========================================================
 
- * Prod Page: http://www.creative-tim.com/product/material-dashboard
+ * Product Page: http://www.creative-tim.com/product/material-dashboard
  * Copyright 2017 Creative Tim (http://www.creative-tim.com)
  * Licensed under MIT (https://github.com/creativetimofficial/material-dashboard/blob/master/LICENSE.md)
 

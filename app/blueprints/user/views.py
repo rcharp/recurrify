@@ -352,7 +352,9 @@ def sync(sync_id=None):
         if source is None or destination is None:
             return redirect(url_for('user.dashboard'))
 
-        return render_template('user/sync.html', sync=s, source=source, destination=destination)
+        products = get_all_products(source) * 50
+
+        return render_template('user/sync.html', sync=s, source=source, destination=destination, products=products)
     else:
         shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
         plans = Plan.query.all()

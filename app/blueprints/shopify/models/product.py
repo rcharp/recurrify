@@ -6,7 +6,7 @@ from lib.util_sqlalchemy import ResourceMixin, AwareDateTime
 from app.extensions import db
 
 
-class Product(ResourceMixin, db.Model):
+class SyncedProduct(ResourceMixin, db.Model):
     __tablename__ = 'products'
 
     # Objects.
@@ -23,8 +23,8 @@ class Product(ResourceMixin, db.Model):
 
     def __init__(self, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
-        super(Product, self).__init__(**kwargs)
-        self.product_id = Product.generate_id()
+        super(SyncedProduct, self).__init__(**kwargs)
+        # self.product_id = SyncedProduct.generate_id()
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}
@@ -39,7 +39,7 @@ class Product(ResourceMixin, db.Model):
         if not db.session.query(exists().where(cls.id == result)).scalar():
             return result
         else:
-            Product.generate_id()
+            SyncedProduct.generate_id()
 
     @classmethod
     def find_by_id(cls, identity):
@@ -50,8 +50,8 @@ class Product(ResourceMixin, db.Model):
         :type identity: str
         :return: User instance
         """
-        return Product.query.filter(
-            (Product.id == identity).first())
+        return SyncedProduct.query.filter(
+            (SyncedProduct.id == identity).first())
 
     @classmethod
     def search(cls, query):
@@ -66,7 +66,7 @@ class Product(ResourceMixin, db.Model):
             return ''
 
         search_query = '%{0}%'.format(query)
-        search_chain = (Product.id.ilike(search_query))
+        search_chain = (SyncedProduct.id.ilike(search_query))
 
         return or_(*search_chain)
 
@@ -83,7 +83,7 @@ class Product(ResourceMixin, db.Model):
         delete_count = 0
 
         for id in ids:
-            product = Product.query.get(id)
+            product = SyncedProduct.query.get(id)
 
             if product is None:
                 continue
@@ -93,3 +93,17 @@ class Product(ResourceMixin, db.Model):
             delete_count += 1
 
         return delete_count
+
+
+class Product:
+
+    tags = ''
+
+    def __init__(self, product):
+        self.description = product['body_html']
+        self.title = product['title']
+        self.created = product['created_at']
+        self.product_id = product['id']
+        self.images = product['images']
+        self.options = product['options']
+        self.variants = product['variants']

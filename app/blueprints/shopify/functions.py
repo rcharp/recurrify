@@ -4,7 +4,7 @@ import pprint
 import requests
 from flask import current_app
 
-from app.blueprints.shopify.prod import Prod
+from app.blueprints.shopify.models.product import Product
 from app.blueprints.shopify.models.shop import Shop
 
 
@@ -102,7 +102,7 @@ def get_all_products(shop, return_json=False, vendor=None):
                 products.append(p)
         else:
             for p in result['products']:
-                product = Prod(p)
+                product = Product(p)
                 products.append(product)
 
     if not return_json:
@@ -131,7 +131,7 @@ def get_product_by_id(shop, product_id, synced=False, return_json=False):
 
     if result is not None and 'product' in result and result['product'] is not None:
         if not return_json:
-            product = Prod(result['product'])
+            product = Product(result['product'])
         else:
             product = result['product']
         return product
