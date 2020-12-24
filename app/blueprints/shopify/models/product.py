@@ -11,7 +11,8 @@ class SyncedProduct(ResourceMixin, db.Model):
 
     # Objects.
     id = db.Column(db.Integer, primary_key=True)
-    product_id = db.Column(db.BigInteger, unique=True, index=True, nullable=False)
+    source_product_id = db.Column(db.BigInteger, unique=False, index=True, nullable=False)
+    destination_product_id = db.Column(db.BigInteger, unique=False, index=True, nullable=False)
 
     # Relationships.
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'),
@@ -21,10 +22,14 @@ class SyncedProduct(ResourceMixin, db.Model):
     sync_id = db.Column(db.BigInteger, db.ForeignKey('syncs.sync_id', onupdate='CASCADE', ondelete='CASCADE'),
                         index=True, nullable=True, primary_key=False, unique=False)
 
-    def __init__(self, **kwargs):
+    def __init__(self, source_product_id, destination_product_id, user_id, shop_id, sync_id, **kwargs):
         # Call Flask-SQLAlchemy's constructor.
         super(SyncedProduct, self).__init__(**kwargs)
-        # self.product_id = SyncedProduct.generate_id()
+        self.source_product_id = source_product_id
+        self.destination_product_id = destination_product_id
+        self.user_id = user_id
+        self.shop_id = shop_id
+        self.sync_id = sync_id
 
     def as_dict(self):
         return {c.name: getattr(self, c.name) for c in self.__table__.columns}

@@ -68,80 +68,49 @@
         {{ flash.render() }}
         <div class="max-w-10xl mx-auto px-4 sm:px-6 md:px-8" style="height:80vh;">
             <!-- Replace with your content -->
-            <div class="mt-5 mb-4 grid lg:grid-cols-4 sm:gap-1 lg:gap-5 sm:grid-cols-2 text-right">
-                <div class="sm:col-span-2 lg:col-span-3 text-lg leading-5 font-medium py-3">
-                    <div id="search-results" class="text-gray-500 text-left" style="display:none">Showing results for: '<span
-                            id="search-term" class="text-gray-700"></span>'
-                    </div>
-                </div>
-                <div class="pull-right sm:col-span-2 lg:col-span-1">
-                    <div class="relative inline-block text-left">
-                        <div>
-                            <span class="rounded-md shadow-sm">
-                              <button id="sort-dropdown-button" type="button"
-                                      onclick="ShowDropdown('sort-dropdown-menu');"
-                                      class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-sm leading-5 font-medium text-gray-700 hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue active:bg-gray-50 active:text-gray-800 transition ease-in-out duration-150">
-                                Sorted by: {% if s == 'alphabetical' %}Alphabetical
-                                  {#{% elif s == 'price_lowest' %}Price (Lowest){% elif s == 'price_highest' %}Price (Highest)#}{% else %}
-                                  Most recent{% endif %}
-                                  <svg class="-mr-1 ml-2 h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
-                                  <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd"/>
-                                </svg>
-                              </button>
-                            </span>
-                        </div>
-
-                        <!--
-                          Dropdown panel, show/hide based on dropdown state.
-
-                          Entering: "transition ease-out duration-100"
-                            From: "transform opacity-0 scale-95"
-                            To: "transform opacity-100 scale-100"
-                          Leaving: "transition ease-in duration-75"
-                            From: "transform opacity-100 scale-100"
-                            To: "transform opacity-0 scale-95"
-                        -->
-                        <div id="sort-dropdown-menu"
-                             class="origin-top-right absolute right-0 w-56 rounded-md shadow-lg transform opacity-0 scale-95"
-                             style="z-index:999; display:none;">
-                            <div class="rounded-md bg-white shadow-xs">
-                                <div class="py-1">
-                                    <a href="{{ url_for('user.sort_products', s='newest') }}"
-                                       class="block px-4 py-2 text-sm leading-5 {% if sort == 'newest' or not sort %}bg-indigo-100 text-indigo-600{% else %}text-gray-700{% endif %} hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 remove-margin">Most
-                                        Recent</a>
-                                    <a href="{{ url_for('user.sort_products', s='alphabetical') }}"
-                                       class="block px-4 py-2 text-sm leading-5 {% if sort == 'alphabetical' %}bg-indigo-100 text-indigo-600{% else %}text-gray-700{% endif %} hover:bg-gray-100 hover:text-gray-900 focus:outline-none focus:bg-gray-100 focus:text-gray-900 remove-margin">Alphabetical</a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <h1 class="mb-5 text-xl font-w700 text-gray-900">Products synced from {{ source.url }} to {{ destination.url }}</h1>
-            {% if products|length > 0 %}
-                <div class="flex flex-col mb-5">
-                    <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
-                        <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
-                            <div class="shadow overflow-hidden border-gray-200 sm:rounded-lg" style="max-height:650px;">
-                                {% include '/user/includes/product_table.html' ignore missing %}
-                            </div>
-                            {#{% include '/user/includes/pagination.html' ignore missing %}#}
-                        </div>
-                    </div>
-                </div>
-            {% else %}
-                <div class="py-4 grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1 col-span-4">
-                    <div class="rounded-lg h-96 text-center" style="display:flex; align-items:center;">
-                      <span class="inline-flex text-lg leading-5 font-medium text-gray-500"
-                            style="float:none;margin:0 auto;">
-                          There are no products.
-                      </span>
-                    </div>
-                </div>
+            {% if source.url and destination.url %}
+                <h1 class="mt-3 mb-4 text-md font-w700 text-gray-900">Please choose products to sync from <span class="text-indigo-500">{{ source.url }}</span> to <span class="text-indigo-500">{{ destination.url }}</span>:</h1>
             {% endif %}
+
+            <form action="{{ url_for('user.submit_sync') }}" method="post">
+                {% if products|length > 0 %}
+                    <div class="flex flex-col mb-5">
+                        <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+                            <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
+                                <div class="shadow overflow-hidden border-gray-200 sm:rounded-lg" style="max-height:650px;">
+                                    {% with sync_id = sync.sync_id %}{% include '/user/includes/product_table.html' ignore missing %}{% endwith %}
+                                </div>
+                                {#{% include '/user/includes/pagination.html' ignore missing %}#}
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="py-4 grid grid-cols-1 gap-6 sm:grid-cols-1 lg:grid-cols-1 col-span-4">
+                        <div class="rounded-lg h-96 text-center" style="display:flex; align-items:center;">
+                          <span class="inline-flex text-lg leading-5 font-medium text-gray-500"
+                                style="float:none;margin:0 auto;">
+                              There are no products.
+                          </span>
+                        </div>
+                    </div>
+                {% endif %}
+                <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
+                    <div>
+                        <p class="text-sm leading-5 text-gray-700 unfiltered-results">
+                            <span class="font-medium">{{ products | length }}</span> products
+                        </p>
+                    </div>
+                    <div class="pull-right">
+                        <span class="ml-3 inline-flex rounded-md shadow-sm">
+                            <button type="submit"
+                                    class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
+                                    >
+                              Save
+                            </button>
+                        </span>
+                    </div>
+                </div>
+            </form>
             <!-- /End replace -->
         </div>
     </main>

@@ -92,7 +92,7 @@ def create_app(settings_override=None):
         app.config['REMEMBER_COOKIE_DOMAIN'] = '.recurrify.io'
     else:
         # Set the app server name
-        SERVER_NAME = '2dcc4685be2e.ngrok.io'
+        SERVER_NAME = '2d6699c19aab.ngrok.io'
         # SERVER_NAME = 'local.dev'
         app.config['SERVER_NAME'] = SERVER_NAME
         app.config['REMEMBER_COOKIE_DOMAIN'] = '.' + SERVER_NAME
@@ -210,7 +210,8 @@ def template_processors(app):
     app.jinja_env.filters['any_votes_filter'] = any_votes_filter
     app.jinja_env.filters['initial_filter'] = initial_filter
     app.jinja_env.filters['deserialize_private_key'] = deserialize_private_key
-    app.jinja_env.filters['any_filter'] = any_filter
+    app.jinja_env.filters['any_attribute_filter'] = any_attribute_filter
+    app.jinja_env.filters['exists_filter'] = exists_filter
     app.jinja_env.globals.update(current_year=current_year)
 
     return app.jinja_env
@@ -420,7 +421,7 @@ def initial_filter(arg):
         return arg[0].upper()
 
 
-def any_filter(arg, k=None, search=None):
+def any_attribute_filter(arg, k=None, search=None):
     if search is None:
         if any(k in item for item in arg):
             return True
@@ -428,4 +429,11 @@ def any_filter(arg, k=None, search=None):
 
     if any(item[k] == search for item in arg):
         return True
+    return False
+
+
+def exists_filter(arg, k):
+    if str(k) in arg:
+        return True
+
     return False

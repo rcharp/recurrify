@@ -73,8 +73,8 @@ def finalize():
     result = rest_call(shop_url, 'shop', token, 'get')
 
     # Get the shop owner's email
-    shopify_id = result['shop']['id'] if 'shop' in result and 'id' in result['shop'] else None
-    email = result['shop']['email'] if 'shop' in result and 'email' in result['shop'] else None
+    shopify_id = result.json()['shop']['id'] if 'shop' in result.json() and 'id' in result.json()['shop'] else None
+    email = result.json()['shop']['email'] if 'shop' in result.json() and 'email' in result.json()['shop'] else None
 
     if db.session.query(exists().where(and_(Shop.shopify_id == shopify_id, Shop.user_id is not None))).scalar():
         flash('There is already an account for this store. Please login or use a different store.', 'error')

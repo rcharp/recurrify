@@ -25,11 +25,12 @@ from flask_cors import cross_origin
 from flask_paginate import Pagination, get_page_args
 from lib.safe_next_url import safe_next_url
 from app.blueprints.user.decorators import anonymous_required
-from app.blueprints.shopify.functions import get_all_products, get_product_by_id
+from app.blueprints.shopify.functions import get_all_products, update_sync, get_synced_products, get_product_by_id
 from app.blueprints.user.models.user import User
 from app.blueprints.base.functions import get_pagination
 from app.blueprints.shopify.models.shop import Shop
 from app.blueprints.shopify.models.sync import Sync
+from app.blueprints.shopify.models.product import SyncedProduct
 from app.blueprints.shopify.models.plan import Plan
 from app.blueprints.user.forms import (
     LoginForm,
@@ -352,9 +353,10 @@ def sync(sync_id=None):
         if source is None or destination is None:
             return redirect(url_for('user.dashboard'))
 
-        products = get_all_products(source) * 50
+        products = get_synced_products(sync_id)
+        synced_product_ids = [str(x.source_product_id) for x in SyncedProduct.query.filter(SyncedProduct.sync_id == sync_id)]
 
-        return render_template('user/sync.html', sync=s, source=source, destination=destination, products=products)
+        return render_template('user/sync.html', sync=s, source=source, destination=destination, products=products, product_ids=synced_product_ids)
     else:
         shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
         plans = Plan.query.all()
@@ -437,14 +439,15 @@ def create_sync():
 def activate_sync():
     try:
         if request.method == 'POST':
-            if 'sync_id' in request.form and 'shop_id' in request.form:
+            if 'sync_id' in request.form and 'shop_id' in request.form and 'activate' in request.form:
                 sync_id = request.form['sync_id']
                 shop_id = request.form['shop_id']
+                activate = request.form['activate']
 
                 s = Sync.query.filter(Sync.sync_id == sync_id).scalar()
                 if s is not None:
                     s.destination_id = shop_id
-                    s.active = True
+                    s.active = True if activate == 'true' else False
                     s.save()
 
                 return jsonify({'success': 'Success'})
@@ -453,9 +456,36 @@ def activate_sync():
         return jsonify({'error': 'Error'})
 
 
-@user.route('/sync_products', methods=['GET', 'POST'])
+@user.route('/submit_sync', methods=['GET', 'POST'])
 @login_required
-def sync_products():
+def submit_sync():
+    try:
+        if request.method == 'POST':
+            if 'sync_id' in request.form:
+                product_ids = list()
+                sync_id = request.form['sync_id']
+
+                if 'product' in request.form:
+                    product_ids = list(set(request.form.getlist('product')))
+
+                count = update_sync(sync_id, product_ids)
+
+                if count >= 0:
+                    flash("Successfully synced " + str(count) + " product(s).", 'success')
+                else:
+                    flash("There was an error. Please try again.", 'error')
+        return redirect(url_for('user.sync', sync_id=sync_id))
+    except Exception as e:
+        from app.blueprints.base.functions import print_traceback
+        print_traceback(e)
+
+        flash("There was an error.", 'error')
+    return redirect(url_for('user.dashboard'))
+
+
+@user.route('/sync_all_products', methods=['GET', 'POST'])
+@login_required
+def sync_all_products():
     try:
         if request.method == 'POST':
             if 'sync_id' in request.form:
@@ -463,11 +493,11 @@ def sync_products():
 
                 s = Sync.query.filter(Sync.sync_id == sync_id).scalar()
                 if s is not None:
-                    from app.blueprints.shopify.functions import sync_products
-                    result = sync_products(s)
-                    print(result)
+                    from app.blueprints.shopify.functions import sync_all_products
+                    success = sync_all_products(s)
 
-                    return jsonify({'success': 'Success'})
+                    if success:
+                        return jsonify({'success': 'Success'})
         return jsonify({'error': 'Error'})
     except Exception as e:
         return jsonify({'error': 'Error'})
@@ -516,7 +546,7 @@ def sort_products(s):
     products = get_all_products(shop)
 
     # Print the list
-    pprint.pprint(products)
+    # pprint.pprint(products)
 
     if s == 'alphabetical':
         products.sort(key=lambda x: x.title)
