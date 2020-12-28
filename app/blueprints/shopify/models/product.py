@@ -12,7 +12,7 @@ class SyncedProduct(ResourceMixin, db.Model):
     # Objects.
     id = db.Column(db.Integer, primary_key=True)
     source_product_id = db.Column(db.BigInteger, unique=False, index=True, nullable=False)
-    destination_product_id = db.Column(db.BigInteger, unique=False, index=True, nullable=False)
+    destination_product_id = db.Column(db.BigInteger, unique=False, index=True, nullable=True)
 
     # Relationships.
     user_id = db.Column(db.Integer, db.ForeignKey('users.id', onupdate='CASCADE', ondelete='CASCADE'),

@@ -392,7 +392,7 @@ def create_sync():
                     # They're setting it up as a source store
                     s.source = True
                     s.save()
-                    flash(Markup("You've successfully set up your store to sync with others. Click \"Sync a store!\" "
+                    flash(Markup("You've successfully set up your store to sync with others. Click \"Sync a new store!\" "
                                  "above to sell your products on another store."), category='success')
 
                 # They're on the sync page
@@ -474,7 +474,7 @@ def submit_sync():
                     flash("Successfully synced " + str(count) + " product(s).", 'success')
                 else:
                     flash("There was an error. Please try again.", 'error')
-        return redirect(url_for('user.sync', sync_id=sync_id))
+                return redirect(url_for('user.sync', sync_id=sync_id))
     except Exception as e:
         from app.blueprints.base.functions import print_traceback
         print_traceback(e)

@@ -4,7 +4,8 @@ import pprint
 import requests
 from flask import current_app
 from flask_login import current_user
-
+from app.extensions import db
+from sqlalchemy import exists, and_
 from app.blueprints.shopify.models.product import SyncedProduct, Product
 from app.blueprints.shopify.models.shop import Shop
 from app.blueprints.shopify.models.sync import Sync
@@ -22,8 +23,8 @@ def sync_all_products(s):
 
         # Get the product ids of the synced products from the source store
         synced_products = SyncedProduct.query.with_entities(SyncedProduct.source_product_id, SyncedProduct.destination_product_id).filter(SyncedProduct.sync_id == s.sync_id).all()
-        source_product_ids = [x.source_product_id for x in synced_products]
-        destination_product_ids = [x.destination_product_id for x in synced_products]
+        source_product_ids = [str(x.source_product_id) for x in synced_products]
+        destination_product_ids = [str(x.destination_product_id) for x in synced_products]
 
         # Get the source products for those ids
         source_products = get_all_products(source, True, kwargs={'ids': source_product_ids})
@@ -33,7 +34,7 @@ def sync_all_products(s):
         destination_products = get_all_products(destination, True, vendor=vendor, kwargs={'ids': destination_product_ids})
 
         for product in source_products:
-            sync_or_create(destination, product, destination_products)
+            sync_or_create_product(destination.shop_id, product, destination_products)
 
         return True
 
@@ -43,30 +44,38 @@ def sync_all_products(s):
         return False
 
 
-def sync_or_create(destination, product, destination_products):
+def sync_or_create_product(destination_id, source_product, destination_products):
     try:
-        # Destination store already has this product, so update it
-        destination_product = next(x for x in destination_products if 'tags' in x and 'recurrify-' + str(product['id']) in x['tags'])
+
+        # If destination store already has this product update it
+        destination_product = next((x for x in destination_products if 'tags' in x and 'recurrify-' + str(source_product['id']) in x['tags']), None)
+
         if destination_product is not None:
-            update_product(destination, product)
+            try:
+                from app.blueprints.base.tasks import update_product
+                update_product(destination_id, destination_product['id'], source_product)
+                return destination_product['id']
+            except Exception as e:
+                from app.blueprints.base.functions import print_traceback
+                print_traceback(e)
+                return -1
 
         # Otherwise create it in the destination store
         else:
-            product.update({'tags': ['recurrify-' + str(product['id'])]})
-            create_product(destination, product)
+            from app.blueprints.base.tasks import create_product
+            return create_product(destination_id, source_product)
 
-        return True
     except Exception as e:
         from app.blueprints.base.functions import print_traceback
         print_traceback(e)
-        return False
+        return None
 
 
 def update_sync(sync_id, product_ids):
     try:
         count = 0
         sync = Sync.query.filter(Sync.sync_id == sync_id).scalar()
-        if sync is None:
+        if sync is None or not sync.active:
             return -1
 
         # Get the source store and destination store
@@ -76,30 +85,48 @@ def update_sync(sync_id, product_ids):
         if source is None or destination is None:
             return -1
 
-        # Get all existing synced products for this particular sync
-        s = SyncedProduct.query.with_entities(SyncedProduct.id, SyncedProduct.source_product_id).filter(SyncedProduct.sync_id == sync_id).all()
+        # Get the products that are currently synced to the destination store
+        vendor = source.url.replace('.myshopify.com', '')
+        destination_products = get_all_products(destination, True, vendor=vendor)
 
-        # Delete the product syncs that no longer exist
-        ids_to_delete = [x.id for x in s if x.source_product_id not in product_ids]
-        SyncedProduct.bulk_delete(ids_to_delete)
-
-        # Create the synced products
+        # Create the newly synced products
         for product_id in product_ids:
+            try:
+                # Either sync or create the product in the destination store
+                from app.blueprints.base.tasks import sync_product
+                sync_product.delay(current_user.id, source.shop_id, sync_id, destination.shop_id, product_id, destination_products)
 
-            # Get the product from the source store via its id
-            product = get_product_by_id(source, product_id, return_json=True)
-
-            # Add the identifying tag for the destination store
-            product.update({'tags': ['recurrify-' + str(product['id'])]})
-
-            # Create the product in the destination store
-            #TODO: sync or create to avoid duplicating creation of products
-            destination_product_id = create_product(destination, product)
-            if destination_product_id is not None:
-                p = SyncedProduct(product_id, destination_product_id, current_user.id, source.shop_id, sync_id)
-                p.save()
+                # Add it to the synced product table, if it doesn't already exist
+                if not db.session.query(exists().where(SyncedProduct.source_product_id == product_id)).scalar():
+                    p = SyncedProduct(product_id, None, current_user.id, source.shop_id, sync_id)
+                    p.save()
 
                 count += 1
+            except Exception as e:
+                from app.blueprints.base.functions import print_traceback
+                print_traceback(e)
+
+            # if destination_product_id is not None:
+            #     if not db.session.query(exists().where(SyncedProduct.source_product_id == product_id)).scalar():
+            #         p = SyncedProduct(product_id, destination_product_id, current_user.id, source.shop_id, sync_id)
+            #         p.save()
+            #
+            #     if destination_product_id != -1:
+            #         count += 1
+
+        # Delete the syncs that no longer exist
+        from app.blueprints.base.tasks import delete_syncs
+
+        # Get all existing synced products for this particular sync
+        synced_products = SyncedProduct.query.filter(SyncedProduct.sync_id == sync_id).all()
+
+        # Delete the unsynced products from the database
+        ids_to_delete = [x.id for x in synced_products if str(x.source_product_id) not in product_ids]
+        SyncedProduct.bulk_delete(ids_to_delete)
+
+        # Delete the unsynced products from the destination store
+        products_to_delete = [x.destination_product_id for x in synced_products if str(x.source_product_id) not in product_ids]
+        delete_syncs.delay(destination.token, destination.url, products_to_delete)
 
         return count
 
@@ -109,7 +136,11 @@ def update_sync(sync_id, product_ids):
         return -1
 
 
-def update_product(shop, data):
+def update_product(shop_id, destination_product_id, data):
+    shop = Shop.query.filter(Shop.shop_id == shop_id).scalar()
+    if shop is None:
+        return
+
     token = shop.token
     url = shop.url
 
@@ -117,17 +148,35 @@ def update_product(shop, data):
         return None
 
     try:
-        print("Updating: " + str(data['id']))
+        # Update the variants to not include variant IDs; overwriting the variant ID will throw an error
+        if 'variants' in data and data['variants'] is not None:
+            for variant in data['variants']:
+                del variant['id']
+
         # Update the existing product
-        result = rest_call(url, 'products', token, 'put', data['id'], data=data)
-        return result.json()
+        result = rest_call(url, 'products', token, 'put', destination_product_id, data=data)
+
+        # print("Update result is:")
+        # pprint.pprint(result.json())
+
+        if result.status_code < 400:
+            r = result.json()
+            if 'product' in r and 'id' in r['product']:
+                return r['product']['id']
+            elif 'errors' in r:
+                return -1
+        return None
     except Exception as e:
         from app.blueprints.base.functions import print_traceback
         print_traceback(e)
         return None
 
 
-def create_product(shop, data):
+def create_product(shop_id, data):
+    shop = Shop.query.filter(Shop.shop_id == shop_id).scalar()
+    if shop is None:
+        return
+
     token = shop.token
     url = shop.url
 
@@ -137,15 +186,37 @@ def create_product(shop, data):
     try:
         result = rest_call(url, 'products', token, 'post', data=data)
 
+        # print("Create result is:")
+        # pprint.pprint(result.json())
+
         if result.status_code < 400:
             r = result.json()
             if 'product' in r and 'id' in r['product']:
                 return r['product']['id']
+            elif 'errors' in r:
+                return -1
         return None
     except Exception as e:
         from app.blueprints.base.functions import print_traceback
         print_traceback(e)
         return None
+
+
+def delete_product(token, url, product_id):
+
+    if token is None or url is None:
+        return None
+
+    try:
+        result = rest_call(url, 'products', token, 'delete', product_id)
+        pprint.pprint(result)
+        if result.status_code == 200:
+            return True
+        return False
+    except Exception as e:
+        from app.blueprints.base.functions import print_traceback
+        print_traceback(e)
+        return False
 
 
 def get_all_products(shop, return_json=False, vendor=None, **kwargs):
@@ -191,12 +262,12 @@ def get_synced_products(sync_id):
     if source is None:
         return None
 
-    product_ids = [str(x.source_product_id) for x in SyncedProduct.query.filter(SyncedProduct.sync_id == sync_id)]
+    # product_ids = [str(x.source_product_id) for x in SyncedProduct.query.filter(SyncedProduct.sync_id == sync_id)]
 
-    if len(product_ids) > 0:
-        products = get_all_products(source, kwargs={'ids': product_ids})
-    else:
-        products = get_all_products(source)
+    # if len(product_ids) > 0:
+        # products = get_all_products(source, kwargs={'ids': product_ids})
+    # else:
+    products = get_all_products(source)
 
     # print(products)
     return products
@@ -229,6 +300,10 @@ def get_product_by_id(shop, product_id, synced=False, return_json=False):
     return None
 
 
+# Adds the source product's id to the tag, so it can be identified for a sync
+def add_source_tag(source_product, product_id):
+    source_product.update({'tags': ['recurrify-' + str(product_id)]})
+
 """
 Queries
 """
@@ -240,24 +315,24 @@ def rest_call(shop_url, api, token, method, *args, data=None, vendor=None, kwarg
 
     for arg in args:
         if arg is not None:
-            url += '/' + arg
+            url += '/' + str(arg)
 
     # Append json to the end of the rest call
     url += '.json?'
 
     if vendor is not None:
-        url += 'vendor=' + vendor
+        url += 'vendor=' + str(vendor)
 
     if kwargs is not None:
         for k, v in kwargs.items():
             if isinstance(v, list):
-                url += k + '=' + ','.join(v)
+                url += str(k) + '=' + ','.join(v)
             elif isinstance(v, dict):
                 if 'ids' in v:
                     ids = v['ids']
                     url += k + '=' + ','.join(list(ids))
             else:
-                url += k + '=' + v
+                url += str(k) + '=' + str(v)
 
     headers = {
         "X-Shopify-Access-Token": token,
@@ -272,6 +347,8 @@ def rest_call(shop_url, api, token, method, *args, data=None, vendor=None, kwarg
     else:
         r = requests.get(url, headers=headers)
 
+    # print(method)
+    # pprint.pprint(r.json())
     # print("URL")
     # print(url)
     # print("method")
@@ -282,7 +359,7 @@ def rest_call(shop_url, api, token, method, *args, data=None, vendor=None, kwarg
     # print(r.json())
     # print("----------------------------")
 
-    result = r#.json()
+    result = r
     if 'Not Found' in result.json().values():
         result = None
 

@@ -107,65 +107,75 @@
                             </div>
 
                             <fieldset class="pt-8" style="width:500px;margin:0 auto;float:none;">
-                                <ul class="space-y-4" role="radiogroup" aria-labelledby="radiogroup-label">
-                                    {% for sync in destinations %}
-                                        <li id="{{ sync.destination_id }}" tabindex="0" role="radio" aria-checked="true"
-                                            class="group relative bg-white rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500"
-                                            >
-                                            <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
-                                                <div class="flex items-center w-full">
-                                                    <div class="grid grid-cols-4 gap-5">
-                                                        <div class="col-span-3">
-                                                            <div class="text-lg">
-                                                                <p class="text-gray-900">
-                                                                    {{ sync.destination_url | title }} -
-                                                                    <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium {% if not sync.active %}bg-gray-100 text-gray-800{% else %}bg-green-100 text-green-800{% endif %}">
-                                                                        {% if not sync.active %}Inactive{% else %}Active{% endif %}
-                                                                    </span>
-                                                                </p>
+                                {% if destinations|length > 0 %}
+                                    <ul class="space-y-4" role="radiogroup" aria-labelledby="radiogroup-label">
+                                        {% for sync in destinations %}
+                                            <li id="{{ sync.destination_id }}" tabindex="0" role="radio" aria-checked="true"
+                                                class="group relative bg-white rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500"
+                                                >
+                                                <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
+                                                    <div class="flex items-center w-full">
+                                                        <div class="grid grid-cols-4 gap-5">
+                                                            <div class="col-span-3">
+                                                                <div class="text-lg">
+                                                                    <p class="text-gray-900">
+                                                                        {{ sync.destination_url | title }} -
+                                                                        <span class="inline-flex items-center px-3 py-0.5 rounded-full text-sm font-medium {% if not sync.active %}bg-gray-100 text-gray-800{% else %}bg-green-100 text-green-800{% endif %}">
+                                                                            {% if not sync.active %}Inactive{% else %}Active{% endif %}
+                                                                        </span>
+                                                                    </p>
+                                                                </div>
+                                                                <div class="text-gray-500 text-sm">
+                                                                    {% set plan = plans|selectattr('id', 'equalto', sync.plan_id ) | list | first %}
+                                                                    <p class="sm:inline">{{ sync.plan|title }} plan - ${{ plan.price }}/mo</p><br/>
+                                                                    <p class="sm:inline">x/{% if plan.limit > 5000 %}Unlimited{% else %}{{ plan.limit }}{% endif %} product syncs used</p><br/><br/>
+                                                                    <a href="{{ url_for('user.sync', sync_id=sync.sync_id) }}">
+                                                                        <p class="sm:inline text-indigo-600"><u>Choose which products to sync</u></p><br/>
+                                                                    </a>
+                                                                </div>
                                                             </div>
-                                                            <div class="text-gray-500 text-sm">
-                                                                {% set plan = plans|selectattr('id', 'equalto', sync.plan_id ) | list | first %}
-                                                                <p class="sm:inline">{{ sync.plan|title }} plan - ${{ plan.price }}/mo</p><br/>
-                                                                <p class="sm:inline">x/{% if plan.limit > 5000 %}Unlimited{% else %}{{ plan.limit }}{% endif %} product syncs used</p><br/><br/>
-                                                                <a href="{{ url_for('user.sync', sync_id=sync.sync_id) }}">
-                                                                    <p class="sm:inline text-indigo-600"><u>Choose which products to sync</u></p><br/>
-                                                                </a>
+                                                            <div class="col-span-1 mt-3 pull-right">
+                                                                <span class="ml-3 text-center items-center rounded-md shadow-sm" style="height:100%">
+                                                                    {% if sync.active %}
+                                                                        <button type="button"
+                                                                                class=" mb-5 inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
+                                                                                onclick="SyncProducts('{{ sync.sync_id }}', this)">
+                                                                          Sync <i class="fa fa-refresh ml-3 pt-1"></i>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                                class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red active:bg-red-700 transition duration-150 ease-in-out"
+                                                                                onclick="ActivateSync('{{ sync.sync_id }}', '{{ sync.destination_id }}', false, this);">
+                                                                          Deactivate
+                                                                        </button>
+                                                                    {% else %}
+                                                                        <button type="button"
+                                                                                class="disabled mb-5 inline-flex justify-center py-2 px-4 text-sm leading-5 font-medium rounded-md text-white bg-gray-400 transition duration-150 ease-in-out"
+                                                                                onclick="return false;">
+                                                                          Sync <i class="fa fa-refresh ml-3 pt-1"></i>
+                                                                        </button>
+                                                                        <button type="button"
+                                                                            class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
+                                                                            onclick="ActivateSync('{{ sync.sync_id }}', '{{ sync.destination_id }}', true, this);">
+                                                                            &nbsp;&nbsp;Activate&nbsp;&nbsp;
+                                                                        </button>
+                                                                    {% endif %}
+                                                                </span>
                                                             </div>
-                                                        </div>
-                                                        <div class="col-span-1 mt-3">
-                                                            <span class="ml-3 text-center items-center rounded-md shadow-sm">
-                                                                {% if sync.active %}
-                                                                    <button type="button"
-                                                                            class=" mb-5 inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
-                                                                            onclick="SyncProducts('{{ sync.sync_id }}', this)">
-                                                                      Sync <i class="fa fa-refresh ml-3 pt-1"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                            class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-red-600 hover:bg-red-500 focus:outline-none focus:border-red-700 focus:shadow-outline-red active:bg-red-700 transition duration-150 ease-in-out"
-                                                                            onclick="ActivateSync('{{ sync.sync_id }}', '{{ sync.destination_id }}', false, this);">
-                                                                      Deactivate
-                                                                    </button>
-                                                                {% else %}
-                                                                    <button type="button"
-                                                                            class="disabled mb-5 inline-flex justify-center py-2 px-4 text-sm leading-5 font-medium rounded-md text-white bg-gray-400 transition duration-150 ease-in-out"
-                                                                            onclick="return false;">
-                                                                      Sync <i class="fa fa-refresh ml-3 pt-1"></i>
-                                                                    </button>
-                                                                    <button type="button"
-                                                                        class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
-                                                                        onclick="ActivateSync('{{ sync.sync_id }}', '{{ sync.destination_id }}', true, this);">
-                                                                        Activate
-                                                                    </button>
-                                                                {% endif %}
-                                                            </span>
                                                         </div>
                                                     </div>
                                                 </div>
-                                            </div>
-                                        </li>
-                                    {% endfor %}
-                                </ul>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <div class="items-center flex w-full pt-8">
+                                        <a href="{{ url_for('user.sync') }}"
+                                            class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
+                                            style="margin:0 auto; float:none">
+                                            Sync a new store
+                                        </a>
+                                    </div>
+                                {% endif %}
                             </fieldset>
                         </div>
                     </div>
@@ -250,6 +260,7 @@
             data: {'sync_id': sync_id},
             success: function (response) {
                 if ('success' in response){
+                    alert("Success");
                     {#el.innerText = "Synced";
                     el.classList.remove('bg-indigo-600');
                     el.classList.remove('hover:bg-indigo-500');

@@ -133,7 +133,7 @@
                                                             <span class="ml-3 inline-flex rounded-md shadow-sm">
                                                                 <button type="button"
                                                                         class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
-                                                                        onclick="ActivateSync('{{ sync.sync_id }}', '{{ shop_id }}', this);">
+                                                                        onclick="ActivateSync('{{ sync.sync_id }}', '{{ shop_id }}', true, this);">
                                                                   Activate
                                                                 </button>
                                                             </span>
@@ -201,12 +201,12 @@
         }
     }
 
-    function ActivateSync(sync_id, shop_id, el){
+    function ActivateSync(sync_id, shop_id, activate, el){
         var url = "{{ url_for('user.activate_sync') }}";
         $.ajax({
             url: url,
             type: 'POST',
-            data: {'sync_id': sync_id, 'shop_id': shop_id},
+            data: {'sync_id': sync_id, 'shop_id': shop_id, 'activate':activate},
             success: function (response) {
                 if ('success' in response){
                     el.innerText = "Activated";
