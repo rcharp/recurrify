@@ -130,8 +130,8 @@
                                     </dt>
                                     <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
                                         {% if destinations and destinations|length > 0 %}
-                                            {% for shop in destinations %}
-                                                {{ shop.url}}
+                                            {% for destination in destinations %}
+                                                {{ destination }}
                                             {% endfor %}
                                         {% else %}
                                             <a href="{{ url_for('user.sync') }}"

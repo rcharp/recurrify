@@ -101,7 +101,12 @@
                     {% if product.variants | any_attribute_filter('requires_shipping', true) %}
                         {% for variant in product.variants %}
                             <div class="text-sm {% if not loop.last %}mb-2{% endif %} leading-5 text-gray-500">
-                                {{ variant['option1'] }}
+                                {% for option in variant|contains_filter('option') %}
+                                    {% for item in option %}
+                                        {{ option[item] }}
+                                    {% endfor %}
+                                    {% if not loop.last %} - {% endif %}
+                                {% endfor %}
                             </div>
                         {% endfor %}
                     {% else %}

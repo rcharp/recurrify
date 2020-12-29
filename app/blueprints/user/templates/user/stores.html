@@ -258,15 +258,22 @@
             url: url,
             type: 'POST',
             data: {'sync_id': sync_id},
+            beforeSend: function () {
+                el.innerText = "Syncing...";
+                el.classList.remove('bg-indigo-600');
+                el.classList.remove('hover:bg-indigo-500');
+                el.classList.add('hover:bg-gray-500');
+                el.classList.add('bg-gray-600');
+                el.removeAttribute("onclick");
+            },
             success: function (response) {
                 if ('success' in response){
-                    alert("Successfully resynced this store.");
-                    {#el.innerText = "Synced";
-                    el.classList.remove('bg-indigo-600');
-                    el.classList.remove('hover:bg-indigo-500');
-                    el.classList.add('hover:bg-green-500');
-                    el.classList.add('bg-green-600');
-                    el.removeAttribute("onclick");#}
+                    el.innerHTML = 'Sync <i class="fa fa-refresh ml-3 pt-1"></i>';
+                    el.classList.remove('bg-gray-600');
+                    el.classList.remove('hover:bg-gray-500');
+                    el.classList.add('hover:bg-indigo-500');
+                    el.classList.add('bg-indigo-600');
+                    el.onclick = function() { SyncProducts(sync_id, el) };
                 }
             },
             error: function (xhr) {

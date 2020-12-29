@@ -6,6 +6,7 @@ PRODUCTION = os.environ.get('PRODUCTION', None)
 
 SERVER_NAME = os.environ.get('SERVER_NAME', None)
 SITE_NAME = os.environ.get('SITE_NAME', None)
+APP_NAME = os.environ.get('APP_NAME', None)
 REMEMBER_COOKIE_DOMAIN = os.environ.get('REMEMBER_COOKIE_DOMAIN', None)
 HEROKU_APP_NAME = os.environ.get('HEROKU_APP_NAME', None)
 

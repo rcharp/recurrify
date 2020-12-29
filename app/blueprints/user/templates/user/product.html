@@ -102,7 +102,7 @@
                                         </dt>
                                         <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
                                             {% for variant in product['variants'] %}
-                                            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-4 mb-5">
+                                                <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-4 mb-5">
                                                     <div class="sm:col-span-1">
                                                         <div class="text-sm mb-2 leading-5 font-medium text-gray-500">
                                                             Option
@@ -136,7 +136,7 @@
                                                             ${{ variant['price'] }}</div>
                                                         <div class="text-sm mb-2 leading-5 text-gray-500">{{ variant['inventory_quantity'] }}</div>
                                                     </div>
-                                            </dl>
+                                                </dl>
                                             {% endfor %}
                                         </dd>
                                     </div>

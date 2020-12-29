@@ -12,7 +12,7 @@ from app.blueprints.shopify.models.sync import Sync
 
 
 def sync_all_products(s):
-    if s is None:
+    if s is None or not s.active:
         return None
 
     try:
@@ -103,14 +103,6 @@ def update_sync(sync_id, product_ids):
             except Exception as e:
                 from app.blueprints.base.functions import print_traceback
                 print_traceback(e)
-
-            # if destination_product_id is not None:
-            #     if not db.session.query(exists().where(SyncedProduct.source_product_id == product_id)).scalar():
-            #         p = SyncedProduct(product_id, destination_product_id, current_user.id, source.shop_id, sync_id)
-            #         p.save()
-            #
-            #     if destination_product_id != -1:
-            #         count += 1
 
         # Delete the syncs that no longer exist
         from app.blueprints.base.tasks import delete_syncs

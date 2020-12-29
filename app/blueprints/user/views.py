@@ -326,7 +326,7 @@ def settings():
 
     if shop is None:
         return redirect(url_for('user.logout'))
-    destinations = list()
+    destinations = [x.destination_url for x in Sync.query.filter(Sync.user_id == current_user.id)]
     return render_template('user/settings.html', current_user=current_user, shop=shop, destinations=destinations)
 
 
@@ -423,7 +423,7 @@ def create_sync():
 
                         t.save()
 
-                        flash(Markup("You've initiated a sync with " + destination_url + "."),
+                        flash(Markup("You've initiated a sync with " + destination_url + ". That store owner needs to install " + current_app.config.get('APP_NAME') + " to complete the sync."),
                               category='success')
                         return redirect(url_for('user.dashboard', store_id=s.shop_id))
                     flash(Markup("There was an error. Please try again."), category='error')
@@ -490,14 +490,16 @@ def sync_all_products():
                 sync_id = request.form['sync_id']
 
                 s = Sync.query.filter(Sync.sync_id == sync_id).scalar()
-                if s is not None:
-                    from app.blueprints.shopify.functions import sync_all_products
-                    success = sync_all_products(s)
 
-                    if success:
-                        return jsonify({'success': 'Success'})
+                from app.blueprints.shopify.functions import sync_all_products
+                success = sync_all_products(s)
+
+                if success:
+                    return jsonify({'success': 'Success'})
         return jsonify({'error': 'Error'})
     except Exception as e:
+        from app.blueprints.base.functions import print_traceback
+        print_traceback(e)
         return jsonify({'error': 'Error'})
 
 
