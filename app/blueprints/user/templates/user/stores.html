@@ -128,7 +128,7 @@
                                                                 <div class="text-gray-500 text-sm">
                                                                     {% set plan = plans|selectattr('id', 'equalto', sync.plan_id ) | list | first %}
                                                                     <p class="sm:inline">{{ sync.plan|title }} plan - ${{ plan.price }}/mo</p><br/>
-                                                                    <p class="sm:inline">x/{% if plan.limit > 5000 %}Unlimited{% else %}{{ plan.limit }}{% endif %} product syncs used</p><br/><br/>
+                                                                    <p class="sm:inline">{{ (sync_counts|selectattr('id', 'equalto', sync.sync_id) | list | first)['count'] }}/{% if plan.limit > 5000 %}Unlimited{% else %}{{ plan.limit }}{% endif %} product syncs used</p><br/><br/>
                                                                     <a href="{{ url_for('user.sync', sync_id=sync.sync_id) }}">
                                                                         <p class="sm:inline text-indigo-600"><u>Choose which products to sync</u></p><br/>
                                                                     </a>
@@ -260,7 +260,7 @@
             data: {'sync_id': sync_id},
             success: function (response) {
                 if ('success' in response){
-                    alert("Success");
+                    alert("Successfully resynced this store.");
                     {#el.innerText = "Synced";
                     el.classList.remove('bg-indigo-600');
                     el.classList.remove('hover:bg-indigo-500');

@@ -78,7 +78,11 @@
                                 {{ product['title'] }}
                             </h3>
                             <p class="mt-1 max-w-2xl text-sm leading-5 text-gray-500">
-                                Personal details and application.
+                                {% if product['variants'] | any_attribute_filter('requires_shipping', true) %}
+                                    Physical product
+                                {% else %}
+                                    Digital product
+                                {% endif %}
                             </p>
                         </div>
                         <div class="px-4 py-5 sm:p-0">
@@ -88,7 +92,7 @@
                                         Description
                                     </dt>
                                     <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                        {{ product['body_html'] }}
+                                        {{ product['body_html']|safe }}
                                     </dd>
                                 </div>
                                 {% if product['variants'] | any_attribute_filter('requires_shipping', true) %}
@@ -97,31 +101,43 @@
                                             Variants
                                         </dt>
                                         <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
-                                            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-{{ product['variants']|length + 1 }}">
-                                                <div class="sm:col-span-1">
-                                                    <div class="text-sm mb-2 leading-5 font-medium text-gray-500">
-                                                        Option
-                                                    </div>
-                                                    <div class="text-sm mb-2 leading-5 font-medium text-gray-500">SKU
-                                                    </div>
-                                                    <div class="text-sm mb-2 leading-5 font-medium text-gray-500">
-                                                        Price
-                                                    </div>
-                                                    <div class="text-sm mb-2 leading-5 font-medium text-gray-500">In
-                                                        stock
-                                                    </div>
-                                                </div>
-                                                {% for variant in product['variants'] %}
+                                            {% for variant in product['variants'] %}
+                                            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-4 mb-5">
                                                     <div class="sm:col-span-1">
-                                                        <div class="text-sm mb-2 leading-5 text-gray-500">{{ variant['option1'] }}</div>
+                                                        <div class="text-sm mb-2 leading-5 font-medium text-gray-500">
+                                                            Option
+                                                        </div>
+                                                        {% if variant['sku'] %}
+                                                            <div class="text-sm mb-2 leading-5 font-medium text-gray-500">
+                                                                SKU
+                                                            </div>
+                                                        {% endif %}
+                                                        <div class="text-sm mb-2 leading-5 font-medium text-gray-500">
+                                                            Price
+                                                        </div>
+                                                        <div class="text-sm mb-2 leading-5 font-medium text-gray-500">In
+                                                            stock
+                                                        </div>
+                                                    </div>
+                                                    <div class="sm:col-span-1">
                                                         <div class="text-sm mb-2 leading-5 text-gray-500">
-                                                            #{{ variant['sku'] }}</div>
+                                                            {% for option in variant|contains_filter('option') %}
+                                                                {% for item in option %}
+                                                                    {{ option[item] }}
+                                                                {% endfor %}
+                                                                {% if not loop.last %} - {% endif %}
+                                                            {% endfor %}
+                                                        </div>
+                                                        <div class="text-sm mb-2 leading-5 text-gray-500">
+                                                            {% if variant['sku'] %}
+                                                                #{{ variant['sku'] }}</div>
+                                                            {% endif %}
                                                         <div class="text-sm mb-2 leading-5 text-gray-500">
                                                             ${{ variant['price'] }}</div>
                                                         <div class="text-sm mb-2 leading-5 text-gray-500">{{ variant['inventory_quantity'] }}</div>
                                                     </div>
-                                                {% endfor %}
                                             </dl>
+                                            {% endfor %}
                                         </dd>
                                     </div>
                                 {% endif %}
@@ -139,6 +155,18 @@
                                         </dl>
                                     </dd>
                                 </div>
+                                {% if stores|length > 0 %}
+                                    <div class="mt-8 sm:mt-0 sm:grid sm:grid-cols-3 sm:gap-4 sm:border-t sm:border-gray-200 sm:px-6 sm:py-5">
+                                        <dt class="text-sm leading-5 font-medium text-gray-500">
+                                            Synced with:
+                                        </dt>
+                                        <dd class="mt-1 text-sm leading-5 text-gray-900 sm:mt-0 sm:col-span-2">
+                                            {% for store in stores %}
+                                                {{ store }}
+                                            {% endfor %}
+                                        </dd>
+                                    </div>
+                                {% endif %}
                             </dl>
                         </div>
                     </div>

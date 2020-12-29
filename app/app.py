@@ -212,6 +212,7 @@ def template_processors(app):
     app.jinja_env.filters['deserialize_private_key'] = deserialize_private_key
     app.jinja_env.filters['any_attribute_filter'] = any_attribute_filter
     app.jinja_env.filters['exists_filter'] = exists_filter
+    app.jinja_env.filters['contains_filter'] = contains_filter
     app.jinja_env.globals.update(current_year=current_year)
 
     return app.jinja_env
@@ -437,3 +438,12 @@ def exists_filter(arg, k):
         return True
 
     return False
+
+
+def contains_filter(arg, search):
+    return_list = list()
+    for k, v in arg.items():
+        if search in k and v is not None:
+            return_list.append({k: v.title()})
+
+    return return_list

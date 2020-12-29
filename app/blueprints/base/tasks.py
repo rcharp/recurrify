@@ -14,7 +14,7 @@ def encrypt_string(plaintext):
 
 
 @celery.task()
-def sync_product(user_id, source_id, sync_id, destination_id, product_id, destination_products):
+def sync_product(source_id, destination_id, product_id, destination_products):
     from app.blueprints.shopify.functions import sync_or_create_product, add_source_tag
     from app.blueprints.shopify.functions import get_product_by_id
     from app.blueprints.shopify.models.shop import Shop
@@ -29,6 +29,7 @@ def sync_product(user_id, source_id, sync_id, destination_id, product_id, destin
     # Add the source product's id to the tag in order to identify it during sync
     add_source_tag(product, product_id)
 
+    # Create the sync
     destination_product_id = sync_or_create_product(destination_id, product, destination_products)
 
     # Update the newly created product's destination product id in the table.

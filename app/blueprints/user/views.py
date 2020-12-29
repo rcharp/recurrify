@@ -287,8 +287,6 @@ def dashboard(page=1):
 
     products = get_all_products(shop)
 
-    products = products * 25
-
     # How many products per page
     offset = 20
     page_start, page_finish, pagination, total_pages = get_pagination(products, offset, page)
@@ -512,30 +510,34 @@ Stores and Products
 @csrf.exempt
 @cross_origin()
 def stores():
-    # shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
-    product_count = 10  # len(get_all_products(shop))
-
     sources = Shop.query.filter(and_(Shop.user_id == current_user.id, Shop.source.is_(True))).all()
     destinations = Sync.query.filter(Sync.user_id == current_user.id).all()
     plans = Plan.query.all()
+    sync_counts = [{'id': x.sync_id, 'count': SyncedProduct.query.filter(SyncedProduct.sync_id == x.sync_id).count()} for x in destinations]
     return render_template('user/stores.html', plans=plans,
                            sources=sources,
                            destinations=destinations,
-                           product_count=product_count)
+                           sync_counts=sync_counts)
 
 
 @user.route('/product/<product_id>', methods=['GET', 'POST'])
 @csrf.exempt
 @cross_origin()
 def product(product_id):
+    from itertools import chain
+
     shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
-    p = get_product_by_id(shop, product_id)
+    p = get_product_by_id(shop, product_id, return_json=True)
 
     if p is None:
         flash("Product not found", 'error')
         return redirect(url_for('user.dashboard'))
 
-    return render_template('user/product.html', current_user=current_user, product=p)
+    syncs = [x.sync_id for x in SyncedProduct.query.filter(SyncedProduct.source_product_id == p['id'])]
+    store_names = list(
+        chain.from_iterable([[x.destination_url for x in Sync.query.filter(Sync.sync_id == y)] for y in syncs]))
+
+    return render_template('user/product.html', current_user=current_user, product=p, stores=store_names)
 
 
 @user.route('/dashboard/<s>', methods=['GET', 'POST'])

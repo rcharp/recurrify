@@ -52,7 +52,6 @@ def sync_or_create_product(destination_id, source_product, destination_products)
 
         if destination_product is not None:
             try:
-                from app.blueprints.base.tasks import update_product
                 update_product(destination_id, destination_product['id'], source_product)
                 return destination_product['id']
             except Exception as e:
@@ -62,7 +61,6 @@ def sync_or_create_product(destination_id, source_product, destination_products)
 
         # Otherwise create it in the destination store
         else:
-            from app.blueprints.base.tasks import create_product
             return create_product(destination_id, source_product)
 
     except Exception as e:
@@ -94,7 +92,7 @@ def update_sync(sync_id, product_ids):
             try:
                 # Either sync or create the product in the destination store
                 from app.blueprints.base.tasks import sync_product
-                sync_product.delay(current_user.id, source.shop_id, sync_id, destination.shop_id, product_id, destination_products)
+                sync_product.delay(source.shop_id, destination.shop_id, product_id, destination_products)
 
                 # Add it to the synced product table, if it doesn't already exist
                 if not db.session.query(exists().where(SyncedProduct.source_product_id == product_id)).scalar():
@@ -209,7 +207,6 @@ def delete_product(token, url, product_id):
 
     try:
         result = rest_call(url, 'products', token, 'delete', product_id)
-        pprint.pprint(result)
         if result.status_code == 200:
             return True
         return False
@@ -344,6 +341,8 @@ def rest_call(shop_url, api, token, method, *args, data=None, vendor=None, kwarg
         r = requests.put(url, headers=headers, json={'product': data})
     elif method == 'post':
         r = requests.post(url, headers=headers, json={'product': data})
+    elif method == 'delete':
+        r = requests.delete(url, headers=headers)
     else:
         r = requests.get(url, headers=headers)
 
