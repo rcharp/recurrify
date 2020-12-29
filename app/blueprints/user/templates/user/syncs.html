@@ -88,8 +88,11 @@
                                                         </p>
                                                     </div>
                                                     <div class="text-gray-500 text-sm">
+                                                        <p>{{ (product_counts | selectattr('id', 'equalto', shop.shop_id) | list | first)['count'] }} total products</p>
+                                                    </div>
+                                                    <div class="text-gray-500 text-sm">
                                                         {% set sync_count = destinations|selectattr('active', 'equalto', True ) | list | length %}
-                                                        <p class="">Actively synced with {{ sync_count }} store{% if sync_count == 1 %}{% else %}s{% endif %}</p><br/>
+                                                        <p>{{ sync_counts | sum(attribute='count') }} product(s) actively synced across {{ sync_count }} store{% if sync_count != 1 %}s{% endif %}</p>
                                                     </div>
                                                 </div>
                                             </div>

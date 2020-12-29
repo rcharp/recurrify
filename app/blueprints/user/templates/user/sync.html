@@ -58,14 +58,17 @@
                         </div>
                         <input id="search_field"
                                class="block w-full h-full pl-8 pr-3 py-2 rounded-md text-gray-900 placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 sm:text-sm"
-                               placeholder="Search products" type="search" onkeyup="SearchProducts(this)"/>
+                               placeholder="Search products" type="search" oninput="SearchProducts(this)"/>
                     </div>
                 </div>
             </div>
         </div>
     </div>
     <main class="flex-1 relative z-0 overflow-y-auto pb-6 focus:outline-none font-w400 mb-5" style="max-height:100%;">
-        {{ flash.render() }}
+        {#{{ flash.render() }}#}
+        <div class="mt-4 ml-8" >
+            <span id="success-message" class="text-yellow-400" style="display:none"></span>
+        </div>
         <div class="max-w-10xl mx-auto px-4 sm:px-6 md:px-8" style="height:80vh;">
             <!-- Replace with your content -->
             {% if source.url and destination.url %}
@@ -80,7 +83,6 @@
                                 <div class="shadow overflow-hidden border-gray-200 sm:rounded-lg" style="max-height:650px;">
                                     {% with sync_id = sync.sync_id %}{% include '/user/includes/product_table.html' ignore missing %}{% endwith %}
                                 </div>
-                                {#{% include '/user/includes/pagination.html' ignore missing %}#}
                             </div>
                         </div>
                     </div>
@@ -97,14 +99,14 @@
                 <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                     <div>
                         <p class="text-sm leading-5 text-gray-700 unfiltered-results">
-                            <span class="font-medium">{{ products | length }}</span> products
+                            <span class="font-bold">{{ products | length }}</span> total products, <span id="syncs-used">{{ product_ids | length }}</span> of {{ limit }} syncs used
                         </p>
                     </div>
                     <div class="pull-right">
                         <span class="ml-3 inline-flex rounded-md shadow-sm">
-                            <button type="submit"
+                            <button type="button"
                                     class="inline-flex justify-center py-2 px-4 border border-transparent text-sm leading-5 font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-500 focus:outline-none focus:border-indigo-700 focus:shadow-outline-indigo active:bg-indigo-700 transition duration-150 ease-in-out"
-                                    >
+                                    onclick="SubmitSync('{{ sync.sync_id }}')">
                               Save
                             </button>
                         </span>
@@ -119,6 +121,31 @@
 <script src="{{ url_for('static', filename='oneui/assets/js/core/jquery.min.js') }}"></script>
 
 <script>
+    function SubmitSync(sync_id) {
+        // Update the message to the user
+        UpdateMessage(true);
+
+        let url = "{{ url_for('user.submit_sync') }}";
+        let data = [];
+
+        $("input:checked").each(function() {
+           data.push($(this).val());
+        });
+
+        $.ajax({
+            url: url,
+            type: 'POST',
+            data: {'sync_id': sync_id, 'product': data},
+            success: function (response) {
+                if ('success' in response){
+                    UpdateMessage(false, response['count']);
+                }
+            },
+            error: function (xhr) {
+            }
+        });
+    }
+
     function ShowDropdown(id) {
         var dropdown = document.getElementById(id);
         if (dropdown.classList.contains('opacity-0')) {
@@ -138,11 +165,19 @@
         }
     }
 
-    function ShowSuccessMessage() {
-        document.getElementById('success-message').style.display = '';
-        setTimeout(function () {
-            return true
-        }, 4000);
+    function UpdateMessage(val, count=false) {
+        let checked = document.querySelectorAll('input[name=product]:checked').length;
+        let message = document.getElementById('success-message');
+
+        if (val){
+            message.innerText = 'Syncing ' + String(checked) + ' products....';
+            message.style.display = '';
+        }
+        else{
+            message.innerText = 'Successfully synced ' + String(count) + ' products!';
+            message.classList.remove('text-yellow-400');
+            message.classList.add('text-green-400');
+        }
     }
 
     function ShowLoginModal(action, member_id) {
@@ -169,7 +204,6 @@
         input += e.value;
 
         var product_rows = document.getElementsByClassName('product-row');
-        document.getElementById('search-term').innerText = input;
 
         for (var i = 0; i < product_rows.length; i++) {
             var item = product_rows[i];
@@ -185,45 +219,6 @@
         } else {
             document.getElementById('search-results').style.display = 'none';
         }
-    }
-
-    function TogglePrivacy() {
-        var public_toggle = document.getElementById('public-toggle');
-        var private_toggle = document.getElementById('private-toggle');
-        var privacy;
-
-        if (public_toggle.classList.contains('bg-green-400')) {
-            public_toggle.classList.remove('bg-green-400');
-            public_toggle.classList.add('bg-gray-200');
-
-            private_toggle.classList.remove('translate-x-5');
-            private_toggle.classList.add('translate-x-0');
-
-            privacy = false;
-        } else {
-            public_toggle.classList.remove('bg-gray-200');
-            public_toggle.classList.add('bg-green-400');
-
-            private_toggle.classList.remove('translate-x-0');
-            private_toggle.classList.add('translate-x-5');
-
-            privacy = true;
-        }
-
-        SetPrivacy(privacy, 'ricky')
-    }
-
-    function SetPrivacy(privacy, domain_id) {
-        var url = "#";
-        $.ajax({
-            url: url,
-            type: 'POST',
-            data: {'domain_id': domain_id, 'privacy': privacy},
-            success: function (response) {
-            },
-            error: function (xhr) {
-            }
-        });
     }
 </script>
 <script>

@@ -25,7 +25,7 @@ from flask_cors import cross_origin
 from flask_paginate import Pagination, get_page_args
 from lib.safe_next_url import safe_next_url
 from app.blueprints.user.decorators import anonymous_required
-from app.blueprints.shopify.functions import get_all_products, update_sync, get_synced_products, get_product_by_id
+from app.blueprints.shopify.functions import get_all_products, update_sync, get_product_count, get_product_by_id
 from app.blueprints.user.models.user import User
 from app.blueprints.base.functions import get_pagination
 from app.blueprints.shopify.models.shop import Shop
@@ -351,10 +351,16 @@ def sync(sync_id=None):
         if source is None or destination is None:
             return redirect(url_for('user.dashboard'))
 
-        products = get_synced_products(sync_id)
+        products = get_all_products(source)
+        # products = products * 10
         synced_product_ids = [str(x.source_product_id) for x in SyncedProduct.query.filter(SyncedProduct.sync_id == sync_id)]
 
-        return render_template('user/sync.html', sync=s, source=source, destination=destination, products=products, product_ids=synced_product_ids)
+        # Get the plan limit
+        p = Plan.query.filter(Plan.id == s.plan_id).scalar()
+        limit = p.limit if p is not None and p.limit is not None else 3
+
+        return render_template('user/sync.html', sync=s, source=source, destination=destination, products=products,
+                               product_ids=synced_product_ids, limit=limit)
     else:
         shop = Shop.query.filter(Shop.user_id == current_user.id).scalar()
         plans = Plan.query.all()
@@ -382,7 +388,7 @@ def create_sync():
 
                             flash(Markup("You're successfully synced with " + request.form['source_url'] + "."),
                                   category='success')
-                            return redirect(url_for('user.stores'))
+                            return redirect(url_for('user.syncs'))
                         else:
                             flash("There was an error.", "error")
                             return redirect(url_for('user.settings'))
@@ -459,20 +465,21 @@ def activate_sync():
 def submit_sync():
     try:
         if request.method == 'POST':
+            print(request.form)
             if 'sync_id' in request.form:
                 product_ids = list()
                 sync_id = request.form['sync_id']
 
-                if 'product' in request.form:
-                    product_ids = list(set(request.form.getlist('product')))
+                # Get the checked products from the page
+                if 'product[]' in request.form:
+                    product_ids = request.form.getlist('product[]')
 
+                # Get the count
                 count = update_sync(sync_id, product_ids)
 
                 if count >= 0:
-                    flash("Successfully synced " + str(count) + " product(s).", 'success')
-                else:
-                    flash("There was an error. Please try again.", 'error')
-                return redirect(url_for('user.sync', sync_id=sync_id))
+                    return jsonify({'success': 'Success', 'count': count})
+                return jsonify({'error': 'Error'})
     except Exception as e:
         from app.blueprints.base.functions import print_traceback
         print_traceback(e)
@@ -508,18 +515,20 @@ Stores and Products
 """
 
 
-@user.route('/stores/', methods=['GET', 'POST'])
+@user.route('/syncs/', methods=['GET', 'POST'])
 @csrf.exempt
 @cross_origin()
-def stores():
+def syncs():
     sources = Shop.query.filter(and_(Shop.user_id == current_user.id, Shop.source.is_(True))).all()
     destinations = Sync.query.filter(Sync.user_id == current_user.id).all()
     plans = Plan.query.all()
+    product_counts = [{'id': x.shop_id, 'count': get_product_count(x)['count']} for x in sources]
     sync_counts = [{'id': x.sync_id, 'count': SyncedProduct.query.filter(SyncedProduct.sync_id == x.sync_id).count()} for x in destinations]
-    return render_template('user/stores.html', plans=plans,
+    return render_template('user/syncs.html', plans=plans,
                            sources=sources,
                            destinations=destinations,
-                           sync_counts=sync_counts)
+                           sync_counts=sync_counts,
+                           product_counts=product_counts)
 
 
 @user.route('/product/<product_id>', methods=['GET', 'POST'])

@@ -12,7 +12,7 @@
                     <th class="px-6 py-3 bg-gray-50 text-center text-xs leading-4 font-medium text-gray-500 uppercase tracking-wider"
                         style="width:5%">
                         <div class="flex items-center h-5">
-                            <input name="product" type="checkbox"
+                            <input name="product-select-all" type="checkbox"
                                    class="cursor-pointer focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                             onchange="SelectAllProducts(this)">
                         </div>
@@ -56,6 +56,7 @@
                             <input name="product" type="checkbox" value="{{ product.product_id }}"
                                    class="product-checkbox cursor-pointer focus:ring-indigo-500 h-4 w-4 text-indigo-600 border-gray-300 rounded"
                                    {% if product_ids | exists_filter(product.product_id) %}checked{% endif %}
+                                   onchange="CheckPlanLimit(this);"
                             >
                         </div>
                     </td>
@@ -145,11 +146,35 @@
 
     <script>
         function SelectAllProducts(val){
-        var checkboxes = document.getElementsByClassName('product-checkbox');
-        for (var i=0; i< checkboxes.length; i++){
-            checkboxes[i].checked = val.checked;
+            let checkboxes = document.getElementsByClassName('product-checkbox');
+            let checked = 0;
+
+            if (val.checked){
+                for (let i=0; i < '{{ limit }}'; i++){
+                    checkboxes[i].checked = val.checked;
+                    checked += 1;
+                }
+            }
+            else {
+                for (let i=0; i < checkboxes.length; i++){
+                    checkboxes[i].checked = val.checked;
+                    checked = 0;
+                }
+            }
+
+            document.getElementById('syncs-used').innerText = String(checked);
         }
-    }
+
+        function CheckPlanLimit(el){
+            let checked = document.querySelectorAll('input[name=product]:checked').length;
+            if (checked > '{{ limit }}'){
+                el.checked = false;
+                alert("You've reached your plan limit of " + '{{ limit }}' + " products to sync. Please upgrade for more.")
+                return;
+            }
+
+            document.getElementById('syncs-used').innerText = String(checked);
+        }
     </script>
 </body>
 </html>

@@ -9,6 +9,7 @@ from sqlalchemy import exists, and_
 from app.blueprints.shopify.models.product import SyncedProduct, Product
 from app.blueprints.shopify.models.shop import Shop
 from app.blueprints.shopify.models.sync import Sync
+from app.blueprints.shopify.models.plan import Plan
 
 
 def sync_all_products(s):
@@ -90,14 +91,15 @@ def update_sync(sync_id, product_ids):
         # Create the newly synced products
         for product_id in product_ids:
             try:
-                # Either sync or create the product in the destination store
-                from app.blueprints.base.tasks import sync_product
-                sync_product.delay(source.shop_id, destination.shop_id, product_id, destination_products)
 
-                # Add it to the synced product table, if it doesn't already exist
+                # Add the product to the synced product table, if it doesn't already exist
                 if not db.session.query(exists().where(SyncedProduct.source_product_id == product_id)).scalar():
                     p = SyncedProduct(product_id, None, current_user.id, source.shop_id, sync_id)
                     p.save()
+
+                # Either sync or create the product in the destination store
+                from app.blueprints.base.tasks import sync_product
+                sync_product.delay(source.shop_id, destination.shop_id, product_id, destination_products)
 
                 count += 1
             except Exception as e:
@@ -239,6 +241,27 @@ def get_all_products(shop, return_json=False, vendor=None, **kwargs):
     return products
 
 
+def get_product_count(shop):
+
+    if shop is None:
+        return None
+
+    token = shop.token
+    url = shop.url
+
+    if token is None or url is None:
+        return None
+
+    # Return the product count
+    result = rest_call(url, 'products', token, 'get', 'count')
+
+    if result.json() is not None:
+        return result.json()
+
+    return 0
+
+
+# Unused method
 def get_synced_products(sync_id):
     if sync_id is None:
         return None
@@ -251,14 +274,7 @@ def get_synced_products(sync_id):
     if source is None:
         return None
 
-    # product_ids = [str(x.source_product_id) for x in SyncedProduct.query.filter(SyncedProduct.sync_id == sync_id)]
-
-    # if len(product_ids) > 0:
-        # products = get_all_products(source, kwargs={'ids': product_ids})
-    # else:
     products = get_all_products(source)
-
-    # print(products)
     return products
 
 

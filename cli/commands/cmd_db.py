@@ -108,7 +108,7 @@ def seed_plans():
     unlimited = {
         'title': 'Unlimited',
         'tag': 'unlimited',
-        'limit': 9999,
+        'limit': 999999,
         'price': 199
     }
 
