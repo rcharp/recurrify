@@ -49,7 +49,7 @@
         <tbody class="bg-white divide-y divide-gray-200">
         <input type="hidden" name="sync_id" value="{{ sync_id }}" />
         {% for product in products|sort(attribute='created') %}
-            <tr class="product-row pb-2">
+            <tr class="product-row items-center justify-center">
                 {% if sync_id %}
                     <td class="px-6 py-4 whitespace-no-wrap text-center" style="width:5%">
                         <div class="flex items-center h-5">
@@ -62,11 +62,10 @@
                 {% endif %}
                 <td class="px-6 py-4 whitespace-no-wrap" style="width:20%">
                     <div class="flex items-center">
-                        <div class="flex-shrink-0 h-10 w-10">
-                            {% for image in product.images %}
-                                <img class="w-10"
-                                     src="{{ image['src'] }}" alt="">
-                            {% endfor %}
+                        <div class="flex-shrink-0 h-20 w-20">
+                            {% if product.images | length > 0 %}
+                                <img class="h-20" src="{{ (product.images | first )['src'] }}" alt="">
+                            {% endif %}
                         </div>
                         <div class="ml-4 truncate">
                             <div class="text-sm leading-5 font-medium text-gray-900 truncate">
