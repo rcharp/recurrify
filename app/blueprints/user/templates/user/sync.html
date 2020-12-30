@@ -168,13 +168,14 @@
     function UpdateMessage(val, count=false) {
         let checked = document.querySelectorAll('input[name=product]:checked').length;
         let message = document.getElementById('success-message');
+        let p = (checked === 1) ? ' product' : ' products';
 
         if (val){
-            message.innerText = 'Syncing ' + String(checked) + ' products....';
+            message.innerText = 'Syncing ' + String(checked) + p + '....';
             message.style.display = '';
         }
         else{
-            message.innerText = 'Successfully synced ' + String(count) + ' products!';
+            message.innerText = 'Successfully synced ' + String(count) + p + '!';
             message.classList.remove('text-yellow-400');
             message.classList.add('text-green-400');
         }

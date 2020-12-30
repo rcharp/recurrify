@@ -28,14 +28,22 @@ def sync_all_products(s):
         destination_product_ids = [str(x.destination_product_id) for x in synced_products]
 
         # Get the source products for those ids
-        source_products = get_all_products(source, True, kwargs={'ids': source_product_ids})
+        source_products = get_all_products(source, True, ids=','.join(source_product_ids))
+
+        print("Source products ids are:")
+        print(','.join(source_product_ids))
+        print("Source Products are:")
+        pprint.pprint(source_products)
 
         # Get the products that are currently synced to the destination store
         vendor = source.url.replace('.myshopify.com', '')
-        destination_products = get_all_products(destination, True, vendor=vendor, kwargs={'ids': destination_product_ids})
+        destination_products = get_all_products(destination, True, vendor=vendor, ids=','.join(destination_product_ids))
 
-        for product in source_products:
-            sync_or_create_product(destination.shop_id, product, destination_products)
+        print("Destination products are:")
+        pprint.pprint(destination_products)
+
+        # for product in source_products:
+        #     sync_or_create_product(destination.shop_id, product, destination_products)
 
         return True
 
@@ -47,9 +55,8 @@ def sync_all_products(s):
 
 def sync_or_create_product(destination_id, source_product, destination_products):
     try:
-
         # If destination store already has this product update it
-        destination_product = next((x for x in destination_products if 'tags' in x and 'recurrify-' + str(source_product['id']) in x['tags']), None)
+        destination_product = next((x for x in destination_products if 'tags' in x and current_app.config.get("APP_NAME") + '-' + str(source_product['id']) in x['tags']), None)
 
         if destination_product is not None:
             try:
@@ -91,7 +98,6 @@ def update_sync(sync_id, product_ids):
         # Create the newly synced products
         for product_id in product_ids:
             try:
-
                 # Add the product to the synced product table, if it doesn't already exist
                 if not db.session.query(exists().where(SyncedProduct.source_product_id == product_id)).scalar():
                     p = SyncedProduct(product_id, None, current_user.id, source.shop_id, sync_id)
@@ -223,7 +229,7 @@ def get_all_products(shop, return_json=False, vendor=None, **kwargs):
         return None
 
     # Only return the products originating from the specified vendor
-    result = rest_call(url, 'products', token, 'get', vendor=vendor, kwargs=kwargs)
+    result = rest_call(url, 'products', token, 'get', vendor=vendor, **kwargs)
 
     if result.json() is not None and 'products' in result.json():
         if return_json:
@@ -278,7 +284,7 @@ def get_synced_products(sync_id):
     return products
 
 
-def get_product_by_id(shop, product_id, synced=False, return_json=False):
+def get_product_by_id(shop, product_id, return_json=False):
 
     if shop is None:
         return None
@@ -289,11 +295,7 @@ def get_product_by_id(shop, product_id, synced=False, return_json=False):
     if token is None or url is None:
         return None
 
-    if synced:
-        kwargs = {'tags': 'hello'}
-        result = rest_call(url, 'products', token, 'get', str(product_id), **kwargs)
-    else:
-        result = rest_call(url, 'products', token, 'get', str(product_id))
+    result = rest_call(url, 'products', token, 'get', str(product_id))
 
     if result.json() is not None and 'product' in result.json() and result.json()['product'] is not None:
         if not return_json:
@@ -307,14 +309,15 @@ def get_product_by_id(shop, product_id, synced=False, return_json=False):
 
 # Adds the source product's id to the tag, so it can be identified for a sync
 def add_source_tag(source_product, product_id):
-    source_product.update({'tags': ['recurrify-' + str(product_id)]})
+    source_product.update({'tags': [current_app.config.get("APP_NAME") + '-' + str(product_id)]})
 
 """
 Queries
 """
 
 
-def rest_call(shop_url, api, token, method, *args, data=None, vendor=None, kwargs=None):
+# The base rest call that returns data from Shopify's API
+def rest_call(shop_url, api, token, method, *args, data=None, vendor=None, **kwargs):
     api_version = current_app.config.get('SHOPIFY_API_VERSION')
     url = 'https://' + shop_url + '/admin/api/' + api_version + '/' + api
 
@@ -326,19 +329,21 @@ def rest_call(shop_url, api, token, method, *args, data=None, vendor=None, kwarg
     url += '.json?'
 
     if vendor is not None:
-        url += 'vendor=' + str(vendor)
+        url += '&vendor=' + str(vendor)
 
     if kwargs is not None:
         for k, v in kwargs.items():
             if isinstance(v, list):
-                url += str(k) + '=' + ','.join(v)
+                url += '&' + str(k) + '=' + ','.join(v)
             elif isinstance(v, dict):
                 if 'ids' in v:
                     ids = v['ids']
-                    url += k + '=' + ','.join(list(ids))
+                    url += '&' + k + '=' + ','.join(list(ids))
             else:
-                url += str(k) + '=' + str(v)
+                url += '&' + str(k) + '=' + str(v)
 
+    print("REST call url: ")
+    print(url)
     headers = {
         "X-Shopify-Access-Token": token,
         "Accept": "application/json",
@@ -373,6 +378,7 @@ def rest_call(shop_url, api, token, method, *args, data=None, vendor=None, kwarg
     return result
 
 
+# Unused, constructs the GraphQL query.
 def construct_query(query, parameters):
     from app.blueprints.base.functions import print_traceback
     try:
@@ -400,6 +406,7 @@ def construct_query(query, parameters):
     return query
 
 
+# Unused, calls the constructed GraphQL query
 def graphql_query(shop_url, token, parameters=None):
     from app.blueprints.base.functions import print_traceback
     try:

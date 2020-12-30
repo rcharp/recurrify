@@ -465,7 +465,6 @@ def activate_sync():
 def submit_sync():
     try:
         if request.method == 'POST':
-            print(request.form)
             if 'sync_id' in request.form:
                 product_ids = list()
                 sync_id = request.form['sync_id']

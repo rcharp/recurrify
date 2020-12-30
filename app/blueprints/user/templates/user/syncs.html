@@ -7,7 +7,7 @@
 <head>
     <meta charset="utf-8">
 
-    <title>Stores - {{ 'site_name'|site_name_filter }}</title>
+    <title>My Syncs - {{ 'site_name'|site_name_filter }}</title>
 
     <meta name="description" content="Recurrify - Subscriptions for your Shopify store">
     <meta name="author" content="pixelcave">
@@ -78,7 +78,7 @@
                                 <ul class="space-y-4" role="radiogroup" aria-labelledby="radiogroup-label">
                                     {% for shop in sources %}
                                         <li id="{{ shop.shop_id }}" tabindex="0" role="radio" aria-checked="true"
-                                            class="group relative bg-white rounded-lg shadow-sm cursor-pointer focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500"
+                                            class="group relative bg-white rounded-lg shadow-sm focus:outline-none focus:ring-1 focus:ring-offset-2 focus:ring-indigo-500"
                                             >
                                             <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
                                                 <div class="items-center">
@@ -118,7 +118,7 @@
                                                 >
                                                 <div class="rounded-lg border border-gray-300 bg-white px-6 py-4 hover:border-gray-400 sm:flex sm:justify-between">
                                                     <div class="flex items-center w-full">
-                                                        <div class="grid grid-cols-4 gap-5">
+                                                        <div class="grid grid-cols-4 gap-1">
                                                             <div class="col-span-3">
                                                                 <div class="text-lg">
                                                                     <p class="text-gray-900">
@@ -151,7 +151,7 @@
                                                                           Deactivate
                                                                         </button>
                                                                     {% else %}
-                                                                        <button type="button"
+                                                                        <button type="button" title="Activate to sync"
                                                                                 class="disabled mb-5 inline-flex justify-center py-2 px-4 text-sm leading-5 font-medium rounded-md text-white bg-gray-400 transition duration-150 ease-in-out"
                                                                                 onclick="return false;">
                                                                           Sync <i class="fa fa-refresh ml-3 pt-1"></i>
